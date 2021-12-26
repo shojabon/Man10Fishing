@@ -1,0 +1,17 @@
+
+rarity:
+  legendary:
+    alias: "レジェンド"
+    weight: 0
+  superRare:
+    alias: "スーパーレア"
+    weight: 0
+  rare:
+    alias: "レア"
+    weight: 0
+  uncommon:
+    alias: "アンコモン"
+    weight: 0
+  common:
+    alias: "コモン"
+    weight: 0
