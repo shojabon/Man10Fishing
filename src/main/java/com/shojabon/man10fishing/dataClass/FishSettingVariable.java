@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.dataClass;
 import com.shojabon.mcutils.Utils.SConfigFile;
 import com.shojabon.mcutils.Utils.SItemStack;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -47,6 +48,11 @@ public class FishSettingVariable<T>{
     }
 
     public T get(){
+        if(value != null){
+            return value;
+        }
+        if(!config.contains("fishFactors." + settingId)) return defaultValue;
+        stringSet(config.getString("fishFactors." + settingId));
         return value;
     }
 

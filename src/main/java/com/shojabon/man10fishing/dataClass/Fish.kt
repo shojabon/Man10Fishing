@@ -19,8 +19,8 @@ class Fish (val name: String, val config: ConfigurationSection){
     var rarity: String = ""
     var weight: Pair<Int, Int> = Pair(0, 0) //min max
     var size: Pair<Int, Int> = Pair(0, 0) //min max
-    var food: IntArray = intArrayOf(0, 0, 0, 0, 0)
-    var foodRange: Int = 0
+//    var food: IntArray = intArrayOf(0, 0, 0, 0, 0)
+//    var foodRange: Int = 0
     var item: ItemStack = ItemStack(Material.ACACIA_PLANKS)
 
     var loaded: Boolean = false
@@ -39,8 +39,6 @@ class Fish (val name: String, val config: ConfigurationSection){
         if(result != null){
             warnError(result)
         }
-
-
         //load functions
         for (field in javaClass.fields) {
             try {
@@ -54,7 +52,7 @@ class Fish (val name: String, val config: ConfigurationSection){
                     for (innerField in func.javaClass.fields) {
                         if (FishSettingVariable::class.java.isAssignableFrom(innerField.type)) {
                             val setting: FishSettingVariable<*> = innerField[func] as FishSettingVariable<*>
-                            settingTypeMap[func.definition.settingPrefix + "." + setting.settingId] = (innerField.genericType as ParameterizedType).actualTypeArguments[0]
+                            settingTypeMap[setting.settingId] = (innerField.genericType as ParameterizedType).actualTypeArguments[0]
                             setting.config = config
                         }
                     }
@@ -83,9 +81,9 @@ class Fish (val name: String, val config: ConfigurationSection){
         if(weight.first > weight.second || (weight.first < 0 || weight.second < 0)) return "不正重量"
         size = Pair(config.getInt("size.min"), config.getInt("size.max"))
         if(size.first > size.second || (size.first < 0 || size.second < 0)) return "不正サイズ"
-        food = config.getIntegerList("food.index").toIntArray()
-        if(food.size != 5)return "フードインデックス"
-        foodRange = config.getInt("food.range")
+//        food = config.getIntegerList("food.index").toIntArray()
+//        if(food.size != 5)return "フードインデックス"
+//        foodRange = config.getInt("food.range")
 
         // item
         val material = Material.getMaterial(config.getString("item.material")?: return "不正マテリアル")?: return "不正マテリアル"
@@ -97,6 +95,7 @@ class Fish (val name: String, val config: ConfigurationSection){
         itemStack.lore = lore
 
         item = itemStack.build()?: return "不正アイテム"
+
 
         loaded = true
         return null
