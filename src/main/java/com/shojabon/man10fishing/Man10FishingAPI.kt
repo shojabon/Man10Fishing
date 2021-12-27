@@ -3,10 +3,13 @@ package com.shojabon.man10fishing
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishRarity
+import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import java.io.File
 import kotlin.math.sin
 import kotlin.random.Random
@@ -58,6 +61,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
 
     //　======================================
 
+    //レアリティ選択
     fun pickRarity(): FishRarity? {
         var total = 0
         for(rarity in rarity.values){
@@ -76,9 +80,37 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         return null
     }
 
-    fun pickFish(): Fish? {
+    //魚選択
+    fun pickFish(fisher: Player): Fish? {
         val rarity = pickRarity()?: return null
-        val fishGroup = rarity.fishInGroup
-        return fishGroup.random()
+        val fishGroup = createFishTable(rarity.fishInGroup, fisher)
+
+        var total = 0
+        for(weight in fishGroup.values){
+            total += (weight * 100).toInt()
+        }
+        if(total == 0) return null
+
+        val rand = Random.nextInt(0, total)
+        var checkingTotal = 0
+        for(fishName in fishGroup.keys){
+            val fishObject = fish[fishName]?: continue
+            val multiplier = fishGroup[fishName]?: continue
+            checkingTotal += (multiplier * 100).toInt()
+
+            if(rand < checkingTotal-1) return fishObject
+        }
+
+        return null
     }
+
+    //抽選のための魚テーブル作成 (内部名, 出現確立)
+    fun createFishTable(fishAvailableToFish: ArrayList<Fish>, fisher: Player): HashMap<String, Float>{
+        val result = HashMap<String, Float>()
+        for(fish in fishAvailableToFish){
+            result[fish.name] = fish.getRarityMultiplier(fisher, FishingRod(ItemStack(Material.FISHING_ROD)))
+        }
+        return result
+    }
+
 }

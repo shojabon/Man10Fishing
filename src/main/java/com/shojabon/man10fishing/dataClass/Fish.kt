@@ -1,13 +1,19 @@
 package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10FishingAPI
+import com.shojabon.man10fishing.factors.FoodFactor
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
-class Fish (private val name: String, private val config: ConfigurationSection){
+class Fish (val name: String, val config: ConfigurationSection){
+
 
     var alias: String = ""
     var rarity: String = ""
@@ -19,10 +25,49 @@ class Fish (private val name: String, private val config: ConfigurationSection){
 
     var loaded: Boolean = false
 
+    //ファクター
+    val fishFactors = ArrayList<FishFactor>()
+
+    companion object{
+        val settingTypeMap = HashMap<String, Type>()
+    }
+
+    lateinit var foodFactor: FoodFactor
+
     init {
         val result = loadConfig()
         if(result != null){
             warnError(result)
+        }
+
+
+        //load functions
+        for (field in javaClass.fields) {
+            try {
+                if (FishFactor::class.java.isAssignableFrom(field.type)) {
+                    field[this] = field.type.getConstructor(Fish::class.java).newInstance(this)
+
+                    //set shop id in setting fields
+                    val func: FishFactor = field[this] as FishFactor
+                    fishFactors.add(func)
+
+                    for (innerField in func.javaClass.fields) {
+                        if (FishSettingVariable::class.java.isAssignableFrom(innerField.type)) {
+                            val setting: FishSettingVariable<*> = innerField[func] as FishSettingVariable<*>
+                            settingTypeMap[func.definition.settingPrefix + "." + setting.settingId] = (innerField.genericType as ParameterizedType).actualTypeArguments[0]
+                            setting.config = config
+                        }
+                    }
+                }
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: InvocationTargetException) {
+                e.printStackTrace()
+            } catch (e: InstantiationException) {
+                e.printStackTrace()
+            } catch (e: NoSuchMethodException) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -55,6 +100,23 @@ class Fish (private val name: String, private val config: ConfigurationSection){
 
         loaded = true
         return null
+    }
+
+    fun isFishEnabled(fisher: Player, rod: FishingRod): Boolean{
+        for(factor in fishFactors){
+            if(!factor.fishEnabled(this, fisher, rod)){
+                return false
+            }
+        }
+        return true
+    }
+
+    fun getRarityMultiplier(fisher: Player, rod: FishingRod): Float{
+        var current = 1f
+        for(factor in fishFactors){
+            current = factor.rarityMultiplier(this, current, fisher, rod)
+        }
+        return current
     }
 
 }

@@ -13,10 +13,11 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onFish(e: PlayerFishEvent) {
         if(e.state != PlayerFishEvent.State.CAUGHT_FISH) return
-        val pickedFish = Man10Fishing.api.pickFish()?: return
+        val pickedFish = Man10Fishing.api.pickFish(e.player)?: return
         e.caught?: return
         val fishedItem = e.caught as Item
         fishedItem.itemStack = pickedFish.item
+        Bukkit.broadcastMessage(pickedFish.alias)
 
     }
 }

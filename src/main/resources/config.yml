@@ -15,3 +15,5 @@ rarity:
   common:
     alias: "コモン"
     weight: 0
+
+foodInRangeMultiplier: 100

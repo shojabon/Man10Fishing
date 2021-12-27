@@ -8,6 +8,7 @@ class Man10Fishing : JavaPlugin() {
 
     companion object{
         lateinit var api: Man10FishingAPI
+        var foodInRangeMultiplier: Int = 1
     }
 
     override fun onEnable() {
@@ -17,6 +18,7 @@ class Man10Fishing : JavaPlugin() {
         val file = File(dataFolder.toString() + File.separator + "fish" + File.separator)
         file.mkdir()
         Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
+        foodInRangeMultiplier = config.getInt("foodInRangeMultiplier")
     }
 
     override fun onDisable() {
