@@ -15,10 +15,10 @@ import kotlin.math.pow
         iconMaterial = Material.MELON_SEEDS,
         explanation = ["食べ物ロジックの定義"],
         settable = false)
-class FoodFactor(fish: Fish?) : FishFactor(fish) {
+class FoodFactor(fish: Fish) : FishFactor(fish) {
 
-    var matrix :FishSettingVariable<List<Double>> = FishSettingVariable("food.matrix", listOf(0.0, 0.0, 0.0, 0.0, 0.0))
-    var range :FishSettingVariable<Double> = FishSettingVariable("food.range", 0.0)
+    var matrix = FishSettingVariable("food.matrix", listOf(0.0, 0.0, 0.0, 0.0, 0.0))
+    var range = FishSettingVariable("food.range", 0.0)
 
     override fun rarityMultiplier(fish: Fish, currentMultiplier: Float, fisher: Player, rod: FishingRod): Float {
         return if (nDimensionDistanceSquared(matrix.get()!!, rod.currentFood) <= (range.get()!!).pow(2.0)) {

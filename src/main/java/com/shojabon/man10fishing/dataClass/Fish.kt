@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10FishingAPI
+import com.shojabon.man10fishing.factors.BroadcastFactor
 import com.shojabon.man10fishing.factors.FoodFactor
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
@@ -30,6 +31,7 @@ class Fish (val name: String, val config: ConfigurationSection){
     }
 
     lateinit var foodFactor: FoodFactor
+    lateinit var broadcastFactor: BroadcastFactor
 
     init {
         val result = loadConfig()
