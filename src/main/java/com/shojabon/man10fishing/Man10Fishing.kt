@@ -9,6 +9,7 @@ class Man10Fishing : JavaPlugin() {
     companion object{
         lateinit var api: Man10FishingAPI
         var foodInRangeMultiplier: Int = 1
+        lateinit var prefix: String
     }
 
     override fun onEnable() {
@@ -19,6 +20,7 @@ class Man10Fishing : JavaPlugin() {
         file.mkdir()
         Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
         foodInRangeMultiplier = config.getInt("foodInRangeMultiplier")
+        prefix = config.getString("prefix")!!
     }
 
     override fun onDisable() {
