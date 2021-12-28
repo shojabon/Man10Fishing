@@ -1,7 +1,10 @@
 package com.shojabon.man10fishing
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.dataClass.FishingRod
+import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -17,7 +20,6 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         e.caught?: return
         val fishedItem = e.caught as Item
         fishedItem.itemStack = pickedFish.item
-        Bukkit.broadcastMessage(pickedFish.alias)
-
+        pickedFish.executeOnFish(e.player, FishingRod(ItemStack(Material.FISHING_ROD)))
     }
 }

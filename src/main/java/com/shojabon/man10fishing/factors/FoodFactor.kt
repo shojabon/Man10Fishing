@@ -8,6 +8,7 @@ import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
 import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishSettingVariable
+import org.bukkit.Bukkit
 import kotlin.math.pow
 
 @FishFactorDefinition(name = "フード",
@@ -33,4 +34,5 @@ class FoodFactor(fish: Fish?) : FishFactor(fish) {
         }
         return result
     }
+
 }
