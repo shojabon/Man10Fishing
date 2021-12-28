@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10FishingAPI
+import com.shojabon.man10fishing.factors.AreaFactor
 import com.shojabon.man10fishing.factors.BroadcastFactor
 import com.shojabon.man10fishing.factors.FoodFactor
 import com.shojabon.mcutils.Utils.SItemStack
@@ -32,6 +33,7 @@ class Fish (val name: String, val config: ConfigurationSection){
 
     lateinit var foodFactor: FoodFactor
     lateinit var broadcastFactor: BroadcastFactor
+    lateinit var areaFactor: AreaFactor
 
     init {
         val result = loadConfig()
