@@ -18,11 +18,6 @@ class FoodFactor(fish: Fish?) : FishFactor(fish) {
 
     var matrix :FishSettingVariable<List<Double>> = FishSettingVariable("food.matrix", listOf(0.0, 0.0, 0.0, 0.0, 0.0))
     var range :FishSettingVariable<Double> = FishSettingVariable("food.range", 0.0)
-    var enabled :FishSettingVariable<Boolean> = FishSettingVariable("food.enabled", true)
-
-    override fun fishEnabled(fish: Fish?, fisher: Player?, rod: FishingRod?): Boolean {
-        return enabled.get()
-    }
 
     override fun rarityMultiplier(fish: Fish, currentMultiplier: Float, fisher: Player, rod: FishingRod): Float {
         return if (nDimensionDistanceSquared(matrix.get()!!, rod.currentFood) <= (range.get()!!).pow(2.0)) {
