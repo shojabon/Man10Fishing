@@ -26,7 +26,7 @@ import org.bukkit.entity.Player
  */
 class SoundFactor(fish : Fish) : FishFactor(fish) {
 
-    val sound = FishSettingVariable("sound.name","ENTITY_PLAYER_LEVELUP")
+    val sound = FishSettingVariable("sound.name","none")
     val volume = FishSettingVariable("sound.volume", 1f)
     val pitch = FishSettingVariable("sound.pitch", 1f)
 
