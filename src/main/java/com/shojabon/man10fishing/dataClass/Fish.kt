@@ -110,4 +110,10 @@ class Fish (val name: String, val config: ConfigurationSection){
         return current
     }
 
+    fun executeOnFish(fisher: Player, rod: FishingRod){
+        for(factor in fishFactors){
+            factor.onFish(this, fisher, rod)
+        }
+    }
+
 }

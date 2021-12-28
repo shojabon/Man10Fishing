@@ -24,4 +24,9 @@ public abstract class FishFactor {
         if(!this.getClass().isAnnotationPresent(FishFactorDefinition.class)) return null;
         return this.getClass().getAnnotation(FishFactorDefinition.class);
     }
+
+    public void onFish(Fish fish, Player fisher, FishingRod rod){}
+
+
+
 }
