@@ -1,6 +1,6 @@
 package com.shojabon.man10fishing.dataClass;
 
-import com.shojabon.man10fishing.annotations.FoodFactorDefinition;
+import com.shojabon.man10fishing.annotations.FishFactorDefinition;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,8 +20,8 @@ public abstract class FishFactor {
         return 1f;
     }
 
-    public FoodFactorDefinition getDefinition(){
-        if(!this.getClass().isAnnotationPresent(FoodFactorDefinition.class)) return null;
-        return this.getClass().getAnnotation(FoodFactorDefinition.class);
+    public FishFactorDefinition getDefinition(){
+        if(!this.getClass().isAnnotationPresent(FishFactorDefinition.class)) return null;
+        return this.getClass().getAnnotation(FishFactorDefinition.class);
     }
 }

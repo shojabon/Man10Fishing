@@ -8,7 +8,6 @@ import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -19,8 +18,6 @@ class Fish (val name: String, val config: ConfigurationSection){
     var rarity: String = ""
     var weight: Pair<Int, Int> = Pair(0, 0) //min max
     var size: Pair<Int, Int> = Pair(0, 0) //min max
-//    var food: IntArray = intArrayOf(0, 0, 0, 0, 0)
-//    var foodRange: Int = 0
     var item: ItemStack = ItemStack(Material.ACACIA_PLANKS)
 
     var loaded: Boolean = false
@@ -49,24 +46,20 @@ class Fish (val name: String, val config: ConfigurationSection){
                     val func: FishFactor = field[this] as FishFactor
                     fishFactors.add(func)
 
-                    for (innerField in func.javaClass.fields) {
+                    for (innerField in func.javaClass.declaredFields) {
                         if (FishSettingVariable::class.java.isAssignableFrom(innerField.type)) {
+                            innerField.isAccessible = true
                             val setting: FishSettingVariable<*> = innerField[func] as FishSettingVariable<*>
                             settingTypeMap[setting.settingId] = (innerField.genericType as ParameterizedType).actualTypeArguments[0]
                             setting.config = config
                         }
                     }
                 }
-            } catch (e: IllegalAccessException) {
-                e.printStackTrace()
-            } catch (e: InvocationTargetException) {
-                e.printStackTrace()
-            } catch (e: InstantiationException) {
-                e.printStackTrace()
-            } catch (e: NoSuchMethodException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+        loaded = true
     }
 
     private fun warnError(error: String){
@@ -97,7 +90,6 @@ class Fish (val name: String, val config: ConfigurationSection){
         item = itemStack.build()?: return "不正アイテム"
 
 
-        loaded = true
         return null
     }
 

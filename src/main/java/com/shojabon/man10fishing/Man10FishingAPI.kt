@@ -108,6 +108,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     fun createFishTable(fishAvailableToFish: ArrayList<Fish>, fisher: Player): HashMap<String, Float>{
         val result = HashMap<String, Float>()
         for(fish in fishAvailableToFish){
+            if(!fish.isFishEnabled(fisher, FishingRod(ItemStack(Material.FISHING_ROD)))) continue
             result[fish.name] = fish.getRarityMultiplier(fisher, FishingRod(ItemStack(Material.FISHING_ROD)))
         }
         return result
