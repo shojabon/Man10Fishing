@@ -75,7 +75,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         for(rarity in rarity.values){
             if(rarity.fishInGroup.size == 0) continue
             checkingTotal += rarity.weight
-            if(rand < checkingTotal-1) return rarity
+            if(rand <= checkingTotal-1) return rarity
         }
         return null
     }
@@ -98,7 +98,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             val multiplier = fishGroup[fishName]?: continue
             checkingTotal += (multiplier * 100).toInt()
 
-            if(rand < checkingTotal-1) return fishObject
+            if(rand <= checkingTotal-1) return fishObject
         }
 
         return null
