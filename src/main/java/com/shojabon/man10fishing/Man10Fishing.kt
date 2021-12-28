@@ -1,5 +1,6 @@
 package com.shojabon.man10fishing
 
+import com.shojabon.man10fishing.commands.Man10FishingCommand
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -21,6 +22,10 @@ class Man10Fishing : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
         foodInRangeMultiplier = config.getInt("foodInRangeMultiplier")
         prefix = config.getString("prefix")!!
+
+        val commandRouter = Man10FishingCommand(this)
+        getCommand("mfish")!!.setExecutor(commandRouter)
+        getCommand("mfish")!!.tabCompleter = commandRouter
     }
 
     override fun onDisable() {
