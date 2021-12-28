@@ -9,7 +9,7 @@ import com.shojabon.mcutils.Utils.SCommandRouter.SCommandObject
 import com.shojabon.mcutils.Utils.SCommandRouter.SCommandArgument
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 
-class Man10ShopV2Command(var plugin: Man10Fishing) : SCommandRouter() {
+class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
     fun registerEvents() {
         setNoPermissionEvent { e: SCommandData -> e.sender.sendMessage(Man10Fishing.prefix + "§c§lあなたは権限がありません") }
         setOnNoCommandFoundEvent { e: SCommandData -> e.sender.sendMessage(Man10Fishing.prefix + "§c§lコマンドが存在しません") }
