@@ -8,7 +8,6 @@ import com.shojabon.man10fishing.dataClass.FishFactor
 import com.shojabon.man10fishing.dataClass.FishSettingVariable
 import com.shojabon.man10fishing.dataClass.FishingRod
 import com.sk89q.worldedit.bukkit.BukkitAdapter
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -16,14 +15,24 @@ import org.bukkit.entity.Player
 @FishFactorDefinition(name = "エリア",
     iconMaterial = Material.OAK_FENCE_GATE,
     explanation = ["エリアロジックの定義"],
-    settable = false)
+    settable = true)
+/**
+ * @author tororo_1066
+ * エリアロジック
+ * area: <エリア名>
+ * none(無記述)で無効化できます
+ */
 class AreaFactor(fish : Fish) : FishFactor(fish){
 
-    val area = FishSettingVariable("area","none")
+    val areas = FishSettingVariable("area",ArrayList<String>(mutableListOf("none")))
 
     override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod): Boolean {
-        if (area.get() == "none")return true
-        val region = Man10Fishing.regionContainer[BukkitAdapter.adapt(fisher.world)]?.getRegion(area.get())?:return false
-        return region.contains(BukkitAdapter.asBlockVector(fisher.location))
+        if (areas.get().contains("none"))return true
+        for (area in areas.get()){
+            val region = Man10Fishing.regionContainer[BukkitAdapter.adapt(fisher.world)]?.getRegion(area)?:return false
+            if (!region.contains(BukkitAdapter.asBlockVector(fisher.location)))continue
+            return true
+        }
+        return false
     }
 }

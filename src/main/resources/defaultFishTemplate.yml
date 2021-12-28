@@ -16,7 +16,7 @@ empty_can:
     food:
       matrix: 100,200,300,400,500
       range: 25
-    area: normal
+    area: normal,aaa
 
 empty_can_2:
   alias: "§e空き缶2"
