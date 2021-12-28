@@ -1,6 +1,8 @@
 package com.shojabon.man10fishing.factors
 
+import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10Fishing.Companion.foodInRangeMultiplier
+import com.shojabon.man10fishing.Man10FishingAPI
 import org.bukkit.Material
 import com.shojabon.man10fishing.dataClass.FishFactor
 import org.bukkit.entity.Player
@@ -21,7 +23,7 @@ class BroadcastFactor(fish: Fish) : FishFactor(fish) {
 
     override fun onFish(fish: Fish, fisher: Player, rod: FishingRod) {
         if(!enabled.get()) return
-        Bukkit.broadcastMessage(fisher.name + "は" + fish.alias + "を釣り上げた！")
+        Bukkit.broadcastMessage(Man10Fishing.prefix + "§e§l" + fisher.name + "は" + fish.alias + "§e§lを釣り上げた！")
     }
 
 }
