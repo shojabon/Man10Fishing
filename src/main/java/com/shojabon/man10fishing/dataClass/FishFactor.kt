@@ -16,5 +16,5 @@ abstract class FishFactor(var fish: Fish) {
     val definition: FishFactorDefinition?
         get() = if (!this.javaClass.isAnnotationPresent(FishFactorDefinition::class.java)) null else this.javaClass.getAnnotation(FishFactorDefinition::class.java)
 
-    open fun onFish(fish: Fish, fisher: Player, rod: FishingRod) {}
+    fun onFish(fish: Fish, fisher: Player, rod: FishingRod) {}
 }
