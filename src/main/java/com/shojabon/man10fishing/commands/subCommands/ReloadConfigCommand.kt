@@ -1,27 +1,21 @@
-package com.shojabon.man10fishing.commands.subCommands;
+package com.shojabon.man10fishing.commands.subCommands
 
-import com.shojabon.man10fishing.Man10Fishing;
-import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI;
-import com.shojabon.mcutils.Utils.SInventory.SInventory;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import com.shojabon.man10fishing.Man10Fishing
+import org.bukkit.command.CommandExecutor
+import com.shojabon.mcutils.Utils.SInventory.SInventory
+import com.shojabon.mcutils.Utils.SCommandRouter.SCommandRouter
+import com.shojabon.mcutils.Utils.SCommandRouter.SCommandData
+import com.shojabon.mcutils.Utils.SCommandRouter.SCommandObject
+import com.shojabon.mcutils.Utils.SCommandRouter.SCommandArgument
+import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
+import org.bukkit.command.Command
+import org.bukkit.command.CommandSender
 
-public class ReloadConfigCommand implements CommandExecutor {
-    Man10Fishing plugin;
-
-    public ReloadConfigCommand(Man10Fishing plugin){
-        this.plugin = plugin;
-    }
-
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        plugin.reloadConfig();
-
-        SInventory.closeAllSInventories();
-
-        sender.sendMessage(Man10Fishing.prefix + "§a§lプラグインがリロードされました");
-        return true;
+class ReloadConfigCommand(var plugin: Man10Fishing) : CommandExecutor {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+        plugin.reloadConfig()
+        SInventory.closeAllSInventories()
+        sender.sendMessage(Man10Fishing.prefix + "§a§lプラグインがリロードされました")
+        return true
     }
 }
