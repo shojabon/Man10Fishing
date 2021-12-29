@@ -15,6 +15,7 @@ import java.util.*
 @FishFactorDefinition(name = "季節",
         iconMaterial = Material.SUNFLOWER,
         explanation = ["釣れる季節"],
+        adminSetting = false,
         settable = true)
 /*
     season: start-end

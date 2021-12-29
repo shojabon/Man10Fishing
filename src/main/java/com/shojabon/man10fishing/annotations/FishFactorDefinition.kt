@@ -8,4 +8,5 @@ annotation class FishFactorDefinition(val name: String = "無名",
                                         val iconMaterial: Material = Material.DIAMOND,
                                         val explanation: Array<String> = [],
                                         val settable: Boolean = false,
+                                        val adminSetting: Boolean = true,
                                         val enabled: Boolean = true)

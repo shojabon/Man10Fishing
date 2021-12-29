@@ -15,6 +15,7 @@ import kotlin.random.Random
 @FishFactorDefinition(name = "サイズ設定",
         iconMaterial = Material.CHEST,
         explanation = ["サイズ定義"],
+        adminSetting = false,
         settable = false)
 class SizeFactor(fish: Fish) : FishFactor(fish) {
 

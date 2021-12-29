@@ -14,6 +14,7 @@ import kotlin.math.pow
 @FishFactorDefinition(name = "フード",
         iconMaterial = Material.MELON_SEEDS,
         explanation = ["食べ物ロジックの定義"],
+        adminSetting = false,
         settable = false)
 class FoodFactor(fish: Fish) : FishFactor(fish) {
 

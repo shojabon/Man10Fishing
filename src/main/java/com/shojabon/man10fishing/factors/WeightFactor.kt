@@ -15,6 +15,7 @@ import kotlin.random.Random
 @FishFactorDefinition(name = "ウェイト設定",
         iconMaterial = Material.CLOCK,
         explanation = ["重量の定義"],
+        adminSetting = false,
         settable = false)
 class WeightFactor(fish: Fish) : FishFactor(fish) {
 

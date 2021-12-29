@@ -15,6 +15,7 @@ import org.bukkit.entity.Player
 @FishFactorDefinition(name = "エリア",
     iconMaterial = Material.OAK_FENCE_GATE,
     explanation = ["エリアロジックの定義"],
+    adminSetting = false,
     settable = true)
 /**
  * @author tororo_1066

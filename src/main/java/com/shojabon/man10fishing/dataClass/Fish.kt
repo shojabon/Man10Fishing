@@ -35,6 +35,9 @@ class Fish (val name: String, val config: ConfigurationSection){
     lateinit var timeFactor:TimeFactor
     lateinit var commandFactor: CommandFactor
     lateinit var seasonFactor: SeasonFactor
+    lateinit var weightFactor: WeightFactor
+    lateinit var sizeFactor: SizeFactor
+
 
     init {
         val result = loadConfig()

@@ -17,6 +17,7 @@ import kotlin.math.pow
 @FishFactorDefinition(name = "時間",
         iconMaterial = Material.CLOCK,
         explanation = ["釣れる時間の定義"],
+        adminSetting = false,
         settable = true)
 /*
     time: 0210-0340,1540-1902

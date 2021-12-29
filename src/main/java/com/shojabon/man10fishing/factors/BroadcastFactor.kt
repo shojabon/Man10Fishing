@@ -16,6 +16,7 @@ import kotlin.math.pow
 @FishFactorDefinition(name = "全体通知設定",
         iconMaterial = Material.BELL,
         explanation = ["大物を釣りが手たときの通知設定"],
+        adminSetting = false,
         settable = false)
 class BroadcastFactor(fish: Fish) : FishFactor(fish) {
 

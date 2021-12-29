@@ -14,6 +14,7 @@ import org.bukkit.entity.Player
 @FishFactorDefinition(name = "コマンド",
         iconMaterial = Material.COMMAND_BLOCK,
         explanation = ["釣ったときに実行されるコマンド"],
+        adminSetting = true,
         settable = true)
 /*
     commands: コマンドその１,コマンドその２,...
