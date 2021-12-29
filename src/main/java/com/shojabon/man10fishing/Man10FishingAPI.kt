@@ -61,6 +61,11 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
 
     //　======================================
 
+    //魚取得
+    fun getFish(name: String): Fish?{
+        return fish[name]
+    }
+
     //レアリティ選択
     fun pickRarity(): FishRarity? {
         var total = 0
