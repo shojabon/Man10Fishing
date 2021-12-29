@@ -16,6 +16,10 @@ import org.bukkit.entity.Player
         settable = true)
 /*
     commands: コマンドその１,コマンドその２,...
+    <player> で釣った人
+    <fish> で釣った魚
+    <rarity> で釣ったレアリティ
+    <world> で釣ったワールド名
  */
 class CommandFactor(fish: Fish) : FishFactor(fish) {
 
@@ -23,7 +27,11 @@ class CommandFactor(fish: Fish) : FishFactor(fish) {
 
     override fun onFish(fish: Fish, fisher: Player, rod: FishingRod) {
         for(command in commands.get()?:return){
-            fisher.performCommand(command)
+            fisher.performCommand(command
+                    .replace("<player>",fisher.name)
+                    .replace("<fish>",fish.name)
+                    .replace("<rarity>",fish.rarity)
+                    .replace("<world>",fisher.world.name))
         }
     }
 
