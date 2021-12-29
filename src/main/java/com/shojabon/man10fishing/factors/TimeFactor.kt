@@ -18,6 +18,11 @@ import kotlin.math.pow
         iconMaterial = Material.CLOCK,
         explanation = ["釣れる時間の定義"],
         settable = true)
+/*
+    time: 0210-0340,1540-1902
+    のように指定
+    上記の場合、午前2時10分〜午前3時40分と午後3時40分〜午後7時2分
+ */
 class TimeFactor(fish: Fish) : FishFactor(fish) {
 
     var timesOfDay = FishSettingVariable("time", listOf("0000-2359"))
