@@ -16,9 +16,8 @@ class Fish (val name: String, val config: ConfigurationSection){
 
     var alias: String = ""
     var rarity: String = ""
-    var weight: Pair<Int, Int> = Pair(0, 0) //min max
-    var size: Pair<Int, Int> = Pair(0, 0) //min max
     var item: ItemStack = ItemStack(Material.ACACIA_PLANKS)
+
 
     var loaded: Boolean = false
 
@@ -76,10 +75,6 @@ class Fish (val name: String, val config: ConfigurationSection){
         alias = config.getString("alias")?: return "不正alias"
         rarity = config.getString("rarity")?: return "不正レアリティ"
         if(!Man10FishingAPI.rarity.containsKey(rarity)) return "存在しないレアリティ"
-        weight = Pair(config.getInt("weight.min"), config.getInt("weight.max"))
-        if(weight.first > weight.second || (weight.first < 0 || weight.second < 0)) return "不正重量"
-        size = Pair(config.getInt("size.min"), config.getInt("size.max"))
-        if(size.first > size.second || (size.first < 0 || size.second < 0)) return "不正サイズ"
 //        food = config.getIntegerList("food.index").toIntArray()
 //        if(food.size != 5)return "フードインデックス"
 //        foodRange = config.getInt("food.range")

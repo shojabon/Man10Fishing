@@ -2,18 +2,18 @@ prefix: "§e§l[§6§lMan10Fishing§e§l]§a"
 rarity:
   legendary:
     alias: "レジェンド"
-    weight: 0
+    weight: 10
   superRare:
     alias: "スーパーレア"
-    weight: 0
+    weight: 11
   rare:
     alias: "レア"
-    weight: 0
+    weight: 12
   uncommon:
     alias: "アンコモン"
-    weight: 0
+    weight: 13
   common:
     alias: "コモン"
-    weight: 0
+    weight: 14
 
 foodInRangeMultiplier: 100
