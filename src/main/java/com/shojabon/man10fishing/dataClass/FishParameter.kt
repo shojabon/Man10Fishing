@@ -1,14 +1,13 @@
-package com.shojabon.man10fishing.itemindex
+package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10FishingAPI
-import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.mcutils.Utils.MySQL.MySQLCachedResultSet
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
-import java.text.ParseException
+import org.bukkit.entity.Player
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FishdexEntry(){
+class FishParameter(){
 
     lateinit var fish : Fish
     lateinit var name : String
@@ -27,7 +26,7 @@ class FishdexEntry(){
 
 
 
-    fun setDataFromDB(resultSet: MySQLCachedResultSet): FishdexEntry {
+    fun setDataFromDB(resultSet: MySQLCachedResultSet): FishParameter {
         fish = Man10FishingAPI.fish[resultSet.getString("fish")]?:return this
         name = resultSet.getString("name")?:return this
         uuid = UUID.fromString(resultSet.getString("uuid"))?:return this
@@ -44,9 +43,21 @@ class FishdexEntry(){
         return this
     }
 
+    fun generateFishParameter(fisher: Player, fish: Fish): FishParameter {
+        name = fisher.name
+        uuid = fisher.uniqueId
+        weight = fish.weightFactor.generateRandomWeight()
+        size = fish.sizeFactor.generateRandomSize()
+
+        dateTime = Date()
+
+        loaded = true
+        return this
+    }
+
 
     // ふぉーまっと、きめよう
-    fun generateFish() : SInventoryItem?{
+    fun generateIndexItem() : SInventoryItem?{
         if (!loaded)return null
         return SInventoryItem(fish.item)
     }

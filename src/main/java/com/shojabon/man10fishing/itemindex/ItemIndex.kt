@@ -3,6 +3,7 @@ package com.shojabon.man10fishing.itemindex
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.Fish
+import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import java.util.*
 import kotlin.collections.HashMap
@@ -10,7 +11,7 @@ import kotlin.collections.HashMap
 class ItemIndex(val name : String, plugin : Man10Fishing){
 
     companion object{
-        val fishdexList = HashMap<UUID,HashMap<String,FishdexEntry>>()
+        val fishdexList = HashMap<UUID,HashMap<String,FishParameter>>()
 
         fun loadData(): Boolean {
             val rs = Man10Fishing.mysql.query("select * from fish_log;") ?: return false
@@ -21,7 +22,7 @@ class ItemIndex(val name : String, plugin : Man10Fishing){
                     fishdexList[uuid] = hashMapOf()
                 }
 
-                fishdexList[uuid]!![data.getString("fish")] = FishdexEntry().setDataFromDB(data)
+                fishdexList[uuid]!![data.getString("fish")] = FishParameter().setDataFromDB(data)
             }
 
             return true

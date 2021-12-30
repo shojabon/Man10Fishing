@@ -2,10 +2,7 @@ package com.shojabon.man10fishing.factors
 
 import com.shojabon.man10fishing.annotations.Author
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
-import com.shojabon.man10fishing.dataClass.Fish
-import com.shojabon.man10fishing.dataClass.FishFactor
-import com.shojabon.man10fishing.dataClass.FishSettingVariable
-import com.shojabon.man10fishing.dataClass.FishingRod
+import com.shojabon.man10fishing.dataClass.*
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -30,7 +27,7 @@ class SoundFactor(fish : Fish) : FishFactor(fish) {
     val volume = FishSettingVariable("sound.volume", 1f)
     val pitch = FishSettingVariable("sound.pitch", 1f)
 
-    override fun onFish(fish: Fish, fisher: Player, rod: FishingRod) {
+    override fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {
         if (!Sound.values().equals(sound.get()))return
         fisher.playSound(fisher.location,Sound.valueOf(sound.get()),volume.get(),pitch.get())
     }

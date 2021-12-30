@@ -2,10 +2,7 @@ package com.shojabon.man10fishing.factors
 
 import com.shojabon.man10fishing.annotations.Author
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
-import com.shojabon.man10fishing.dataClass.Fish
-import com.shojabon.man10fishing.dataClass.FishFactor
-import com.shojabon.man10fishing.dataClass.FishSettingVariable
-import com.shojabon.man10fishing.dataClass.FishingRod
+import com.shojabon.man10fishing.dataClass.*
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -27,7 +24,7 @@ class CommandFactor(fish: Fish) : FishFactor(fish) {
 
     val commands=FishSettingVariable("commands", null as List<String>?)
 
-    override fun onFish(fish: Fish, fisher: Player, rod: FishingRod) {
+    override fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {
         for(command in commands.get()?:return){
             Bukkit.dispatchCommand(Bukkit.getServer().consoleSender,command
                     .replace("<player>",fisher.name)

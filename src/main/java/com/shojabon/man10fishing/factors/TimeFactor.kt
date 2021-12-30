@@ -3,12 +3,9 @@ package com.shojabon.man10fishing.factors
 import com.shojabon.man10fishing.Man10Fishing.Companion.foodInRangeMultiplier
 import com.shojabon.man10fishing.annotations.Author
 import org.bukkit.Material
-import com.shojabon.man10fishing.dataClass.FishFactor
 import org.bukkit.entity.Player
-import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
-import com.shojabon.man10fishing.dataClass.Fish
-import com.shojabon.man10fishing.dataClass.FishSettingVariable
+import com.shojabon.man10fishing.dataClass.*
 import org.bukkit.Bukkit
 import java.util.*
 import kotlin.math.pow

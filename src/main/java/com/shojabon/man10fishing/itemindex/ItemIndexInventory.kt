@@ -3,6 +3,7 @@ package com.shojabon.man10fishing.itemindex
 import ToolMenu.LargeSInventoryMenu
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
+import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
@@ -35,7 +36,7 @@ class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, pr
         for (fishdex in fishdexList){
             val index = getFishIndex(fishdex.value)
             if (index == -1)continue
-            fishdex.value.generateFish()?.clickable(false)?.let { items.set(index, it) }
+            fishdex.value.generateIndexItem()?.clickable(false)?.let { items.set(index, it) }
         }
 
         setItems(items)
@@ -45,7 +46,7 @@ class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, pr
         renderInventory(0)
     }
 
-    private fun getFishIndex(fishdex: FishdexEntry): Int {
+    private fun getFishIndex(fishdex: FishParameter): Int {
         return fishdex.fish.config.getInt("fishFactors.index", -1)
     }
 }

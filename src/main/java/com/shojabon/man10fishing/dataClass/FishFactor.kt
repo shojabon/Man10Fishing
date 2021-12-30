@@ -1,7 +1,6 @@
 package com.shojabon.man10fishing.dataClass
 
 import org.bukkit.entity.Player
-import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
 
 abstract class FishFactor(var fish: Fish) {
@@ -13,8 +12,9 @@ abstract class FishFactor(var fish: Fish) {
         return 1f
     }
 
+    open fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {}
+
     val definition: FishFactorDefinition?
         get() = if (!this.javaClass.isAnnotationPresent(FishFactorDefinition::class.java)) null else this.javaClass.getAnnotation(FishFactorDefinition::class.java)
 
-    open fun onFish(fish: Fish, fisher: Player, rod: FishingRod) {}
 }
