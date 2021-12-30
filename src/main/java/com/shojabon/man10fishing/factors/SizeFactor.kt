@@ -10,6 +10,7 @@ import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishSettingVariable
 import org.bukkit.Bukkit
 import kotlin.math.pow
+import kotlin.math.round
 import kotlin.random.Random
 
 @FishFactorDefinition(name = "サイズ設定",
@@ -24,7 +25,7 @@ class SizeFactor(fish: Fish) : FishFactor(fish) {
 
     fun generateRandomSize(): Double {
         if(max.get() < min.get()) return -1.0
-        return Random.nextDouble(min.get(), max.get())
+        return round(Random.nextDouble(min.get(), max.get()) * 10) / 10
     }
 
 
