@@ -19,10 +19,6 @@ class FishParameter(){
 
     var loaded = false
 
-    companion object{
-
-    }
-
 
 
 
@@ -44,6 +40,7 @@ class FishParameter(){
     }
 
     fun generateFishParameter(fisher: Player, fish: Fish): FishParameter {
+        this.fish = fish
         name = fisher.name
         uuid = fisher.uniqueId
         weight = fish.weightFactor.generateRandomWeight()

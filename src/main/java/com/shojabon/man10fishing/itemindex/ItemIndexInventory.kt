@@ -2,7 +2,6 @@ package com.shojabon.man10fishing.itemindex
 
 import ToolMenu.LargeSInventoryMenu
 import com.shojabon.man10fishing.Man10Fishing
-import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
@@ -34,6 +33,8 @@ class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, pr
         }
 
         for (fishdex in fishdexList){
+            if (!fishdex.value.loaded)continue
+            if (fishdex.value.fish.rarity != rarityName)continue
             val index = getFishIndex(fishdex.value)
             if (index == -1)continue
             fishdex.value.generateIndexItem()?.clickable(false)?.let { items.set(index, it) }
