@@ -14,11 +14,10 @@ import org.bukkit.entity.Player
 @Author(author = "tororo_1066")
 @FishFactorDefinition(name = "エリア",
     iconMaterial = Material.OAK_FENCE_GATE,
-    explanation = ["エリアロジックの定義"],
+    explanation = ["エリア指定の定義"],
     adminSetting = false,
     settable = true)
 /**
- * @author tororo_1066
  * エリアロジック
  * area: <エリア名>
  * none(無記述)で無効化できます

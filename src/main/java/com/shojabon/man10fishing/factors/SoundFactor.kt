@@ -14,11 +14,10 @@ import org.bukkit.entity.Player
 @Author(author = "tororo_1066")
 @FishFactorDefinition(name = "サウンド",
     iconMaterial = Material.NOTE_BLOCK,
-    explanation = ["サウンドロジックの定義"],
+    explanation = ["サウンドの定義"],
     adminSetting = false,
     settable = true)
 /**
- * @author tororo_1066
  * サウンドロジック
  * sound:
  *   name: <サウンド名(大文字、.を_にする必要あり)>

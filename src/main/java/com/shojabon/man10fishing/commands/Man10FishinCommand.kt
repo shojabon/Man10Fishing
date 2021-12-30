@@ -1,13 +1,11 @@
 package com.shojabon.man10fishing.commands
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.commands.subCommands.OpenItemIndexMenuCommand
 import org.bukkit.command.CommandExecutor
 import com.shojabon.mcutils.Utils.SInventory.SInventory
-import com.shojabon.mcutils.Utils.SCommandRouter.SCommandRouter
-import com.shojabon.mcutils.Utils.SCommandRouter.SCommandData
-import com.shojabon.mcutils.Utils.SCommandRouter.SCommandObject
-import com.shojabon.mcutils.Utils.SCommandRouter.SCommandArgument
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
+import com.shojabon.mcutils.Utils.SCommandRouter.*
 
 class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
     fun registerEvents() {
@@ -19,13 +17,23 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
 
         //reload command
         addCommand(
-                SCommandObject()
-                        .addArgument(SCommandArgument().addAllowedString("reload")).addRequiredPermission("man10shopv2.reload")
-                        .addExplanation("プラグインをリロードする")
-                        .addExplanation("")
-                        .addExplanation("設定を変更したときに使用する")
-                        .addExplanation("コマンドを使用するとサーバー起動時状態に戻る")
-                        .setExecutor(ReloadConfigCommand(plugin))
+            SCommandObject()
+                .addArgument(SCommandArgument().addAllowedString("reload")).addRequiredPermission("man10shopv2.reload")
+                .addExplanation("プラグインをリロードする")
+                .addExplanation("")
+                .addExplanation("設定を変更したときに使用する")
+                .addExplanation("コマンドを使用するとサーバー起動時状態に戻る")
+                .setExecutor(ReloadConfigCommand(plugin))
+        )
+
+        //itemindex command
+        addCommand(
+            SCommandObject()
+                .addArgument(SCommandArgument().addAllowedString("ii"))
+                .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING).addAlias("レアリティ名"))
+                .addRequiredPermission("man10fish.ii")
+                .addExplanation("図鑑を見る")
+                .setExecutor(OpenItemIndexMenuCommand(plugin))
         )
     }
 

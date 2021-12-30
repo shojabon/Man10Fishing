@@ -17,3 +17,10 @@ rarity:
     weight: 14
 
 foodInRangeMultiplier: 100
+
+mysql:
+  host: localhost
+  port: 3306
+  pass: pass
+  user: root
+  db: man10fish

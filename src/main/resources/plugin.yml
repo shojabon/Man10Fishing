@@ -5,6 +5,7 @@ api-version: 1.17
 
 depend:
   - WorldGuard
+  - WorldEdit
 
 commands:
   mfish:
