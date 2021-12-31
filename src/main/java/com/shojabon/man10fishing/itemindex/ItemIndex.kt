@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
-class ItemIndex(val name : String, plugin : Man10Fishing){
+class ItemIndex{
 
     companion object{
         val fishdexList = HashMap<UUID,HashMap<String,FishParameter>>()

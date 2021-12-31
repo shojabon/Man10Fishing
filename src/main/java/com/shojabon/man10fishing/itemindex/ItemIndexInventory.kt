@@ -7,7 +7,9 @@ import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -18,7 +20,7 @@ class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, pr
     override fun renderMenu() {
         val items = ArrayList<SInventoryItem>()
 
-        val fishdexList = ItemIndex.fishdexList[uuid]
+        val fishdexList = ItemIndex.fishdexList[uuid]?.filter { it.value.fish.rarity == rarityName }
         if (fishdexList == null){
             Bukkit.getPlayer(uuid)?.sendMessage(Man10Fishing.prefix + "図鑑情報がありません")
             return
@@ -34,14 +36,16 @@ class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, pr
 
         for (fishdex in fishdexList){
             if (!fishdex.value.loaded)continue
-            if (fishdex.value.fish.rarity != rarityName)continue
             val index = getFishIndex(fishdex.value)
             if (index == -1)continue
-            fishdex.value.generateIndexItem()?.clickable(false)?.let { items.set(index, it) }
+            val item = (fishdex.value.generateIndexItem()?.clickable(false) ?:continue).setEvent { changeMoreInfoItem(it.slot,fishdex.value) }
+
+            items[index] = item
         }
 
         setItems(items)
     }
+
 
     override fun afterRenderMenu() {
         renderInventory(0)
@@ -49,5 +53,20 @@ class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, pr
 
     private fun getFishIndex(fishdex: FishParameter): Int {
         return fishdex.fish.config.getInt("fishFactors.index", -1)
+    }
+
+    private fun changeMoreInfoItem(slot : Int, parameter: FishParameter){
+        val sdFormat = SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(parameter.dateTime)
+        val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
+        item.lore = mutableListOf("§d大きさ：${parameter.size}g","§b長さ：${parameter.weight}cm","§6釣れた日：${sdFormat}")
+
+        setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
+        renderInventory()
+    }
+
+    private fun changeSoftInfoItem(slot : Int, parameter: FishParameter){
+        val item = parameter.generateIndexItem()?:return
+        setItem(slot, item.clickable(false).setEvent { changeMoreInfoItem(it.slot,parameter) })
+        renderInventory()
     }
 }
