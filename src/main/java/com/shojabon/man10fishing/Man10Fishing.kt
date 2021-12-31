@@ -19,7 +19,7 @@ class Man10Fishing : JavaPlugin() {
         lateinit var prefix: String
 
         //以下別plAPI
-        lateinit var regionContainer : RegionContainer
+        var regionContainer : RegionContainer? = null
     }
 
     override fun onEnable() {
@@ -34,10 +34,11 @@ class Man10Fishing : JavaPlugin() {
         prefix = config.getString("prefix")!!
         ItemIndex.loadData()
 
-        if (server.pluginManager.isPluginEnabled("WorldGuard")){
-            regionContainer = WorldGuard.getInstance().platform.regionContainer
+        regionContainer = if (server.pluginManager.isPluginEnabled("WorldGuard")){
+            WorldGuard.getInstance().platform.regionContainer
         }else{
             logger.warning("WorldGuardが導入されていません！")
+            null
         }
 
         val commandRouter = Man10FishingCommand(this)

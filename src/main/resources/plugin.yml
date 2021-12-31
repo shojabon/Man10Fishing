@@ -3,7 +3,7 @@ version: '${version}'
 main: com.shojabon.man10fishing.Man10Fishing
 api-version: 1.17
 
-depend:
+softdepend:
   - WorldGuard
   - WorldEdit
 
