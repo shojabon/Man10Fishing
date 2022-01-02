@@ -2,6 +2,7 @@ package com.shojabon.man10fishing.itemindex
 
 import ToolMenu.LargeSInventoryMenu
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
@@ -14,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, private val uuid : UUID) : LargeSInventoryMenu(rarityName, plugin) {
+class ItemIndexInventory(private val rarityName : String, private val plugin: JavaPlugin, private val uuid : UUID, private val fromCategory : Boolean) : LargeSInventoryMenu(rarityName, plugin) {
 
 
 
@@ -43,13 +44,26 @@ class ItemIndexInventory(private val rarityName : String, plugin: JavaPlugin, pr
             items[index] = item
         }
 
+        Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.BLOCK_CHEST_OPEN,1f,2f) }
         setItems(items)
+
+        setOnCloseEvent {
+            if (fromCategory){
+                Bukkit.getScheduler().runTask(plugin, Runnable {
+                    val player = Bukkit.getPlayer(uuid)?:return@Runnable
+                    movingPlayer.add(player.uniqueId)
+                    ItemIndexCategory(plugin,uuid).open(player)
+                    movingPlayer.remove(player.uniqueId)
+                })
+            }
+        }
     }
 
 
     override fun afterRenderMenu() {
         renderInventory(0)
     }
+
 
     private fun getFishIndex(fishdex: FishParameter): Int {
         return fishdex.fish.config.getInt("fishFactors.index", -1)

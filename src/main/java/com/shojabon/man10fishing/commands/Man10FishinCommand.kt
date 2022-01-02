@@ -30,7 +30,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         addCommand(
             SCommandObject()
                 .addArgument(SCommandArgument().addAllowedString("ii"))
-                .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING).addAlias("レアリティ名"))
+                .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING).addAlias("レアリティ名").addAlias("list"))
                 .addRequiredPermission("man10fish.ii")
                 .addExplanation("図鑑を見る")
                 .setExecutor(OpenItemIndexMenuCommand(plugin))

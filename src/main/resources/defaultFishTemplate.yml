@@ -1,12 +1,6 @@
 empty_can:
   alias: "§e空き缶"
   rarity: legendary
-  weight:
-    min: 400
-    max: 1000
-  size:
-    min: 15
-    max: 150
   item:
     material: DIAMOND
     lore:
@@ -16,17 +10,17 @@ empty_can:
     food:
       matrix: 100,200,300,400,500
       range: 25
+    weight:
+      min: 400
+      max: 1000
+    size:
+      min: 15
+      max: 150
     area: normal,aaa
 
 empty_can_2:
   alias: "§e空き缶2"
   rarity: legendary
-  weight:
-    min: 400
-    max: 1000
-  size:
-    min: 15
-    max: 150
   item:
     material: STONE
     lore:
@@ -36,4 +30,10 @@ empty_can_2:
     food:
       matrix: 0,0,0,0,0
       range: 25
+    weight:
+      min: 400
+      max: 1000
+    size:
+      min: 15
+      max: 150
     area: none
