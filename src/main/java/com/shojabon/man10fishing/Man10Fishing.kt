@@ -15,6 +15,7 @@ class Man10Fishing : JavaPlugin() {
     companion object{
         lateinit var api: Man10FishingAPI
         lateinit var mysql : ThreadedMySQLAPI
+        lateinit var instance : Man10Fishing
         var foodInRangeMultiplier: Int = 1
         lateinit var prefix: String
 
@@ -25,6 +26,7 @@ class Man10Fishing : JavaPlugin() {
     override fun onEnable() {
         // Plugin startup logic
         saveDefaultConfig()
+        instance = this
         api = Man10FishingAPI(this)
         mysql = ThreadedMySQLAPI(this)
         val file = File(dataFolder.toString() + File.separator + "fish" + File.separator)

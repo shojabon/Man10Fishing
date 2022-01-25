@@ -19,6 +19,9 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         if(e.state != PlayerFishEvent.State.CAUGHT_FISH) return
         val pickedFish = Man10Fishing.api.pickFish(e.player)?: return
         e.caught?: return
+
+        if(!FishingRod.isRod(e.player.inventory.itemInMainHand)) return
+
         val fishedItem = e.caught as Item
         fishedItem.itemStack = pickedFish.item
         val fishParameter: FishParameter = FishParameter().generateFishParameter(e.player, pickedFish)
