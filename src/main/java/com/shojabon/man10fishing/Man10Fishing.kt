@@ -34,7 +34,9 @@ class Man10Fishing : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
         foodInRangeMultiplier = config.getInt("foodInRangeMultiplier")
         prefix = config.getString("prefix")!!
-        ItemIndex.loadData()
+        if (!ItemIndex.loadData()){
+            logger.warning("MySQLの読み込みに失敗しました。 一部機能が使用できません。")
+        }
 
         regionContainer = if (server.pluginManager.isPluginEnabled("WorldGuard")){
             WorldGuard.getInstance().platform.regionContainer

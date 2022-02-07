@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 @Author(author = "tororo_1066")
 @FishFactorDefinition(name = "データベース",
     iconMaterial = Material.BOOK,
-    explanation = ["データベース保存の定義"],
+    explanation = ["データベースに保存するロジック"],
     settable = false)
 class LogginFactor(fish : Fish) : FishFactor(fish) {
 
@@ -20,14 +20,6 @@ class LogginFactor(fish : Fish) : FishFactor(fish) {
 
     override fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {
         if (index.get() == -1)return
-
-        val fishdexList = ItemIndex.fishdexList
-
-        val playerData = fishdexList[fisher.uniqueId]
-
-        if (playerData == null){
-            fishdexList[fisher.uniqueId] = hashMapOf()
-        }
 
         if (!Man10Fishing.mysql.execute("insert into fish_log (fish, rarity, date_time, name, uuid, weight, size) VALUES " +
                     "('${fish.name}', '${fish.rarity}', '${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(parameter.dateTime)}', '${fisher.name}', '${fisher.uniqueId}', ${parameter.weight}, ${parameter.size})")){

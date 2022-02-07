@@ -1,10 +1,7 @@
 package com.shojabon.man10fishing
 
-import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.man10fishing.dataClass.FishingRod
-import com.shojabon.mcutils.Utils.SItemStack
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler

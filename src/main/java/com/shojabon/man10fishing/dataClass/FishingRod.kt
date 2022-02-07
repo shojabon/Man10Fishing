@@ -4,7 +4,6 @@ import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 class FishingRod(var rodItem: ItemStack) {
     companion object{

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player
 @Author(author = "tororo_1066")
 @FishFactorDefinition(name = "エリア",
     iconMaterial = Material.OAK_FENCE_GATE,
-    explanation = ["エリア指定の定義"],
+    explanation = ["釣れるエリア設定(WorldGuard)"],
     adminSetting = false,
     settable = true)
 /**

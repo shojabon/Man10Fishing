@@ -20,7 +20,7 @@ class OpenItemIndexMenuCommand(var plugin: Man10Fishing) : CommandExecutor {
         }
         if (!Man10FishingAPI.rarity.containsKey(args[1])){
             sender.sendMessage(Man10Fishing.prefix + "§4レアリティが存在しません")
-            return false
+            return true
         }
         ItemIndexInventory(args[1],plugin,sender.uniqueId,false).open(sender)
         return true

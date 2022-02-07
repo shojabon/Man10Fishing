@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FishParameter(){
+class FishParameter {
 
     lateinit var fish : Fish
     lateinit var name : String

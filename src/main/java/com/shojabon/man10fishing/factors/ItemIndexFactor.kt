@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 @Author(author = "tororo_1066")
 @FishFactorDefinition(name = "図鑑",
     iconMaterial = Material.BOOK,
-    explanation = ["図鑑の定義"],
+    explanation = ["図鑑に保存するロジック"],
     settable = false)
 class ItemIndexFactor(fish : Fish) : FishFactor(fish){
 
