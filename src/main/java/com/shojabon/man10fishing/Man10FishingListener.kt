@@ -17,11 +17,12 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         val pickedFish = Man10Fishing.api.pickFish(e.player)?: return
         e.caught?: return
 
-        if(!FishingRod.isRod(e.player.inventory.itemInMainHand)) return
+        val mainHand = e.player.inventory.itemInMainHand
+        if(!FishingRod.isRod(mainHand)) return
 
         val fishedItem = e.caught as Item
         fishedItem.itemStack = pickedFish.item
         val fishParameter: FishParameter = FishParameter().generateFishParameter(e.player, pickedFish)
-        pickedFish.executeOnFish(fishParameter, e.player, FishingRod(ItemStack(Material.FISHING_ROD)))
+        pickedFish.executeOnFish(fishParameter, e.player, FishingRod(mainHand))
     }
 }
