@@ -2,6 +2,7 @@ package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.mcutils.Utils.SItemStack
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -37,7 +38,7 @@ class FishingRod(var rodItem: ItemStack) {
     fun setFoodCount(count: Int){
         remainingFoodCount = count
         if(remainingFoodCount < 0) remainingFoodCount = 0
-        rodItem = SItemStack(rodItem).setCustomData(Man10Fishing.instance, "foodCount", remainingFoodCount.toString()).build()
+        SItemStack(rodItem).setCustomData(Man10Fishing.instance, "foodCount", remainingFoodCount.toString())
     }
 
     fun addFoodCount(count: Int){
@@ -57,6 +58,10 @@ class FishingRod(var rodItem: ItemStack) {
             foodString += "$foodElement|"
         }
         foodString = foodString.dropLast(1)
+        rodItem = SItemStack(rodItem).setCustomData(Man10Fishing.instance, "foodType", foodString).build()
+    }
+
+    fun setFoodType(foodString: String){
         rodItem = SItemStack(rodItem).setCustomData(Man10Fishing.instance, "foodType", foodString).build()
     }
 

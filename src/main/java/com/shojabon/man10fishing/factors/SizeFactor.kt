@@ -21,7 +21,7 @@ import kotlin.random.Random
 class SizeFactor(fish: Fish) : FishFactor(fish) {
 
     var min = FishSettingVariable("size.min", 0.0)
-    var max = FishSettingVariable("size.max", 0.0)
+    var max = FishSettingVariable("size.max", 1.0)
 
     fun generateRandomSize(): Double {
         if(max.get() < min.get()) return -1.0
