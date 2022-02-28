@@ -2,6 +2,7 @@ package com.shojabon.man10fishing
 
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.man10fishing.dataClass.FishingRod
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler
@@ -19,10 +20,13 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
         val mainHand = e.player.inventory.itemInMainHand
         if(!FishingRod.isRod(mainHand)) return
+        val rodItem = FishingRod(mainHand)
+        if(rodItem.getFoodCount() <= 0) return
 
         val fishedItem = e.caught as Item
         fishedItem.itemStack = pickedFish.item
         val fishParameter: FishParameter = FishParameter().generateFishParameter(e.player, pickedFish)
-        pickedFish.executeOnFish(fishParameter, e.player, FishingRod(mainHand))
+        pickedFish.executeOnFish(fishParameter, e.player, rodItem)
+        rodItem.removeFoodCount(1)
     }
 }

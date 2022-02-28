@@ -5,6 +5,7 @@ import com.shojabon.man10fishing.commands.subCommands.OpenItemIndexMenuCommand
 import org.bukkit.command.CommandExecutor
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
+import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
 import com.shojabon.mcutils.Utils.SCommandRouter.*
 
 class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
@@ -34,6 +35,13 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                 .addRequiredPermission("man10fish.ii")
                 .addExplanation("図鑑を見る")
                 .setExecutor(OpenItemIndexMenuCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("rod")).addArgument(SCommandArgument().addAllowedString("create")).addRequiredPermission("man10shopv2.rod.create")
+                        .addExplanation("持っている釣り竿をMan10Fishingで使用可能にする")
+                        .setExecutor(MakeIntoRodCommand(plugin))
         )
     }
 
