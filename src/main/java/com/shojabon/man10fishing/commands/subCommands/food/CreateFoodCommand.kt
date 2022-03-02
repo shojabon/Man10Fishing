@@ -20,7 +20,7 @@ class CreateFoodCommand(var plugin: Man10Fishing) : CommandExecutor {
             return false
         }
         for(foodInfo in foodSeparatedInformation){
-            if(!BaseUtils.isInt(foodInfo)){
+            if(!BaseUtils.isDouble(foodInfo)){
                 sender.sendMessage(Man10Fishing.prefix + "§4 餌情報は0|0|0|0|0形式で入力してください")
                 return false
             }

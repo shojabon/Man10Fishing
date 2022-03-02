@@ -60,7 +60,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             e.player.inventory.removeItemAnySlot(itemStack)
 
             val rod = FishingRod(e.player.inventory.itemInMainHand)
-            val foodType = FishFood(itemStack).getFoodType() ?: return@setOnConfirm
+            val foodType = FishFood(itemStack).getFoodTypeString() ?: return@setOnConfirm
             Bukkit.broadcastMessage(foodType)
             rod.setFoodCount(5)
             rod.setFoodType(foodType)

@@ -7,6 +7,7 @@ import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.mcutils.Utils.MySQL.MySQLAPI
 import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
+import com.shojabon.mcutils.Utils.SInventory.SInventory
 import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.plugin.java.JavaPlugin
@@ -62,5 +63,7 @@ class Man10Fishing : JavaPlugin() {
 
     override fun onDisable() {
         // Plugin shutdown logic
+
+        SInventory.closeAllSInventories()
     }
 }

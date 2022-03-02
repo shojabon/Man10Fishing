@@ -2,6 +2,7 @@ package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.mcutils.Utils.BaseUtils
+import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
@@ -32,9 +33,22 @@ class FishFood(var food: ItemStack) {
             }
             return true
         }
+
+        //餌合成
+        fun mixFoodType(food1: FishFood, food2: FishFood): List<Double>?{
+            val result = ArrayList<Double>()
+
+            val food1Type = food1.getFoodTypeList() ?: return null
+            val food2Type = food2.getFoodTypeList() ?: return null
+
+            for(i in food1Type.indices){
+                result.add((food1Type[i] + food2Type[i])/2)
+            }
+            return result
+        }
     }
 
-    fun getFoodType(): String?{
+    fun getFoodTypeString(): String?{
         if(!isFood(food)) return null
         if(isEmbeddedFood(food)) return SItemStack(food).getCustomData(Man10Fishing.instance, "foodType")
         val defaultFoodType = Man10Fishing.foodConfig.getString(food.type.name) ?: return null
@@ -49,5 +63,39 @@ class FishFood(var food: ItemStack) {
             }
         }
         return defaultFoodType
+    }
+
+    fun getFoodTypeList(): List<Double>?{
+        val result = ArrayList<Double>()
+        val foodTypeString = this.getFoodTypeString() ?: return null
+
+        val foodSeparatedInformation = foodTypeString.split("|")
+        if(foodSeparatedInformation.size != 5){
+            return null
+        }
+        for(foodInfo in foodSeparatedInformation){
+            if(!BaseUtils.isDouble(foodInfo)){
+                return null
+            }
+            result.add(foodInfo.toDouble())
+        }
+        return result
+    }
+
+    fun setFoodTypeString(string: String){
+        val result = SItemStack(food).setCustomData(Man10Fishing.instance, "foodType", string)
+        food = result.build()
+    }
+
+    fun setFoodTypeList(data: List<Double>){
+
+        var resultData = ""
+        for(i in data.indices){
+            resultData += data[i].toString() + "|"
+        }
+        resultData = resultData.substring(0, resultData.length-1)
+
+        val result = SItemStack(food).setCustomData(Man10Fishing.instance, "foodType", resultData)
+        food = result.build()
     }
 }

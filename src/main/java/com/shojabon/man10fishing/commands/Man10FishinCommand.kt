@@ -2,10 +2,9 @@ package com.shojabon.man10fishing.commands
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.commands.subCommands.OpenItemIndexMenuCommand
-import org.bukkit.command.CommandExecutor
-import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
+import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
 import com.shojabon.mcutils.Utils.SCommandRouter.*
 
@@ -53,6 +52,14 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10shopv2.food.create")
                         .addExplanation("餌を作成する 0|0|0|0|0形式で入力")
                         .setExecutor(CreateFoodCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("food")).addArgument(SCommandArgument().addAllowedString("mix"))
+                        .addRequiredPermission("man10shopv2.food.mix")
+                        .addExplanation("餌を合成する")
+                        .setExecutor(SynthesizeFishFoodCommand(plugin))
         )
     }
 
