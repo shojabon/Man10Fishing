@@ -3,16 +3,18 @@ package com.shojabon.man10fishing.itemindex
 import ToolMenu.LargeSInventoryMenu
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
+import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
+import com.shojabon.mcutils.Utils.SStringBuilder
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 
 class ItemIndexInventory(private val rarityName : String, private val plugin: JavaPlugin, private val uuid : UUID, private val fromCategory : Boolean) : LargeSInventoryMenu(rarityName, plugin) {
@@ -22,25 +24,30 @@ class ItemIndexInventory(private val rarityName : String, private val plugin: Ja
     override fun renderMenu() {
         val items = ArrayList<SInventoryItem>()
 
-        val fishdexList = ItemIndex.fishdexList[uuid]?.filter { it.value.fish.rarity == rarityName }
-        if (fishdexList == null){
+        val fishdexList = ItemIndex.fishdexList[uuid]?.filter {
+            if (rarityName == "all") true else {
+                it.value.firstOrNull()?.fish?.rarity == rarityName
+            }
+        }
+        if (fishdexList == null || fishdexList.isEmpty()){
             Bukkit.getPlayer(uuid)?.sendMessage(Man10Fishing.prefix + "§4図鑑情報がありません")
             return
         }
 
-
-        val lastId = fishdexList.entries.maxByOrNull { it.value.fish.config.getInt("fishFactors.index") }!!.value.fish.config.getInt("fishFactors.index")
-
-
-        for (loop in 0..lastId){
-            items.add(SInventoryItem(SItemStack(Material.GLASS_PANE).setDisplayName("$loop").build()).clickable(false))
+        for (fish in Man10FishingAPI.fish.filter {
+            if (rarityName == "all") true else {
+                it.value.rarity == rarityName
+            }
+        }.filter { getFishIndex(it.value) != -1 }.entries.sortedBy { getFishIndex(it.value) }){
+            items.add(SInventoryItem(SItemStack(Material.GLASS_PANE).setDisplayName("${getFishIndex(fish.value)}").build()).clickable(false))
         }
 
         for (fishdex in fishdexList){
-            if (!fishdex.value.loaded)continue
-            val index = getFishIndex(fishdex.value)
+            if (fishdex.value.firstOrNull()?.loaded == false)continue
+            val index = getFishIndex(fishdex.value.first())
             if (index == -1)continue
-            val item = (fishdex.value.generateIndexItem()?.clickable(false) ?:continue).setEvent { changeMoreInfoItem(it.slot,fishdex.value) }
+            val oneData = fishdex.value.maxByOrNull { it.size }!!
+            val item = (oneData.generateIndexItem()?.clickable(false)?:continue).setEvent { changeMoreInfoItem(it.slot,oneData) }
             items[index] = item
         }
 
@@ -69,11 +76,45 @@ class ItemIndexInventory(private val rarityName : String, private val plugin: Ja
         return fishdex.fish.config.getInt("fishFactors.index", -1)
     }
 
+    private fun getFishIndex(fishdex: Fish): Int {
+        return fishdex.config.getInt("fishFactors.index", -1)
+    }
+
     private fun changeMoreInfoItem(slot : Int, parameter: FishParameter){
         Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
         val sdFormat = SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(parameter.dateTime)
         val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
-        item.lore = mutableListOf("§d大きさ：${parameter.size}g","§b長さ：${parameter.weight}cm","§6釣れた日：${sdFormat}")
+        item.lore = mutableListOf("§d長さ：${parameter.size}cm","§6釣れた日：${sdFormat}")
+        val foodList = parameter.fish.config.getString("fishFactors.food.matrix")!!.split(",").map { it.toDouble() }
+        if (!parameter.fish.config.getBoolean("fishFactors.food.hide")){
+            listOf("§b甘","§f塩","§2苦","§e酸","§4旨").forEachIndexed { i, str ->
+                val distance = (foodList[i].toInt()) - 500
+                if (abs(distance) < 10)return@forEachIndexed
+                val boldAmount = distance / 100
+                val smallAmount = (distance - boldAmount * 100) / 10
+
+                val isMinus = distance < 0
+                val strBuilder = SStringBuilder(str)
+                if (boldAmount != 0){
+                    strBuilder.text(if (isMinus) "§c§l" else "§a§l")
+
+                    IntProgression.fromClosedRange(if (isMinus) boldAmount else 1, if (isMinus) -1 else boldAmount, 1).forEach {
+                        strBuilder.text(if (isMinus) "↓" else "↑")
+                    }
+                }
+
+                if (smallAmount != 0){
+                    strBuilder.text(if (isMinus) "§c" else "§a")
+                    IntProgression.fromClosedRange(if (isMinus) smallAmount else 1, if (isMinus) -1 else smallAmount, 1).forEach {
+                        strBuilder.text(if (isMinus) "↓" else "↑")
+                    }
+                }
+
+                item.addLore(strBuilder.build())
+            }
+        }
+        item.addLore(" ")
+        item.addLore(Man10FishingAPI.rarity[parameter.fish.rarity]!!.alias)
 
         setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
         renderInventory()

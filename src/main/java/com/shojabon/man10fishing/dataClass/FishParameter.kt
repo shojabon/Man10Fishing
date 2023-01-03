@@ -12,7 +12,6 @@ class FishParameter {
     lateinit var fish : Fish
     lateinit var name : String
     lateinit var uuid : UUID
-    var weight : Double = 0.0
     var size : Double = 0.0
     lateinit var dateTime : Date
 
@@ -26,7 +25,6 @@ class FishParameter {
         fish = Man10FishingAPI.fish[resultSet.getString("fish")]?:return this
         name = resultSet.getString("name")?:return this
         uuid = UUID.fromString(resultSet.getString("uuid"))?:return this
-        weight = resultSet.getDouble("weight")
         size = resultSet.getDouble("size")
 
         val dateFormat = resultSet.getString("date_time").replace("T"," ").replace("-","/")
@@ -43,7 +41,6 @@ class FishParameter {
         this.fish = fish
         name = fisher.name
         uuid = fisher.uniqueId
-        weight = fish.weightFactor.generateRandomWeight()
         size = fish.sizeFactor.generateRandomSize()
 
         dateTime = Date()

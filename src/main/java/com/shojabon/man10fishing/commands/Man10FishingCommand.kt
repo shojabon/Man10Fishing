@@ -6,7 +6,9 @@ import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
+import com.shojabon.man10fishing.itemindex.ItemIndexInventory
 import com.shojabon.mcutils.Utils.SCommandRouter.*
+import org.bukkit.entity.Player
 
 class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
     fun registerEvents() {
@@ -28,6 +30,18 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         )
 
         //itemindex command
+        addCommand(
+            SCommandObject()
+                .addArgument(SCommandArgument().addAllowedString("ii"))
+                .addRequiredPermission("man10fish.ii")
+                .addExplanation("図鑑を見る")
+                .setExecutor { sender, _, _, _ ->
+                    if (sender !is Player)return@setExecutor true
+                    ItemIndexInventory("all", plugin, sender.uniqueId, false).open(sender)
+                    return@setExecutor true
+                }
+        )
+
         addCommand(
             SCommandObject()
                 .addArgument(SCommandArgument().addAllowedString("ii"))

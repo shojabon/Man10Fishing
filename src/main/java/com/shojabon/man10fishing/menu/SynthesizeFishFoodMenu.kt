@@ -51,7 +51,10 @@ class SynthesizeFishFoodMenu: SInventory("§6§l餌合成", 4, Man10Fishing.inst
 
     fun onClick(): Consumer<InventoryClickEvent> {
         return Consumer<InventoryClickEvent> {
-            if(it.currentItem == null) return@Consumer
+            if(it.currentItem == null){
+                it.isCancelled = true
+                return@Consumer
+            }
             if(!FishFood.isFood(it.currentItem!!)){
                 it.isCancelled = true
                 return@Consumer

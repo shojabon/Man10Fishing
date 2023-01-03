@@ -120,4 +120,21 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         return result
     }
 
+    //DB作成
+    fun createTables(){
+        Man10Fishing.mysql.asyncExecute("CREATE TABLE IF NOT EXISTS `fish_log` (\n" +
+                "\t`id` INT(10) NOT NULL AUTO_INCREMENT,\n" +
+                "\t`fish` TEXT NOT NULL COLLATE 'utf8mb4_0900_ai_ci',\n" +
+                "\t`rarity` TEXT NOT NULL COLLATE 'utf8mb4_0900_ai_ci',\n" +
+                "\t`date_time` TEXT NOT NULL COLLATE 'utf8mb4_0900_ai_ci',\n" +
+                "\t`name` VARCHAR(16) NOT NULL DEFAULT '' COLLATE 'utf8mb4_0900_ai_ci',\n" +
+                "\t`uuid` VARCHAR(36) NOT NULL DEFAULT '' COLLATE 'utf8mb4_0900_ai_ci',\n" +
+                "\t`size` DOUBLE NOT NULL DEFAULT '0',\n" +
+                "\tPRIMARY KEY (`id`) USING BTREE\n" +
+                ")\n" +
+                "COLLATE='utf8mb4_0900_ai_ci'\n" +
+                "ENGINE=InnoDB\n" +
+                ";\n") {}
+    }
+
 }

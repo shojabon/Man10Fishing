@@ -24,12 +24,15 @@ class AreaFactor(fish : Fish) : FishFactor(fish){
     val areas = FishSettingVariable("area",ArrayList<String>(mutableListOf("none")))
 
      override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod): Boolean {
-        if (areas.get().contains("none"))return true
-        for (area in areas.get()){
-            val region = Man10Fishing.regionContainer?.get(BukkitAdapter.adapt(fisher.world))?.getRegion(area)?:return false
-            if (!region.contains(BukkitAdapter.asBlockVector(fisher.location)))continue
-            return true
-        }
-        return false
+         if (areas.get().contains("none"))return true
+         if (Man10Fishing.regionContainer == null)return false
+         for (region in Man10Fishing.regionContainer!![BukkitAdapter.adapt(fisher.world)]!!.regions){
+             for (area in areas.get()){
+                 if (region.key.startsWith(area)){
+                     if (region.value.contains(BukkitAdapter.asBlockVector(fisher.location)))return true
+                 }
+             }
+         }
+         return false
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+@Suppress("UNUSED")
 class Fish (val name: String, val config: ConfigurationSection){
 
 
@@ -35,9 +36,8 @@ class Fish (val name: String, val config: ConfigurationSection){
     lateinit var timeFactor:TimeFactor
     lateinit var commandFactor: CommandFactor
     lateinit var seasonFactor: SeasonFactor
-    lateinit var weightFactor: WeightFactor
     lateinit var sizeFactor: SizeFactor
-    lateinit var logginFactor: LogginFactor
+    lateinit var loggingFactor: LoggingFactor
     lateinit var itemIndexFactor: ItemIndexFactor
 
 

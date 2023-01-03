@@ -20,7 +20,7 @@ import java.util.*
     例
     season: 2-4
  */
-class SeasonFactor(fish: Fish) : FishFactor(fish) {
+class  SeasonFactor(fish: Fish) : FishFactor(fish) {
 
     val seasons= FishSettingVariable("season", listOf("1-12"))
 

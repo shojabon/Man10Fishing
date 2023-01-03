@@ -28,8 +28,10 @@ class ItemIndexFactor(fish : Fish) : FishFactor(fish){
         }
 
         if (!playerData!!.containsKey(fish.name)) {
-            playerData[fish.name] = parameter
+            playerData[fish.name] = arrayListOf()
         }
+
+        playerData[fish.name]!!.add(parameter)
     }
 
 

@@ -4,6 +4,7 @@ import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.protection.regions.RegionContainer
 import com.shojabon.man10fishing.commands.Man10FishingCommand
 import com.shojabon.man10fishing.itemindex.ItemIndex
+import com.shojabon.man10fishing.itemindex.ItemIndexListener
 import com.shojabon.mcutils.Utils.MySQL.MySQLAPI
 import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
@@ -25,6 +26,7 @@ class Man10Fishing : JavaPlugin() {
 
 
         //以下別plAPI
+        //WorldGuard
         var regionContainer : RegionContainer? = null
     }
 
@@ -34,15 +36,13 @@ class Man10Fishing : JavaPlugin() {
         instance = this
         api = Man10FishingAPI(this)
         mysql = ThreadedMySQLAPI(this)
+        api.createTables()
         val file = File(dataFolder.toString() + File.separator + "fish" + File.separator)
         file.mkdir()
         Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
+        Bukkit.getPluginManager().registerEvents(ItemIndexListener(), this)
         foodInRangeMultiplier = config.getInt("foodInRangeMultiplier")
         prefix = config.getString("prefix")!!
-        if (!ItemIndex.loadData()){
-            logger.warning("MySQLの読み込みに失敗しました。 一部機能が使用できません。")
-        }
-
 
         if(!File(dataFolder.toString() + File.separator + "foodConfig.yml").exists()){
             SConfigFile(this).saveResource("foodConfig.yml", dataFolder.toString() + File.separator + "foodConfig.yml")
