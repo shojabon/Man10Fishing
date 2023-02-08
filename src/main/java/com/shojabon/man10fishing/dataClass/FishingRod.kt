@@ -45,8 +45,9 @@ class FishingRod(var rodItem: ItemStack) {
         setFoodCount(getFoodCount() + count)
     }
 
-    fun removeFoodCount(count: Int){
+    fun removeFoodCount(count: Int): Boolean {
         setFoodCount(getFoodCount() - count)
+        return getFoodCount() > 0
     }
 
     //食べ物タイプ

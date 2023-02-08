@@ -31,7 +31,9 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         fishedItem.itemStack = pickedFish.item
         val fishParameter: FishParameter = FishParameter().generateFishParameter(e.player, pickedFish)
         pickedFish.executeOnFish(fishParameter, e.player, rodItem)
-        rodItem.removeFoodCount(1)
+        if (!rodItem.removeFoodCount(1)){
+            e.player.sendMessage(Man10Fishing.prefix + "§c餌がなくなりました")
+        }
     }
 
     @EventHandler
