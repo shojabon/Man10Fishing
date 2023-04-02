@@ -38,7 +38,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
     @EventHandler
     fun onClick(e: PlayerInteractEvent){
-        if(e.action != Action.LEFT_CLICK_BLOCK)return
+        if(!e.action.isLeftClick)return
         if(e.player.inventory.itemInMainHand.type != Material.FISHING_ROD) return
         if(!FishingRod.isRod(e.player.inventory.itemInMainHand)) return
         e.isCancelled = true
