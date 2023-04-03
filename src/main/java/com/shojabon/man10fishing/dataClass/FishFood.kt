@@ -23,7 +23,7 @@ class FishFood(var food: ItemStack) {
         fun isDefaultFood(item: ItemStack): Boolean{
             val defaultFoodType = Man10Fishing.foodConfig.getString(item.type.name) ?: return false
             val foodSeparatedInformation = defaultFoodType.split("|")
-            if(foodSeparatedInformation.size != 5){
+            if(foodSeparatedInformation.size != 6){
                 return false
             }
             for(foodInfo in foodSeparatedInformation){
@@ -54,7 +54,7 @@ class FishFood(var food: ItemStack) {
         val defaultFoodType = Man10Fishing.foodConfig.getString(food.type.name) ?: return null
 
         val foodSeparatedInformation = defaultFoodType.split("|")
-        if(foodSeparatedInformation.size != 5){
+        if(foodSeparatedInformation.size != 6){
             return null
         }
         for(foodInfo in foodSeparatedInformation){
@@ -70,7 +70,7 @@ class FishFood(var food: ItemStack) {
         val foodTypeString = this.getFoodTypeString() ?: return null
 
         val foodSeparatedInformation = foodTypeString.split("|")
-        if(foodSeparatedInformation.size != 5){
+        if(foodSeparatedInformation.size != 6){
             return null
         }
         for(foodInfo in foodSeparatedInformation){
