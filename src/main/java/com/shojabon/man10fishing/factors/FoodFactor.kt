@@ -19,7 +19,14 @@ class FoodFactor(fish: Fish) : FishFactor(fish) {
     var range = FishSettingVariable("food.range", 0.0)
 
     override fun rarityMultiplier(fish: Fish, currentMultiplier: Float, fisher: Player, rod: FishingRod): Float {
-        return if (nDimensionDistanceSquared(matrix.get()!!, rod.currentFood) <= (range.get()!!).pow(2.0)) {
+
+        //food,fishの半径及び中心の距離をとり、円同士が重なっているかどうかを半径と中心の距離との関係で評価
+        // x<y+z == x^2<(x+z)^2
+        val foodRange=rod.currentFood[5]
+        val fishRange=range.get()!!
+        val poweredDistance=nDimensionDistanceSquared(matrix.get()!!, rod.currentFood.subList(0,5))
+
+        return if (poweredDistance <= foodRange.pow(2.0)+fishRange.pow(2.0)+2*foodRange*fishRange) {
             currentMultiplier * foodInRangeMultiplier
         } else 1f
     }

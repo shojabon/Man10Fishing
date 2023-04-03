@@ -18,7 +18,7 @@ class FishingRod(var rodItem: ItemStack) {
     }
 
     var remainingFoodCount = 0
-    var currentFood = listOf(0.0, 0.0, 0.0, 0.0, 0.0)
+    var currentFood = listOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
     init {
         if (isRod(rodItem)){
