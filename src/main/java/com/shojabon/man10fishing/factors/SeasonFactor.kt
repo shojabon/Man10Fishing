@@ -25,6 +25,7 @@ import java.util.*
     - AUTUMN
     使えるものは[SPRING,SUMMER,AUTUMN,WINTER]
     それ以外の文字列を入れると全ての季節で釣れるようになる
+    日曜日〜土曜日を１週間とした
  */
 class  SeasonFactor(fish: Fish) : FishFactor(fish) {
 
