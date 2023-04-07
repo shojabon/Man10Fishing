@@ -15,32 +15,43 @@ import java.util.*
         adminSetting = false,
         settable = true)
 /*
-    season: start-end
+    season:
+    - 季節
+    - 季節
+    ...
     で指定
     例
-    season: 2-4
+    season:
+    - AUTUMN
+    使えるものは[SPRING,SUMMER,AUTUMN,WINTER]
+    それ以外の文字列を入れると全ての季節で釣れるようになる
  */
 class  SeasonFactor(fish: Fish) : FishFactor(fish) {
 
-    val seasons= FishSettingVariable("season", listOf("1-12"))
+    val seasons= FishSettingVariable("season", listOf("ALL"))
 
     override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod): Boolean {
-        //月を1~12で取得
-        val month=Calendar.getInstance().get(Calendar.MONTH)+1
-        for(season in seasons.get()){
-            //開始と終了に分解
-            val stAndEnd=season.split("-")
-            val start=stAndEnd[0].toIntOrNull()
-            val end=stAndEnd[1].toIntOrNull()
 
-            if(start==null||end==null){
-                Bukkit.getLogger().info("§4${fish.name}のseason読み取りでエラーが発生しました")
-                return false
-            }
-            if(start<=month&&month<=end){
-                return true
-            }
+        //1970/1/4から何週間経ったかを/7までで計算し、その後4で割った余りを考えることで現在の季節を取得する
+        val nowSeason=(((Date().time/864000000L)-3L)/7)%4
+
+        for(season in seasons.get()){
+
+            if(representSeasonInLong(season,nowSeason)==nowSeason) return true
+
         }
         return false
+    }
+
+
+    //Stringで表された季節をLongに変換する
+    private fun representSeasonInLong(season:String,nowSeason:Long):Long{
+        return when(season){
+            "SPRING"->0L
+            "SUMMER"->1L
+            "AUTUMN"->2L
+            "WINTER"->3L
+            else->-nowSeason
+        }
     }
 }
