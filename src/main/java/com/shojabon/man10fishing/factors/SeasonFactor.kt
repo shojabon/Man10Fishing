@@ -47,7 +47,7 @@ class  SeasonFactor(fish: Fish) : FishFactor(fish) {
 
     //Stringで表された季節をLongに変換する
     private fun representSeasonInLong(season:String,nowSeason:Long):Long{
-        return when(season){
+        return when(season.toUpperCase()){
             "SPRING"->0L
             "SUMMER"->1L
             "AUTUMN"->2L
