@@ -1,5 +1,6 @@
 package com.shojabon.man10fishing.dataClass
 
+import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.factors.*
 import com.shojabon.mcutils.Utils.SItemStack
@@ -119,6 +120,13 @@ class Fish (val name: String, val config: ConfigurationSection){
     fun executeOnFish(parameter: FishParameter, fisher: Player, rod: FishingRod){
         for(factor in fishFactors){
             factor.onFish(this, parameter, fisher, rod)
+        }
+
+        val contest = Man10Fishing.nowContest
+        if (contest != null){
+            if (contest.players.containsKey(fisher.uniqueId)){
+                contest.onCaughtFish(contest.players[fisher.uniqueId]!!, parameter)
+            }
         }
     }
 
