@@ -31,6 +31,7 @@ class  SeasonFactor(fish: Fish) : FishFactor(fish) {
 
     val seasons= FishSettingVariable("season", listOf("ALL"))
 
+    //季節を取得する関数はどこか一般用に作るべき
     override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod): Boolean {
 
         //1970/1/4から何週間経ったかを/7までで計算し、その後4で割った余りを考えることで現在の季節を取得する
