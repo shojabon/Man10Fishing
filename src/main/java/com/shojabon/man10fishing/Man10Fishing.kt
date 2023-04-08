@@ -3,6 +3,7 @@ package com.shojabon.man10fishing
 import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.protection.regions.RegionContainer
 import com.shojabon.man10fishing.commands.Man10FishingCommand
+import com.shojabon.man10fishing.contest.AbstractFishContest
 import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.itemindex.ItemIndexListener
 import com.shojabon.mcutils.Utils.MySQL.MySQLAPI
@@ -24,8 +25,8 @@ class Man10Fishing : JavaPlugin() {
         var foodInRangeMultiplier: Int = 1
         lateinit var prefix: String
 
+        var nowContest : AbstractFishContest? = null
 
-        //以下別plAPI
         //WorldGuard
         var regionContainer : RegionContainer? = null
     }
