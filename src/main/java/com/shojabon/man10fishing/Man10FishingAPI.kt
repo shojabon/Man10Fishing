@@ -8,6 +8,7 @@ import com.shojabon.man10fishing.enums.Season
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -152,6 +153,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     }
 
     //現在の季節を返す
+    //基準は1990/1/4の日曜日
     fun getCurrentSeason(): Season {
         return when((((Date().time/864000000L)-3L)/7)%4){
             0L->Season.SPRING
@@ -162,6 +164,12 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             //10000000%上のどれかにしかならんけどコンパイルエラー発生するんで↓を書いている
             else->Season.ALL
         }
+    }
+
+
+    //季節に応じたスポーン場所を返す
+    fun getSpawnLocation():Location?{
+        return Man10Fishing.spawnPoints[getCurrentSeason()]
     }
 
 }

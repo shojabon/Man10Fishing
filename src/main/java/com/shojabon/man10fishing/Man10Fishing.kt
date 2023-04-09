@@ -4,6 +4,7 @@ import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.protection.regions.RegionContainer
 import com.shojabon.man10fishing.commands.Man10FishingCommand
 import com.shojabon.man10fishing.contest.AbstractFishContest
+import com.shojabon.man10fishing.enums.Season
 import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.itemindex.ItemIndexListener
 import com.shojabon.mcutils.Utils.MySQL.MySQLAPI
@@ -11,6 +12,7 @@ import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -29,6 +31,8 @@ class Man10Fishing : JavaPlugin() {
 
         //WorldGuard
         var regionContainer : RegionContainer? = null
+
+        val spawnPoints=HashMap<Season, Location>()
     }
 
     override fun onEnable() {
@@ -60,6 +64,17 @@ class Man10Fishing : JavaPlugin() {
         val commandRouter = Man10FishingCommand(this)
         getCommand("mfish")!!.setExecutor(commandRouter)
         getCommand("mfish")!!.tabCompleter = commandRouter
+
+
+        //季節ごとのスポーン地点読み取り
+        val configSection=config.getConfigurationSection("spawnPoints")
+        for(strSeason in configSection?.getKeys(false)?: listOf()){
+            val season=Season.valueOf(strSeason)
+            val loc=configSection?.getLocation(strSeason)
+            if(loc!=null){
+                spawnPoints[season]=loc
+            }
+        }
     }
 
     override fun onDisable() {

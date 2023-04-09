@@ -71,10 +71,4 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     }
 
 
-    //季節ごとに釣りエリアを変更するための処理
-    @EventHandler
-    fun onJoinWorld(e:PlayerChangedWorldEvent){
-
-    }
-
 }
