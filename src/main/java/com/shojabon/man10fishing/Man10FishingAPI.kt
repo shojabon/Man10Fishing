@@ -4,6 +4,7 @@ import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishRarity
 import com.shojabon.man10fishing.dataClass.FishingRod
+import com.shojabon.man10fishing.enums.Season
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
@@ -11,6 +12,9 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.math.sin
 import kotlin.random.Random
 
@@ -135,6 +139,19 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
                 "COLLATE='utf8mb4_0900_ai_ci'\n" +
                 "ENGINE=InnoDB\n" +
                 ";\n") {}
+    }
+
+    //現在の季節を返す
+    fun getCurrentSeason(): Season {
+        return when((((Date().time/864000000L)-3L)/7)%4){
+            0L->Season.SPRING
+            1L->Season.SUMMER
+            2L->Season.AUTUMN
+            3L->Season.WINTER
+
+            //10000000%上のどれかにしかならんけどコンパイルエラー発生するんで↓を書いている
+            else->Season.ALL
+        }
     }
 
 }

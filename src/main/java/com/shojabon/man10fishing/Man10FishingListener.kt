@@ -10,6 +10,7 @@ import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -70,4 +71,12 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         }
         menu.open(e.player)
     }
+
+
+    //季節ごとに釣りエリアを変更するための処理
+    @EventHandler
+    fun onJoinWorld(e:PlayerChangedWorldEvent){
+
+    }
+
 }
