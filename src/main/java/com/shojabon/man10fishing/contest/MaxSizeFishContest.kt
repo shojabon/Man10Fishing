@@ -2,20 +2,17 @@ package com.shojabon.man10fishing.contest
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.dataClass.FishParameter
-import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
-import org.bukkit.Server
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
-import org.bukkit.configuration.file.YamlConfiguration
 
 class MaxSizeFishContest: AbstractFishContest() {
 
-    var maxSizePlayers = ArrayList<Pair<FishContestPlayer, FishParameter>>()
-    var winnerPlayerLimit = 3
-    var rewardCommands = HashMap<Int,List<String>>()
+    private var maxSizePlayers = ArrayList<Pair<FishContestPlayer, FishParameter>>()
+    private var winnerPlayerLimit = 3
+    private var rewardCommands = HashMap<Int,List<String>>()
 
-    val bossBar = Bukkit.createBossBar("§e§l最大サイズの魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
+    private val bossBar = Bukkit.createBossBar("§e§l最も大きい魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
     override fun onStart() {
         time.setRemainingTime(config.getInt("time", 60))
@@ -57,7 +54,7 @@ class MaxSizeFishContest: AbstractFishContest() {
         }
 
         if (maxSizePlayers.maxOf { it.second.size } == fish.size){
-            bossBar.setTitle("§e§l最大サイズの魚を釣れ！§b${fish.fish.alias}§d(${fish.size}cm)")
+            bossBar.setTitle("§e§l最も大きい魚を釣れ！§b${fish.fish.alias}§d(${fish.size}cm)")
         }
     }
 

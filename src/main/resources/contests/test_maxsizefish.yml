@@ -1,7 +1,7 @@
-game: MaxSizeFishContest
-time: 60
-winnerPlayerLimit: 2
-rewardCommands:
+game: MaxSizeFishContest # ゲームの種類指定 class名
+time: 60 # ゲーム時間(秒)
+winnerPlayerLimit: 2 # 勝者人数
+rewardCommands: # 勝者に与えるコマンド
   1:
     - eco give <name> 10000
     - tell <name> &a1位になりました！10000円をプレゼントします！

@@ -23,7 +23,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         //reload command
         addCommand(
             SCommandObject()
-                .addArgument(SCommandArgument().addAllowedString("reload")).addRequiredPermission("man10shopv2.reload")
+                .addArgument(SCommandArgument().addAllowedString("reload")).addRequiredPermission("man10fishing.reload")
                 .addExplanation("プラグインをリロードする")
                 .addExplanation("")
                 .addExplanation("設定を変更したときに使用する")
@@ -35,7 +35,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         addCommand(
             SCommandObject()
                 .addArgument(SCommandArgument().addAllowedString("ii"))
-                .addRequiredPermission("man10fish.ii")
+                .addRequiredPermission("man10fishing.ii")
                 .addExplanation("図鑑を見る")
                 .setExecutor { sender, _, _, _ ->
                     if (sender !is Player)return@setExecutor true
@@ -48,7 +48,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
             SCommandObject()
                 .addArgument(SCommandArgument().addAllowedString("ii"))
                 .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING).addAlias("レアリティ名").addAlias("list"))
-                .addRequiredPermission("man10fish.ii")
+                .addRequiredPermission("man10fishing.ii")
                 .addExplanation("図鑑を見る")
                 .setExecutor(OpenItemIndexMenuCommand(plugin))
         )
@@ -56,7 +56,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         addCommand(
                 SCommandObject()
                         .addArgument(SCommandArgument().addAllowedString("rod")).addArgument(SCommandArgument().addAllowedString("create"))
-                        .addRequiredPermission("man10shopv2.rod.create")
+                        .addRequiredPermission("man10fishing.rod.create")
                         .addExplanation("持っている釣り竿をMan10Fishingで使用可能にする")
                         .setExecutor(MakeIntoRodCommand(plugin))
         )
@@ -65,7 +65,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                 SCommandObject()
                         .addArgument(SCommandArgument().addAllowedString("food")).addArgument(SCommandArgument().addAllowedString("create"))
                         .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING).addAlias("食べ物情報"))
-                        .addRequiredPermission("man10shopv2.food.create")
+                        .addRequiredPermission("man10fishing.food.create")
                         .addExplanation("餌を作成する 0|0|0|0|0形式で入力")
                         .setExecutor(CreateFoodCommand(plugin))
         )
@@ -73,7 +73,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         addCommand(
                 SCommandObject()
                         .addArgument(SCommandArgument().addAllowedString("food")).addArgument(SCommandArgument().addAllowedString("mix"))
-                        .addRequiredPermission("man10shopv2.food.mix")
+                        .addRequiredPermission("man10fishing.food.mix")
                         .addExplanation("餌を合成する")
                         .setExecutor(SynthesizeFishFoodCommand(plugin))
         )
@@ -87,7 +87,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                 SCommandObject()
                         .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("start"))
                         .addArgument(contestArgs)
-                        .addRequiredPermission("man10shopv2.contest.start")
+                        .addRequiredPermission("man10fishing.contest.start")
                         .addExplanation("コンテストを開始する")
                         .setExecutor(StartContest(plugin))
         )
@@ -95,7 +95,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         addCommand(
                 SCommandObject()
                            .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("stop"))
-                            .addRequiredPermission("man10shopv2.contest.stop")
+                            .addRequiredPermission("man10fishing.contest.stop")
                             .addExplanation("コンテストを強制的に終了する")
                             .setExecutor(StopContest(plugin))
         )

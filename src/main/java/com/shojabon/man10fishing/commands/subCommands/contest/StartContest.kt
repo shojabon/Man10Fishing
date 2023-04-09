@@ -22,6 +22,7 @@ class StartContest(val plugin: Man10Fishing): CommandExecutor {
             return true
         }
 
+        //add players 参加の有無を選べるといいかもしれない
         Bukkit.getOnlinePlayers().forEach {
             contest.players[it.uniqueId] = FishContestPlayer(it.uniqueId, it.name)
         }
