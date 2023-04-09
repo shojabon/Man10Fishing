@@ -27,7 +27,7 @@ import java.util.*
     それ以外の文字列を入れると全ての季節で釣れるようになる
     日曜日〜土曜日を１週間とした
  */
-class  SeasonFactor(fish: Fish) : FishFactor(fish) {
+class SeasonFactor(fish: Fish) : FishFactor(fish) {
 
     val seasons= FishSettingVariable("season", listOf("ALL"))
 

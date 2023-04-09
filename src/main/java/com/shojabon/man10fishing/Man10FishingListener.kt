@@ -38,7 +38,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
     @EventHandler
     fun onClick(e: PlayerInteractEvent){
-        if(!e.action.isLeftClick)return
+        if(e.action != Action.LEFT_CLICK_BLOCK)return
         if(e.player.inventory.itemInMainHand.type != Material.FISHING_ROD) return
         if(!FishingRod.isRod(e.player.inventory.itemInMainHand)) return
         e.isCancelled = true
@@ -46,9 +46,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         val menu = SingleItemStackSelectorMenu("餌を選択してください", ItemStack(Material.AIR), plugin)
         menu.setCheckItemFunction { itemStack: ItemStack? ->
             if(itemStack == null) return@setCheckItemFunction false
-            if(!FishFood.isFood(itemStack)) return@setCheckItemFunction false
-
-            return@setCheckItemFunction true
+            return@setCheckItemFunction FishFood.isFood(itemStack)
         }
         menu.selectTypeItem(true)
         menu.setOnConfirm { itemStack: ItemStack? ->

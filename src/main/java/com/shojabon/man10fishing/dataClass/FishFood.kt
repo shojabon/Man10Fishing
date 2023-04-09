@@ -15,8 +15,7 @@ class FishFood(var food: ItemStack) {
         //データが埋め込まれてるなら
         fun isEmbeddedFood(item: ItemStack): Boolean {
             if (SItemStack(item).getCustomData(Man10Fishing.instance, "foodType") == null) return false
-            if (SItemStack(item).getCustomData(Man10Fishing.instance, "foodCount") != null) return false
-            return true
+            return SItemStack(item).getCustomData(Man10Fishing.instance, "foodCount") == null
         }
 
         //デフォルト設定があるアイテムなら

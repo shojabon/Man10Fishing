@@ -125,7 +125,10 @@ class Fish (val name: String, val config: ConfigurationSection){
         val contest = Man10Fishing.nowContest
         if (contest != null){
             if (contest.players.containsKey(fisher.uniqueId)){
-                contest.onCaughtFish(contest.players[fisher.uniqueId]!!, parameter)
+                val contestPlayer = contest.players[fisher.uniqueId]!!
+                contestPlayer.caughtFish.add(parameter)
+                contest.onCaughtFish(contestPlayer, parameter)
+
             }
         }
     }

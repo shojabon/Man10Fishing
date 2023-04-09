@@ -1,0 +1,9 @@
+game: MaxSizeFishContest
+time: 60
+rewardCommands:
+  1:
+    - eco give <name> 10000
+    - tell <name> &a1位になりました！10000円をプレゼントします！
+  2:
+    - eco give <name> 1000
+    - tell <name> &a2位になりました！1000円をプレゼントします！

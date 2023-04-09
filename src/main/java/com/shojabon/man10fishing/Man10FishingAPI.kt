@@ -120,6 +120,16 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         return result
     }
 
+    //contest一覧取得
+    fun getContestList(): ArrayList<String>{
+        val result = ArrayList<String>()
+        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.path + File.separator + "contests")){
+            SConfigFile.getConfigFile(file.path)?:continue
+            result.add(file.nameWithoutExtension)
+        }
+        return result
+    }
+
     //DB作成
     fun createTables(){
         Man10Fishing.mysql.asyncExecute("CREATE TABLE IF NOT EXISTS `fish_log` (\n" +

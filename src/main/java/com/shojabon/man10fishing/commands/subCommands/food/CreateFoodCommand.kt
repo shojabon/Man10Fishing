@@ -15,13 +15,13 @@ class CreateFoodCommand(var plugin: Man10Fishing) : CommandExecutor {
         val p: Player = sender
         val foodInformation = args[2]
         val foodSeparatedInformation = foodInformation.split("|")
-        if(foodSeparatedInformation.size != 5){
-            sender.sendMessage(Man10Fishing.prefix + "§4 餌情報は0|0|0|0|0形式で入力してください")
+        if(foodSeparatedInformation.size != 6){
+            sender.sendMessage(Man10Fishing.prefix + "§4 餌情報は0|0|0|0|0|0形式で入力してください")
             return false
         }
         for(foodInfo in foodSeparatedInformation){
             if(!BaseUtils.isDouble(foodInfo)){
-                sender.sendMessage(Man10Fishing.prefix + "§4 餌情報は0|0|0|0|0形式で入力してください")
+                sender.sendMessage(Man10Fishing.prefix + "§4 餌情報は0|0|0|0|0|0形式で入力してください")
                 return false
             }
         }

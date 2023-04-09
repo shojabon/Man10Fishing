@@ -3,6 +3,8 @@ package com.shojabon.man10fishing.commands
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.commands.subCommands.OpenItemIndexMenuCommand
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
+import com.shojabon.man10fishing.commands.subCommands.contest.StartContest
+import com.shojabon.man10fishing.commands.subCommands.contest.StopContest
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
@@ -74,6 +76,28 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10shopv2.food.mix")
                         .addExplanation("餌を合成する")
                         .setExecutor(SynthesizeFishFoodCommand(plugin))
+        )
+
+        val contestArgs = SCommandArgument()
+        Man10Fishing.api.getContestList().forEach {
+            contestArgs.addAllowedString(it)
+        }
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("start"))
+                        .addArgument(contestArgs)
+                        .addRequiredPermission("man10shopv2.contest.start")
+                        .addExplanation("コンテストを開始する")
+                        .setExecutor(StartContest(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                           .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("stop"))
+                            .addRequiredPermission("man10shopv2.contest.stop")
+                            .addExplanation("コンテストを強制的に終了する")
+                            .setExecutor(StopContest(plugin))
         )
     }
 
