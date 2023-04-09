@@ -47,7 +47,7 @@ class SeasonFactor(fish: Fish) : FishFactor(fish) {
 
 
     private fun checkSeason(strSeason:String,current:Season):Boolean{
-        val season=Season.valueOf(strSeason)
+        val season=Season.valueOf(strSeason.toUpperCase())
         return season==Season.ALL||season==current
     }
 }
