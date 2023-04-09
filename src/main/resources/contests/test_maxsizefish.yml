@@ -1,5 +1,6 @@
 game: MaxSizeFishContest
 time: 60
+winnerPlayerLimit: 2
 rewardCommands:
   1:
     - eco give <name> 10000
