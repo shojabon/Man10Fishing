@@ -14,7 +14,7 @@ class RegisterSpawnLocationCommand(var plugin: Man10Fishing) : CommandExecutor {
         val season= Season.valueOf(args[1].toUpperCase())
         val loc=sender.location
 
-        plugin.config.set(season.toString(),loc)
+        plugin.config.set("spawnPoints.${season}",loc)
         Man10Fishing.spawnPoints[season]=loc
         plugin.saveConfig()
 
