@@ -102,12 +102,12 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         )
 
         addCommand(
-            SCommandObject()
-                .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("info"))
-                .addArgument(contestArgs)
-                .addRequiredPermission("man10fishing.contest.info")
-                .addExplanation("コンテストの情報を見る")
-                .setExecutor(InfoContest(plugin))
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("info"))
+                        .addArgument(contestArgs)
+                        .addRequiredPermission("man10fishing.contest.info")
+                        .addExplanation("コンテストの情報を見る")
+                        .setExecutor(InfoContest(plugin))
         )
     }
 

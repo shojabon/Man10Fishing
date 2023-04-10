@@ -70,15 +70,16 @@ class MaxSizeFishContest: AbstractFishContest() {
             maxSizePlayers.sortedBy { it.second.size }.forEachIndexed { index, pair ->
                 broadCastPlayers("§a${index + 1}位: §e${pair.first.name}§7:§b${pair.second.fish.alias}§d(${pair.second.size}cm)")
                 val commands = rewardCommands[index + 1]?:return@forEachIndexed
-                //プレイヤーが存在してなければ別に実行しなくてもいいかもしれない
-                //if (Bukkit.getPlayer(pair.first.uuid) == null) return@forEachIndexed
+                val player = Bukkit.getPlayer(pair.first.uuid)?:return@forEachIndexed
                 commands.forEach {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it
+                        .replace("&", "§")
                         .replace("<name>", pair.first.name)
                         .replace("<uuid>", pair.first.uuid.toString())
                         .replace("<fish>", pair.second.fish.alias)
                         .replace("<size>", pair.second.size.toString())
-                        .replace("<world>", Bukkit.getPlayer(pair.first.uuid)?.world?.name?:"null"))
+                        .replace("<world>", player.world.name)
+                        .replace("<and>", "&"))
                 }
             }
         })

@@ -9,10 +9,16 @@ import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.UUID
 
+/**
+ * コンテストの基盤
+ */
 abstract class AbstractFishContest {
 
+    //コンテストに参加しているプレイヤー 今は鯖にいる全員が参加
     val players = HashMap<UUID, FishContestPlayer>()
+    //タイマー
     var time = STimer().apply { addOnEndEvent { end() } }
+    //コンフィグ
     protected lateinit var config: YamlConfiguration
 
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
@@ -20,13 +26,17 @@ abstract class AbstractFishContest {
         return this
     }
 
+    //始まったときの処理
     abstract fun onStart()
 
+    //釣れたときの処理
     open fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {}
 
+    //終わったときの処理
     abstract fun onEnd()
 
 
+    //コンテストを開始する
     fun start(){
         Man10Fishing.nowContest = this
         onStart()
@@ -35,12 +45,14 @@ abstract class AbstractFishContest {
         }
     }
 
+    //コンテストを終了する 終わるときにはこの関数を使う
     fun end(){
         time.stop()
         onEnd()
         Man10Fishing.nowContest = null
     }
 
+    //プレイヤー全員にメッセージを送信する
     fun broadCastPlayers(msg: String){
         players.forEach { p ->
             Bukkit.getPlayer(p.key)?.sendMessage(Man10Fishing.prefix + msg)
