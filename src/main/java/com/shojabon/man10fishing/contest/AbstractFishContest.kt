@@ -47,6 +47,12 @@ abstract class AbstractFishContest {
         }
     }
 
+    fun dispatchCommand(command:String){
+        Bukkit.getScheduler().runTask(Man10Fishing.instance,Runnable{
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),command)
+        })
+    }
+
     companion object{
         fun newInstance(name: String): AbstractFishContest? {
             return try {
