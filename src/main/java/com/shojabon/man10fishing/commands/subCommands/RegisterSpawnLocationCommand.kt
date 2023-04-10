@@ -1,7 +1,7 @@
 package com.shojabon.man10fishing.commands.subCommands
 
 import com.shojabon.man10fishing.Man10Fishing
-import com.shojabon.man10fishing.enums.Season
+import com.shojabon.man10fishing.dataClass.enums.Season
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

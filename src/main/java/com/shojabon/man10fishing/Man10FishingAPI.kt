@@ -1,12 +1,10 @@
 package com.shojabon.man10fishing
 
-import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishRarity
 import com.shojabon.man10fishing.dataClass.FishingRod
-import com.shojabon.man10fishing.enums.Season
+import com.shojabon.man10fishing.dataClass.enums.Season
 import com.shojabon.mcutils.Utils.SConfigFile
-import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -16,7 +14,6 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.sin
 import kotlin.random.Random
 
 class Man10FishingAPI(private val plugin: Man10Fishing) {

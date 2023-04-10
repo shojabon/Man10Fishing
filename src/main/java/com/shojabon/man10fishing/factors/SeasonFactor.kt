@@ -4,11 +4,9 @@ import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.annotations.Author
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
 import com.shojabon.man10fishing.dataClass.*
-import com.shojabon.man10fishing.enums.Season
-import org.bukkit.Bukkit
+import com.shojabon.man10fishing.dataClass.enums.Season
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import java.util.*
 
 @Author(author = "JToTl")
 @FishFactorDefinition(name = "季節",

@@ -4,10 +4,8 @@ import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.protection.regions.RegionContainer
 import com.shojabon.man10fishing.commands.Man10FishingCommand
 import com.shojabon.man10fishing.contest.AbstractFishContest
-import com.shojabon.man10fishing.enums.Season
-import com.shojabon.man10fishing.itemindex.ItemIndex
+import com.shojabon.man10fishing.dataClass.enums.Season
 import com.shojabon.man10fishing.itemindex.ItemIndexListener
-import com.shojabon.mcutils.Utils.MySQL.MySQLAPI
 import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SInventory.SInventory
