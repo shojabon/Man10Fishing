@@ -34,7 +34,7 @@ class FastFishingContest:AbstractFishContest() {
         broadCastPlayers("§f${player.name}§aが§e${fishCounter[player.uuid]!!}匹目§aの${targetFishName}を釣り上げた!")
 
         //このstopがonEndを実行するかどうか未確認
-        if(fishCounter[player.uuid]!!>=targetFishAmount)time.stop()
+        if(fishCounter[player.uuid]!!>=targetFishAmount)end()
     }
 
     override fun onStart() {
