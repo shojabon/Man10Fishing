@@ -74,8 +74,8 @@ abstract class AbstractFishContest() {
             return try {
                 val config = YamlConfiguration.loadConfiguration(File("${Man10Fishing.instance.dataFolder.path}/contests/${name}.yml"))
                 val clazz = Class.forName("com.shojabon.man10fishing.contest.${config.getString("game")}")
-                val instance = clazz.getConstructor(YamlConfiguration::class.java).newInstance(config) as AbstractFishContest
-                instance
+                val instance = clazz.getConstructor().newInstance() as AbstractFishContest
+                instance.setConfig(config)
             } catch (e: Exception) {
                 null
             }
