@@ -27,7 +27,7 @@ class MakeIntoRodCommand(var plugin: Man10Fishing) : CommandExecutor {
         }
         val item = SItemStack(p.inventory.itemInMainHand)
         item.setCustomData(Man10Fishing.instance, "foodCount", "0")
-        item.setCustomData(Man10Fishing.instance, "foodType", "0|0|0|0|0")
+        item.setCustomData(Man10Fishing.instance, "foodType", "0|0|0|0|0|0")
         sender.sendMessage(Man10Fishing.prefix + "§a釣り竿を作成しました")
         return true
     }
