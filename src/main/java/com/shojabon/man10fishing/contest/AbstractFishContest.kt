@@ -12,7 +12,7 @@ import java.util.UUID
 /**
  * コンテストの基盤
  */
-abstract class AbstractFishContest {
+abstract class AbstractFishContest() {
 
     //コンテストに参加しているプレイヤー 今は鯖にいる全員が参加
     val players = HashMap<UUID, FishContestPlayer>()
@@ -20,6 +20,10 @@ abstract class AbstractFishContest {
     var time = STimer().apply { addOnEndEvent { end() } }
     //コンフィグ
     protected lateinit var config: YamlConfiguration
+
+    constructor(config: YamlConfiguration): this() {
+        this.config = config
+    }
 
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
@@ -70,8 +74,8 @@ abstract class AbstractFishContest {
             return try {
                 val config = YamlConfiguration.loadConfiguration(File("${Man10Fishing.instance.dataFolder.path}/contests/${name}.yml"))
                 val clazz = Class.forName("com.shojabon.man10fishing.contest.${config.getString("game")}")
-                val instance = clazz.getConstructor().newInstance() as AbstractFishContest
-                instance.setConfig(config)
+                val instance = clazz.getConstructor(YamlConfiguration::class.java).newInstance(config) as AbstractFishContest
+                instance
             } catch (e: Exception) {
                 null
             }
