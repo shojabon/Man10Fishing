@@ -21,10 +21,6 @@ abstract class AbstractFishContest() {
     //コンフィグ
     protected lateinit var config: YamlConfiguration
 
-    constructor(config: YamlConfiguration): this() {
-        this.config = config
-    }
-
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
         return this

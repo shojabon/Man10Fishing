@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing
 
 import ToolMenu.SingleItemStackSelectorMenu
+import com.shojabon.man10fishing.contest.FishContestPlayer
 import com.shojabon.man10fishing.dataClass.FishFood
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.man10fishing.dataClass.FishingRod
@@ -13,6 +14,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.ItemStack
 
 class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
@@ -70,5 +72,11 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         menu.open(e.player)
     }
 
+    @EventHandler
+    fun onJoin(e: PlayerJoinEvent){
+        val contest = Man10Fishing.nowContest?:return
+        if (contest.players.containsKey(e.player.uniqueId))return
+        contest.players[e.player.uniqueId] = FishContestPlayer(e.player.uniqueId, e.player.name)
+    }
 
 }

@@ -128,7 +128,6 @@ class Fish (val name: String, val config: ConfigurationSection){
                 val contestPlayer = contest.players[fisher.uniqueId]!!
                 contestPlayer.caughtFish.add(parameter)
                 contest.onCaughtFish(contestPlayer, parameter)
-
             }
         }
     }
