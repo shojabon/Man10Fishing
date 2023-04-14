@@ -15,7 +15,7 @@ class FishContestPlayer() {
     val caughtFish = ArrayList<FishParameter>()
     var allowedFishCount=0
 
-    fun addFishCount(){
+    fun plusOneFishCount(){
         allowedFishCount++
     }
 }

@@ -151,15 +151,14 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
 
     //現在の季節を返す
     //基準は1990/1/4の日曜日
+    //季節は、基準日から7日を春として1週間ごとに春→夏→秋→冬→春...と帰納的に定義される
     fun getCurrentSeason(): Season {
         return when((((Date().time/864000000L)-3L)/7)%4){
             0L->Season.SPRING
             1L->Season.SUMMER
             2L->Season.AUTUMN
-            3L->Season.WINTER
-
-            //10000000%上のどれかにしかならんけどコンパイルエラー発生するんで↓を書いている
-            else->Season.ALL
+            else->Season.WINTER
+            //処理の関係上elseとなっているが、これは3Lの場合のみしか通らない
         }
     }
 

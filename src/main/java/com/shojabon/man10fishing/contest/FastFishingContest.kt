@@ -27,7 +27,7 @@ class FastFishingContest:AbstractFishContest() {
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
         if(targetFishList!=null&&!targetFishList!!.contains(fish.fish.name))return
-        player.addFishCount()
+        player.plusOneFishCount()
 
         broadCastPlayers("§f${player.name}§aが§e${players[player.uuid]?.allowedFishCount}匹目§aの${targetFishName}を釣り上げた!")
 

@@ -5,6 +5,12 @@ import org.bukkit.Bukkit
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 
+/*
+
+該当の魚を釣った数を競うコンテスト
+数が同じである場合、先にその数を達成した方を上位とする
+
+*/
 class MaxAmountFishContest:AbstractFishContest() {
 
 
@@ -23,12 +29,11 @@ class MaxAmountFishContest:AbstractFishContest() {
 
         if(targetFishList!=null&&!targetFishList!!.contains(fish.fish.name))return
 
-        player.addFishCount()
+        player.plusOneFishCount()
 
+        broadCastPlayers("${player.name}§aが§e${fish.name}を釣り上げた!")
 
-
-
-
+        updateRanking(player)
     }
 
     override fun onStart() {
@@ -50,11 +55,37 @@ class MaxAmountFishContest:AbstractFishContest() {
 
     override fun onEnd() {
 
+        broadCastPlayers("§c§lコンテスト終了!!")
+
+        //サブスレッドで実行されてると思ってる
+        Thread.sleep(4000)
+
+        if(ranking.isEmpty()){
+            broadCastPlayers("§c§l${targetFishName}を釣ったプレイヤーはいませんでした")
+            return
+        }
+
+        broadCastPlayers("§c§l順位")
+        //サブスレッドで実行されてると思ってる
+        Thread.sleep(500)
+        for(i in 1..ranking.size){
+            broadCastPlayers("§a${i}位: §e${ranking[i]?.name}§7:§b${ranking[i]?.allowedFishCount}匹")
+            val player = Bukkit.getPlayer(ranking[i]!!.uuid)?:continue
+            rewardCommands[i]?.forEach {
+                dispatchCommand(it.replace("&", "§")
+                        .replace("<name>", player.name)
+                        .replace("<uuid>", player.uniqueId.toString())
+                        .replace("<count>", ranking[i]!!.allowedFishCount.toString())
+                        .replace("<world>", player.world.name)
+                        .replace("<and>", "&"))
+            }
+        }
+
     }
 
     //ランキングを更新する
+    //可読性だいぶ低い、ゴメン!
     private fun updateRanking(player:FishContestPlayer){
-
 
         //ランキングに上限人数未満のプレイヤーしか登録されていない場合
         if(ranking.size<winningPlayerLimit){
@@ -66,14 +97,18 @@ class MaxAmountFishContest:AbstractFishContest() {
         //ランキング更新用の変数
         var beforeRank=winningPlayerLimit
 
-        for (i in winningPlayerLimit downTo 1){
+        for (i in winningPlayerLimit-1 downTo 1){
             if((ranking[i]?.allowedFishCount?:0)>=player.allowedFishCount){
 
-                //更新前のランキングがあればそれを取得する
+                //更新前にランクインをしていた場合必ずここを通り、取得する
+                //更新前のランクが最下位位だった場合はbeforeRankの変数宣言で対応
                 if(ranking[i]==player){
                     beforeRank=i
                     continue
                 }
+
+                //ここを通る際、i+1==beforeRankだった場合はランキングの変動がないことを意味するのでreturn
+                if(i+1==beforeRank)return
 
                 //ここを通るのはiがplayerの一つ上の順位になったときなので、それの１つ下にplayerを配置する
                 //構造上beforeRank>=i+1は保証されている
@@ -82,6 +117,9 @@ class MaxAmountFishContest:AbstractFishContest() {
                     ranking[j] = ranking[j - 1]!!
                 }
                 ranking[i+1]=player
+
+                broadCastPlayers("§e§l[§fランキング更新§e§l]§f${player.name}§aが${ranking.size}位にランクイン!")
+
                 return
             }
         }
