@@ -20,7 +20,6 @@ class FastFishingContest:AbstractFishContest() {
     private var rewardCommands:List<String>?=null
 
 
-    private val fishCounter=HashMap<UUID,Int>()
     private var winner:Player?=null
     private val bossBar = Bukkit.createBossBar("§e§l一番はじめに&c&l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
@@ -28,13 +27,11 @@ class FastFishingContest:AbstractFishContest() {
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
         if(targetFishList!=null&&!targetFishList!!.contains(fish.fish.name))return
-        if(!fishCounter.containsKey(player.uuid))fishCounter[player.uuid]=0
-        fishCounter[player.uuid]=fishCounter[player.uuid]!!+1
+        player.addFishCount()
 
-        broadCastPlayers("§f${player.name}§aが§e${fishCounter[player.uuid]!!}匹目§aの${targetFishName}を釣り上げた!")
+        broadCastPlayers("§f${player.name}§aが§e${players[player.uuid]?.allowedFishCount}匹目§aの${targetFishName}を釣り上げた!")
 
-        //このstopがonEndを実行するかどうか未確認
-        if(fishCounter[player.uuid]!!>=targetFishAmount)end()
+        if(player.allowedFishCount >= targetFishAmount)end()
     }
 
     override fun onStart() {

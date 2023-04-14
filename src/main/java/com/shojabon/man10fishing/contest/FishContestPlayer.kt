@@ -13,4 +13,9 @@ class FishContestPlayer() {
     lateinit var uuid: UUID
     var name = ""
     val caughtFish = ArrayList<FishParameter>()
+    var allowedFishCount=0
+
+    fun addFishCount(){
+        allowedFishCount++
+    }
 }

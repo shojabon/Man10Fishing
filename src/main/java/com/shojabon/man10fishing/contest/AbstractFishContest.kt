@@ -59,6 +59,8 @@ abstract class AbstractFishContest() {
         }
     }
 
+    //コマンドを発行する
+    //プレイスホルダーは各自のコンテストでやりましょう
     fun dispatchCommand(command:String){
         Bukkit.getScheduler().runTask(Man10Fishing.instance,Runnable{
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),command)
