@@ -5,6 +5,8 @@ import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.STimer
 import org.bukkit.Bukkit
+import org.bukkit.boss.BarColor
+import org.bukkit.boss.BarStyle
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.UUID
@@ -20,6 +22,9 @@ abstract class AbstractFishContest() {
     var time = STimer().apply { addOnEndEvent { end() } }
     //コンフィグ
     protected lateinit var config: YamlConfiguration
+
+    //コンテスト表示用のボスバー
+    val bossBar=Bukkit.createBossBar("§e§l魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config

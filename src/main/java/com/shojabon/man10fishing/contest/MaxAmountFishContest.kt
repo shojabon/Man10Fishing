@@ -22,7 +22,6 @@ class MaxAmountFishContest:AbstractFishContest() {
 
 
     private val ranking=HashMap<Int,FishContestPlayer>()
-    private val bossBar = Bukkit.createBossBar("§e§l最も多く&c&l${targetFishName}&e&lを釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
@@ -41,6 +40,8 @@ class MaxAmountFishContest:AbstractFishContest() {
         targetFishList=config.getStringList("targetFishes")
         targetFishName=config.getString("targetFishName","魚")!!
         winningPlayerLimit=config.getInt("winnerPlayerLimit", 10)
+
+        bossBar.setTitle("§e§l最も多く&c&l${targetFishName}&e&lを釣れ！")
 
         time.setRemainingTime(config.getInt("time", 60))
         config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {

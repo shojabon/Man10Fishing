@@ -21,8 +21,6 @@ class FastFishingContest:AbstractFishContest() {
 
 
     private var winner:Player?=null
-    private val bossBar = Bukkit.createBossBar("§e§l一番はじめに&c&l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！", BarColor.BLUE, BarStyle.SOLID)
-
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
@@ -40,6 +38,8 @@ class FastFishingContest:AbstractFishContest() {
         targetFishAmount=config.getInt("amount",1)
         winningPlayerLimit=config.getInt("winnerPlayerLimit", 3)
         rewardCommands=config.getStringList("rewardCommands")
+
+        bossBar.setTitle("§e§l一番はじめに&c&l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！")
 
         time.setRemainingTime(config.getInt("time", 60))
         players.keys.forEach {

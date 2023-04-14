@@ -12,7 +12,6 @@ class MaxSizeFishContest: AbstractFishContest() {
     private var winnerPlayerLimit = 3
     private var rewardCommands = HashMap<Int,List<String>>()
 
-    private val bossBar = Bukkit.createBossBar("§e§l最も大きい魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
     override fun onStart() {
         time.setRemainingTime(config.getInt("time", 60))
@@ -20,6 +19,8 @@ class MaxSizeFishContest: AbstractFishContest() {
         config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {
             rewardCommands[it.toInt()] = config.getStringList("rewardCommands.$it")
         }
+
+        bossBar.setTitle("§e§l最も大きい魚を釣れ！")
 
         players.keys.forEach {
             bossBar.addPlayer(Bukkit.getPlayer(it)?:return@forEach)
