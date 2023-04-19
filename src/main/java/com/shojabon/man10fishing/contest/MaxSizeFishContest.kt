@@ -22,10 +22,10 @@ class MaxSizeFishContest: AbstractFishContest() {
 
         bossBar.setTitle("§e§l最も大きい魚を釣れ！")
 
-        players.keys.forEach {
-            bossBar.addPlayer(Bukkit.getPlayer(it)?:return@forEach)
-        }
-        time.linkBossBar(bossBar, true)
+//        players.keys.forEach {
+//            bossBar.addPlayer(Bukkit.getPlayer(it)?:return@forEach)
+//        }
+//        time.linkBossBar(bossBar, true)
     }
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
