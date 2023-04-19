@@ -25,11 +25,11 @@ class FastFishingContest:AbstractFishContest() {
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
         if(targetFishList!=null&&!targetFishList!!.contains(fish.fish.name))return
-        player.plusOneFishCount()
+        player.addAllowedCaughtFish(fish)
 
-        broadCastPlayers("§f${player.name}§aが§e${players[player.uuid]?.allowedFishCount}匹目§aの${targetFishName}を釣り上げた!")
+        broadCastPlayers("§f${player.name}§aが§e${players[player.uuid]?.allowedCaughtFish?.size}匹目§aの${targetFishName}を釣り上げた!")
 
-        if(player.allowedFishCount >= targetFishAmount)end()
+        if(player.allowedCaughtFish.size >= targetFishAmount)end()
     }
 
     override fun onStart() {
@@ -42,10 +42,6 @@ class FastFishingContest:AbstractFishContest() {
         bossBar.setTitle("§e§l一番はじめに&c&l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！")
 
         time.setRemainingTime(config.getInt("time", 60))
-        players.keys.forEach {
-            bossBar.addPlayer(Bukkit.getPlayer(it)?:return@forEach)
-        }
-        time.linkBossBar(bossBar, true)
     }
 
     override fun onEnd() {

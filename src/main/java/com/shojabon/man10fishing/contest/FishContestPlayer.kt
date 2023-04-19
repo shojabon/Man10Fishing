@@ -13,9 +13,24 @@ class FishContestPlayer() {
     lateinit var uuid: UUID
     var name = ""
     val caughtFish = ArrayList<FishParameter>()
-    var allowedFishCount=0
+    var allowedCaughtFish=ArrayList<FishParameter>()
 
-    fun plusOneFishCount(){
-        allowedFishCount++
+    fun addAllowedCaughtFish(fish:FishParameter){
+        allowedCaughtFish.add(fish)
+    }
+    fun getMaxSizeFish():FishParameter?{
+        return caughtFish.maxByOrNull { it.size }
+    }
+
+    fun getMinSizeFish():FishParameter?{
+        return caughtFish.minByOrNull { it.size }
+    }
+
+    fun getMaxSizeAllowedFish():FishParameter?{
+        return allowedCaughtFish.maxByOrNull { it.size }
+    }
+
+    fun getMinSizeAllowedFish():FishParameter?{
+        return allowedCaughtFish.minByOrNull { it.size }
     }
 }

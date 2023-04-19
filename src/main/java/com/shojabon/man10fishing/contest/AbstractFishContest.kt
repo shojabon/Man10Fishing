@@ -26,6 +26,11 @@ abstract class AbstractFishContest() {
     //コンテスト表示用のボスバー
     val bossBar=Bukkit.createBossBar("§e§l魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
+    //ランキング用のマップ
+    val ranking= HashMap<Int,FishContestPlayer>()
+    //ランキングのサイズ
+    var rankingSize=10
+
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
         return this
@@ -40,6 +45,55 @@ abstract class AbstractFishContest() {
     //終わったときの処理
     abstract fun onEnd()
 
+    //データの変動があったプレイヤーを指定し、ランキングを更新する
+    //ランキングシステムを使う場合はonCatchFishでこれを呼び出せばOK
+    protected fun updateRanking(player:FishContestPlayer){
+
+        //ランキングに上限人数未満のプレイヤーしか登録されていない場合
+        if(ranking.size<rankingSize){
+            ranking[ranking.size+1]=player
+            broadCastPlayers("§f${player.name}§aが${ranking.size}位にランクイン!")
+            return
+        }
+
+        //ランキング更新用の変数
+        var beforeRank=rankingSize
+
+        for (i in rankingSize-1 downTo 1){
+            //ランキング下位から順に比較を行い、自分以上の評価を持つ順位になった場合ifの中を通す
+            if(rankingDefinition(player,ranking[i]!!)){
+
+                //更新前にランクインをしていた場合必ずここを通り、取得する
+                //更新前のランクが最下位位だった場合はbeforeRankの変数宣言で対応
+                if(ranking[i]==player){
+                    beforeRank=i
+                    continue
+                }
+
+                //ここを通る際、i+1==beforeRankだった場合はランキングの変動がないことを意味するのでreturn
+                if(i+1==beforeRank)return
+
+                //ここを通るのはiがplayerの一つ上の順位になったときなので、それの１つ下にplayerを配置する
+                //構造上beforeRank>=i+1は保証されている
+                for(j in beforeRank downTo i+1) {
+                    if(j==i+1)break
+                    ranking[j] = ranking[j - 1]!!
+                }
+                ranking[i+1]=player
+
+                broadCastPlayers("§e§l[§fランキング更新§e§l]§f${player.name}§aが${ranking.size}位にランクイン!")
+
+                return
+            }
+        }
+    }
+
+    //順位の定義
+    //lowerPlayer<=higherPlayerであるときにtrueを返すようにする
+    open fun rankingDefinition(lowerPlayer:FishContestPlayer,higherPlayer:FishContestPlayer):Boolean{
+        return false
+    }
+
 
     //コンテストを開始する
     fun start(){
@@ -48,6 +102,10 @@ abstract class AbstractFishContest() {
         if (time.originalTime != 0){
             time.start()
         }
+        players.keys.forEach {
+            bossBar.addPlayer(Bukkit.getPlayer(it)?:return@forEach)
+        }
+        time.linkBossBar(bossBar, true)
     }
 
     //コンテストを終了する 終わるときにはこの関数を使う
