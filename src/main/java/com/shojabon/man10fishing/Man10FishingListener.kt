@@ -103,15 +103,16 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         if(rodItem.getFoodType() == foodItem.getFoodTypeList()){
             rodItem.addFoodCount(amount)
 
-            e.player.sendMessage(Man10Fishing.prefix + "§c餌を追加しました")
+            e.player.sendMessage(Man10Fishing.prefix + "§a餌を追加しました")
         }
         else{
             rodItem.setFoodType(foodItem.getFoodTypeList()?: listOf(0.0,0.0,0.0,0.0,0.0,0.0))
             rodItem.setFoodCount(amount)
 
-            e.player.sendMessage(Man10Fishing.prefix + "§c餌をセットしました")
+            e.player.sendMessage(Man10Fishing.prefix + "§a餌をセットしました")
         }
 
+        e.player.inventory.setItemInMainHand(rodItem.rodItem)
         e.player.inventory.setItemInOffHand(ItemStack(Material.AIR))
 
     }
