@@ -81,41 +81,5 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         contest.bossBar.addPlayer(e.player)
     }
 
-
-    //餌の適用を作ってみた(仮置きなので変更の余地あり)
-    @EventHandler
-    fun onSwapItem(e:PlayerSwapHandItemsEvent){
-        //両手のアイテムの確認
-        val mainhand=e.mainHandItem?:return
-        val offhand=e.offHandItem?:return
-        if(!FishingRod.isRod(offhand))return
-        if(!FishFood.isFood(mainhand))return
-
-        e.isCancelled=true
-
-        val rodItem=FishingRod(offhand)
-        val foodItem=FishFood(mainhand)
-        val amount=mainhand.amount
-
-
-        //現在の餌と一致すれば数値のみ増やす
-        //これでできるかわからんがとりあえずで
-        if(rodItem.getFoodType() == foodItem.getFoodTypeList()){
-            rodItem.addFoodCount(amount)
-
-            e.player.sendMessage(Man10Fishing.prefix + "§a餌を追加しました")
-        }
-        else{
-            rodItem.setFoodType(foodItem.getFoodTypeList()?: listOf(0.0,0.0,0.0,0.0,0.0,0.0))
-            rodItem.setFoodCount(amount)
-
-            e.player.sendMessage(Man10Fishing.prefix + "§a餌をセットしました")
-        }
-
-        e.player.inventory.setItemInMainHand(rodItem.rodItem)
-        e.player.inventory.setItemInOffHand(ItemStack(Material.AIR))
-
-    }
-
-
+    
 }
