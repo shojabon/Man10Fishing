@@ -3,33 +3,33 @@ rarity:
   secret:
     alias: "シークレット"
     weight: 1
-    namePrefix: "§l"
-    loreDisplayName: "§7§lSecret"
+    namePrefix: "§4§l"
+    loreDisplayName: "§4§l§oSECRET"
   crystal:
     alias: "クリスタル"
     weight: 10
-    namePrefix: "§d"
-    loreDisplayName: "§dCrystal"
+    namePrefix: "§d§l"
+    loreDisplayName: "§d§l§oCRYSTAL"
   legendary:
     alias: "レジェンダリー"
     weight: 11
-    namePrefix: "§6"
-    loreDisplayName: "§6Legendary"
+    namePrefix: "§6§l"
+    loreDisplayName: "§6§l§oLEGENDARY"
   epic:
     alias: "エピック"
     weight: 12
-    namePrefix: "§5"
-    loreDisplayName: "§5Epic"
+    namePrefix: "§5§l"
+    loreDisplayName: "§5§l§oEPIC"
   uncommon:
     alias: "アンコモン"
     weight: 13
-    namePrefix: "§9"
-    loreDisplayName: "§9UnCommon"
+    namePrefix: "§9§l"
+    loreDisplayName: "§9§l§oUNCOMMON"
   common:
     alias: "コモン"
     weight: 14
-    namePrefix: "§f"
-    loreDisplayName: "§fCommon"
+    namePrefix: "§f§l"
+    loreDisplayName: "§f§l§oCOMMON"
 
 foodInRangeMultiplier: 100
 

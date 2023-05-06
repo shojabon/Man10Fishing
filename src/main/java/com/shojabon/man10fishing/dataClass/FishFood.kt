@@ -45,6 +45,37 @@ class FishFood(var food: ItemStack) {
             }
             return result
         }
+
+        fun getFoodTypeLoreFromStr(data:List<String>):List<String>{
+            val numData= mutableListOf<Double>()
+            data.forEach { numData.add(it.toDoubleOrNull()?:return listOf("§4不正なデータ")) }
+            return getFoodTypeLore(numData)
+        }
+
+        fun getFoodTypeLore(data: List<Double>):List<String>{
+
+            if(data.size<6)return listOf("§4不正なデータ")
+            val lore= mutableListOf("§e甘味§3：§f§l■","§e酸味§3：§f§l■","§e旨味§3：§f§l■","§e苦味§3：§f§l■","§e匂い§3：§f§l■","","§7味のぶれ：§c")
+
+            for(i in 0 until 5){
+                var count=-400
+                for(j in 0 until 9){
+                    if(data[i]<count)break
+                    lore[i]+="■"
+                    count+=100
+                }
+            }
+
+            when{
+                (data[5]<100)->{lore[6]=lore[6]+"極めて小さい"}
+                (100<=data[5]&&data[5]<200)->{lore[6]=lore[6]+"小さい"}
+                (200<=data[5]&&data[5]<300)->{lore[6]=lore[6]+"普通"}
+                (300<=data[5]&&data[5]<400)->{lore[6]=lore[6]+"大きい"}
+                (400<=data[5]&&data[5]<500)->{lore[6]=lore[6]+"極めて大きい"}
+            }
+
+            return lore
+        }
     }
 
     fun getFoodTypeString(): String?{
