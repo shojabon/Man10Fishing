@@ -6,6 +6,7 @@ import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 import com.shojabon.man10fishing.commands.subCommands.contest.InfoContest
 import com.shojabon.man10fishing.commands.subCommands.contest.StartContest
 import com.shojabon.man10fishing.commands.subCommands.contest.StopContest
+import com.shojabon.man10fishing.commands.subCommands.fish.GetFishCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
@@ -108,6 +109,16 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10fishing.contest.info")
                         .addExplanation("コンテストの情報を見る")
                         .setExecutor(InfoContest(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("fish"))
+                        .addArgument(SCommandArgument().addAllowedString("get"))
+                        .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING))
+                        .addRequiredPermission("man10fishing.fish.get")
+                        .addExplanation("魚を取得する")
+                        .setExecutor(GetFishCommand(plugin))
         )
     }
 
