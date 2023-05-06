@@ -86,11 +86,13 @@ class Fish (val name: String, val config: ConfigurationSection){
 //        foodRange = config.getInt("food.range")
 
         // item
+        val rarityData=Man10FishingAPI.rarity[rarity]!!
         val material = Material.getMaterial(config.getString("item.material")?: return "不正マテリアル")?: return "不正マテリアル"
         val customModelData = config.getInt("item.customModelData")
         val lore = config.getStringList("item.lore")
+        lore.add(rarityData.loreDisplayName)
 
-        val itemStack = SItemStack(material).setDisplayName(alias)
+        val itemStack = SItemStack(material).setDisplayName(rarityData.namePrefix+alias)
         itemStack.customModelData = customModelData
         itemStack.lore = lore
 

@@ -1,20 +1,35 @@
 prefix: "§e§l[§6§lMan10Fishing§e§l]§a"
 rarity:
-  legendary:
-    alias: "レジェンド"
+  secret:
+    alias: "シークレット"
+    weight: 1
+    namePrefix: "§l"
+    loreDisplayName: "§7§lSecret"
+  crystal:
+    alias: "クリスタル"
     weight: 10
-  superRare:
-    alias: "スーパーレア"
+    namePrefix: "§d"
+    loreDisplayName: "§dCrystal"
+  legendary:
+    alias: "レジェンダリー"
     weight: 11
-  rare:
-    alias: "レア"
+    namePrefix: "§6"
+    loreDisplayName: "§6Legendary"
+  epic:
+    alias: "エピック"
     weight: 12
+    namePrefix: "§5"
+    loreDisplayName: "§5Epic"
   uncommon:
     alias: "アンコモン"
     weight: 13
+    namePrefix: "§9"
+    loreDisplayName: "§9UnCommon"
   common:
     alias: "コモン"
     weight: 14
+    namePrefix: "§f"
+    loreDisplayName: "§fCommon"
 
 foodInRangeMultiplier: 100
 

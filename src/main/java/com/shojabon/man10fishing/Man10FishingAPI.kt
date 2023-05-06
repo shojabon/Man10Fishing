@@ -37,11 +37,13 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             val alias = configSection.getString("$rarityName.alias")
             val weight = configSection.getInt("$rarityName.weight")
             val material = Material.getMaterial(configSection.getString("$rarityName.material")?:"STONE")?:Material.STONE
+            val namePrefix=configSection.getString("$rarityName.namePrefix")?:""
+            val loreDisplayName=configSection.getString("$rarityName.loreDisplayName")?:"未設定"
             if(alias == null || weight == 0){
                 Bukkit.getLogger().info("レアリティ$rarityName でエラーが発生しました")
                 continue
             }
-            val rarityObject = FishRarity(rarityName, alias, weight,material)
+            val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix, loreDisplayName)
             rarity[rarityName] = rarityObject
         }
     }
