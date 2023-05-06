@@ -26,7 +26,9 @@ class CreateFoodCommand(var plugin: Man10Fishing) : CommandExecutor {
                 return false
             }
         }
-        val item = SItemStack(p.inventory.itemInMainHand).setLore(FishFood.getFoodTypeLoreFromStr(foodSeparatedInformation))
+        val item = SItemStack(p.inventory.itemInMainHand)
+                .setLore(FishFood.getFoodTypeLoreFromStr(foodSeparatedInformation))
+                .setDisplayName(FishFood.getFoodTypeNameFromStr(foodSeparatedInformation))
         item.setCustomData(Man10Fishing.instance, "foodType", foodInformation)
         sender.sendMessage(Man10Fishing.prefix + "§a餌を作成しました")
         return true
