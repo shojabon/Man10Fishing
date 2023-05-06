@@ -91,9 +91,9 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     }
 
     //魚選択
-    fun pickFish(fisher: Player): Fish? {
+    fun pickFish(fisher: Player,rod: FishingRod): Fish? {
         val rarity = pickRarity()?: return null
-        val fishGroup = createFishTable(rarity.fishInGroup, fisher)
+        val fishGroup = createFishTable(rarity.fishInGroup, fisher,rod)
 
         var total = 0
         for(weight in fishGroup.values){
@@ -115,11 +115,11 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     }
 
     //抽選のための魚テーブル作成 (内部名, 出現確立)
-    fun createFishTable(fishAvailableToFish: ArrayList<Fish>, fisher: Player): HashMap<String, Float>{
+    fun createFishTable(fishAvailableToFish: ArrayList<Fish>, fisher: Player,rod: FishingRod): HashMap<String, Float>{
         val result = HashMap<String, Float>()
         for(fish in fishAvailableToFish){
-            if(!fish.isFishEnabled(fisher, FishingRod(ItemStack(Material.FISHING_ROD)))) continue
-            result[fish.name] = fish.getRarityMultiplier(fisher, FishingRod(ItemStack(Material.FISHING_ROD)))
+            if(!fish.isFishEnabled(fisher, rod)) continue
+            result[fish.name] = fish.getRarityMultiplier(fisher, rod)
         }
         return result
     }

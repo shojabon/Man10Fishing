@@ -28,7 +28,7 @@ class FoodFactor(fish: Fish) : FishFactor(fish) {
 
         return if (poweredDistance <= foodRange.pow(2.0)+fishRange.pow(2.0)+2*foodRange*fishRange) {
             currentMultiplier * foodInRangeMultiplier
-        } else 1f
+        } else currentMultiplier
     }
 
     private fun nDimensionDistanceSquared(origin: List<Double>, target: List<Double?>?): Double {

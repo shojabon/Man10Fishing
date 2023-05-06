@@ -9,7 +9,7 @@ abstract class FishFactor(var fish: Fish) {
     }
 
     open fun rarityMultiplier(fish: Fish, currentMultiplier: Float, fisher: Player, rod: FishingRod): Float {
-        return 1f
+        return currentMultiplier
     }
 
     open fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {

@@ -23,13 +23,15 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onFish(e: PlayerFishEvent) {
         if(e.state != PlayerFishEvent.State.CAUGHT_FISH) return
-        val pickedFish = Man10Fishing.api.pickFish(e.player)?: return
-        e.caught?: return
 
         val mainHand = e.player.inventory.itemInMainHand
         if(!FishingRod.isRod(mainHand)) return
         val rodItem = FishingRod(mainHand)
         if(rodItem.getFoodCount() <= 0) return
+
+        e.caught?: return
+        val pickedFish = Man10Fishing.api.pickFish(e.player,rodItem)?: return
+
 
         val fishedItem = e.caught as Item
         fishedItem.itemStack = pickedFish.item
@@ -81,5 +83,5 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         contest.bossBar.addPlayer(e.player)
     }
 
-    
+
 }
