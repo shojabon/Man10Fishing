@@ -73,7 +73,7 @@ class SynthesizeFishFoodMenu: SInventory("§6§l餌合成", 4, Man10Fishing.inst
         val lore=FishFood.getFoodTypeLore(mixedType)
         val name=FishFood.getFoodTypeName(mixedType)
 
-        val item = SItemStack(Material.FIREWORK_STAR).setLore(lore).setDisplayName(name)
+        val item = SItemStack(Material.FIREWORK_STAR).setLore(lore).setDisplayName(name).setCustomModelData(0)
         item.amount = this.getFinalAmount(food1, food2)
 
         val result = FishFood(item.build())
