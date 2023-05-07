@@ -112,6 +112,7 @@ abstract class AbstractFishContest() {
     fun end(){
         time.stop()
         onEnd()
+        bossBar.removeAll()
         Man10Fishing.nowContest = null
     }
 

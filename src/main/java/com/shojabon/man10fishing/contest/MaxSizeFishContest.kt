@@ -60,7 +60,6 @@ class MaxSizeFishContest: AbstractFishContest() {
     }
 
     override fun onEnd() {
-        bossBar.removeAll()
         if (maxSizePlayers.isEmpty()) {
             broadCastPlayers("§c§l魚が一匹も釣られませんでした")
             return
