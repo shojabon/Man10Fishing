@@ -24,11 +24,11 @@ class MaxAmountFishContest:AbstractFishContest() {
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
-        if(targetFishList.isNotEmpty() &&!targetFishList!!.contains(fish.fish.name))return
+        if(targetFishList.isNotEmpty() &&!targetFishList.contains(fish.fish.name))return
 
         player.addAllowedCaughtFish(fish)
 
-        broadCastPlayers("${player.name}§aが§e${fish.fish.alias}を釣り上げた!")
+        broadCastPlayers("${player.name}§aが§e${fish.fish.alias}§aを釣り上げた!")
 
         updateRanking(player)
     }

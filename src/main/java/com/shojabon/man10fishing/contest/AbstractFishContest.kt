@@ -50,16 +50,17 @@ abstract class AbstractFishContest() {
     protected fun updateRanking(player:FishContestPlayer){
 
         //ランキングに上限人数未満のプレイヤーしか登録されていない場合
-        if(ranking.size<rankingSize){
-            ranking[ranking.size+1]=player
-            broadCastPlayers("§f${player.name}§aが${ranking.size}位にランクイン!")
+        if(ranking.size<rankingSize&&!ranking.containsValue(player)){
+            ranking[ranking.size + 1] = player
+            broadCastPlayers("§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
             return
+
         }
 
         //ランキング更新用の変数
         var beforeRank=rankingSize
 
-        for (i in rankingSize-1 downTo 1){
+        for (i in ranking.size-1 downTo 1){
             //ランキング下位から順に比較を行い、自分以上の評価を持つ順位になった場合ifの中を通す
             if(rankingDefinition(player,ranking[i]!!)){
 
@@ -81,7 +82,7 @@ abstract class AbstractFishContest() {
                 }
                 ranking[i+1]=player
 
-                broadCastPlayers("§e§l[§fランキング更新§e§l]§f${player.name}§aが${ranking.size}位にランクイン!")
+                broadCastPlayers("§e§l[§fランキング更新§e§l]§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
 
                 return
             }
@@ -111,9 +112,9 @@ abstract class AbstractFishContest() {
     //コンテストを終了する 終わるときにはこの関数を使う
     fun end(){
         time.stop()
+        Man10Fishing.nowContest = null
         onEnd()
         bossBar.removeAll()
-        Man10Fishing.nowContest = null
     }
 
     //プレイヤー全員にメッセージを送信する
