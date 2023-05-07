@@ -40,6 +40,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         if (!rodItem.removeFoodCount(1)){
             e.player.sendMessage(Man10Fishing.prefix + "§c餌がなくなりました")
         }
+        rodItem.updateLore()
     }
 
     @EventHandler
@@ -69,6 +70,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             val foodType = FishFood(itemStack).getFoodTypeString() ?: return@setOnConfirm
             rod.setFoodCount(5)
             rod.setFoodType(foodType)
+            rod.updateLore()
+            e.player.sendMessage(Man10Fishing.prefix + "§a餌をセットしました")
             menu.close(e.player)
 
         }

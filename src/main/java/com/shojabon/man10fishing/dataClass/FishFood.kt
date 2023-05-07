@@ -112,7 +112,7 @@ class FishFood(var food: ItemStack) {
                 (100<=data[5]&&data[5]<200)->{lore[6]=lore[6]+"小さい"}
                 (200<=data[5]&&data[5]<300)->{lore[6]=lore[6]+"普通"}
                 (300<=data[5]&&data[5]<400)->{lore[6]=lore[6]+"大きい"}
-                (400<=data[5]&&data[5]<500)->{lore[6]=lore[6]+"極めて大きい"}
+                (400<=data[5])->{lore[6]=lore[6]+"極めて大きい"}
             }
 
             return lore

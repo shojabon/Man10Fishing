@@ -69,4 +69,20 @@ class FishingRod(var rodItem: ItemStack) {
     fun getFoodType(): List<Double>{
         return currentFood
     }
+
+    fun updateLore(){
+        val count=getFoodCount()
+
+        val lore= mutableListOf<String>()
+        if(count<1){
+            lore.add("§c餌未設定")
+        }
+        else{
+            lore.add("§aセット中の餌")
+            lore.add("")
+            lore.addAll(FishFood.getFoodTypeLore(getFoodType()))
+            lore.add("§e残り§b${getFoodCount()}§e個")
+        }
+        rodItem=SItemStack(rodItem).setLore(lore).build()
+    }
 }
