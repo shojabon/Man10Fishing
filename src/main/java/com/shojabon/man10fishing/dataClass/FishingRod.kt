@@ -83,19 +83,30 @@ class FishingRod(var rodItem: ItemStack) {
         return currentFood
     }
 
+    //最後に餌の情報が書かれていることを前提としている
     fun updateLore(){
         val count=getFoodCount()
 
-        val lore= mutableListOf<String>()
+        val newRod=SItemStack(rodItem)
+        val oldLore=newRod.lore
+        var loreNum=oldLore.size
+        if(oldLore.contains("§c餌未設定")){
+            loreNum=oldLore.indexOf("§c餌未設定")
+        }
+        else if(oldLore.contains("§aセット中の餌")){
+            loreNum=oldLore.indexOf("§aセット中の餌")
+        }
+
+        val newLore= mutableListOf<String>()
+        newLore.addAll(oldLore.subList(0,loreNum))
         if(count<1){
-            lore.add("§c餌未設定")
+            newLore.add("§c餌未設定")
         }
         else{
-            lore.add("§aセット中の餌")
-            lore.add("")
-            lore.addAll(FishFood.getFoodTypeLore(getFoodType()))
-            lore.add("§e残り§b${getFoodCount()}§e個")
+            newLore.add("§aセット中の餌")
+            newLore.addAll(FishFood.getFoodTypeLore(getFoodType()))
+            newLore.add("§e残り§b${getFoodCount()}§e個")
         }
-        rodItem=SItemStack(rodItem).setLore(lore).build()
+        rodItem=SItemStack(rodItem).setLore(newLore).build()
     }
 }

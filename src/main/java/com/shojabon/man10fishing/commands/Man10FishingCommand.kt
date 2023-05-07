@@ -2,7 +2,9 @@ package com.shojabon.man10fishing.commands
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.commands.subCommands.OpenItemIndexMenuCommand
+import com.shojabon.man10fishing.commands.subCommands.RegisterSpawnLocationCommand
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
+import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
 import com.shojabon.man10fishing.commands.subCommands.contest.InfoContest
 import com.shojabon.man10fishing.commands.subCommands.contest.StartContest
 import com.shojabon.man10fishing.commands.subCommands.contest.StopContest
@@ -119,6 +121,23 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10fishing.fish.get")
                         .addExplanation("魚を取得する")
                         .setExecutor(GetFishCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("spawn"))
+                        .addExplanation("スポーン地点に戻る")
+                        .addRequiredPermission("man10fishing.spawn")
+                        .setExecutor(SpawnCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("registerSpawn"))
+                        .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING))
+                        .addExplanation("季節のスポーン地点を設定する")
+                        .addRequiredPermission("man10fishing.registerspawn")
+                        .setExecutor(RegisterSpawnLocationCommand(plugin))
         )
     }
 
