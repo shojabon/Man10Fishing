@@ -54,7 +54,7 @@ class FishFood(var food: ItemStack) {
 
         fun getFoodTypeName(data:List<Double>):String{
             if(data.size<6)return "§4不正なデータ"
-            var name="§f"
+            var name="§a"
             if(data[5]<50)name+="洗練された"
 
             val tasteData=data.subList(0,5)
