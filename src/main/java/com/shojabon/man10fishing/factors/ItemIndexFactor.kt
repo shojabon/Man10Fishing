@@ -21,11 +21,11 @@ class ItemIndexFactor(fish : Fish) : FishFactor(fish){
 
         val fishdexList = ItemIndex.fishdexList
 
-        val playerData = fishdexList[fisher.uniqueId]
-
-        if (playerData == null){
+        if (!fishdexList.containsKey(fisher.uniqueId)){
             fishdexList[fisher.uniqueId] = hashMapOf()
         }
+
+        val playerData = fishdexList[fisher.uniqueId]
 
         if (!playerData!!.containsKey(fish.name)) {
             playerData[fish.name] = arrayListOf()
