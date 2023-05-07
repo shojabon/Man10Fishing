@@ -37,7 +37,7 @@ class MaxSumSizeFishContest:AbstractFishContest() {
             rewardCommands[it.toInt()] = config.getStringList("rewardCommands.$it")
         }
 
-        bossBar.setTitle("§e§l大きな${targetFishName}をたくさん釣れ！")
+        bossBar.setTitle("§e§l大きな§c§l${targetFishName}§e§lをたくさん釣れ！")
 
         time.setRemainingTime(config.getInt("time", 60))
     }

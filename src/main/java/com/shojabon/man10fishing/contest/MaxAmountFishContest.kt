@@ -40,7 +40,7 @@ class MaxAmountFishContest:AbstractFishContest() {
         winningPlayerLimit=config.getInt("winnerPlayerLimit", 10)
         rankingSize=config.getInt("rankingSize",winningPlayerLimit)
 
-        bossBar.setTitle("§e§l最も多く&c&l${targetFishName}&e&lを釣れ！")
+        bossBar.setTitle("§e§l最も多く§c§l${targetFishName}§e§lを釣れ！")
 
         time.setRemainingTime(config.getInt("time", 60))
         config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {

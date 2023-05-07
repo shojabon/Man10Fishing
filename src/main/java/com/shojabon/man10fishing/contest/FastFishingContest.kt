@@ -39,7 +39,7 @@ class FastFishingContest:AbstractFishContest() {
         winningPlayerLimit=config.getInt("winnerPlayerLimit", 3)
         rewardCommands=config.getStringList("rewardCommands")
 
-        bossBar.setTitle("§e§l一番はじめに&c&l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！")
+        bossBar.setTitle("§e§l一番はじめに§c§l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！")
 
         time.setRemainingTime(config.getInt("time", 60))
     }
