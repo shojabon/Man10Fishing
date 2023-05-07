@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.mcutils.Utils.BaseUtils
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -63,6 +64,18 @@ class FishingRod(var rodItem: ItemStack) {
     }
 
     fun setFoodType(foodString: String){
+        val result = ArrayList<Double>()
+        val foodSeparatedInformation = foodString.split("|")
+        if(foodSeparatedInformation.size != 6){
+            return
+        }
+        for(foodInfo in foodSeparatedInformation){
+            if(!BaseUtils.isDouble(foodInfo)){
+                return
+            }
+            result.add(foodInfo.toDouble())
+        }
+        currentFood=result
         rodItem = SItemStack(rodItem).setCustomData(Man10Fishing.instance, "foodType", foodString).build()
     }
 

@@ -55,7 +55,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             if(itemStack == null) return@setCheckItemFunction false
             return@setCheckItemFunction FishFood.isFood(itemStack)
         }
-        menu.selectTypeItem(true)
+//        menu.selectTypeItem(true)
         menu.setOnConfirm { itemStack: ItemStack? ->
             if(e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return@setOnConfirm
             if(e.player.inventory.itemInMainHand.type != Material.FISHING_ROD) return@setOnConfirm
@@ -68,7 +68,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
             val rod = FishingRod(e.player.inventory.itemInMainHand)
             val foodType = FishFood(itemStack).getFoodTypeString() ?: return@setOnConfirm
-            rod.setFoodCount(5)
+
+            rod.setFoodCount(itemStack.amount)
             rod.setFoodType(foodType)
             rod.updateLore()
             e.player.sendMessage(Man10Fishing.prefix + "§a餌をセットしました")
