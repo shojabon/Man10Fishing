@@ -66,7 +66,7 @@ class FishFood(var food: ItemStack) {
             else{
                 val max=tasteData.maxOrNull()?:0.0
 
-                if(max*5-sum>300){
+                if(max*5-sum>800){
                     when(tasteData.indexOf(max)){
 
                         0->name+="甘い"
