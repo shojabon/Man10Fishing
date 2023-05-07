@@ -8,7 +8,7 @@ class MaxSumSizeFishContest:AbstractFishContest() {
 
 
     //configからとるもの
-    private var targetFishList= mutableListOf<String>()
+    private lateinit var targetFishList:List<String>
     private var targetFishName="魚"
     private var rewardCommands = HashMap<Int,List<String>>()
 
@@ -17,7 +17,7 @@ class MaxSumSizeFishContest:AbstractFishContest() {
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
-        if(targetFishList.size!=0&&!targetFishList.contains(fish.fish.name))return
+        if(targetFishList.isNotEmpty()&&!targetFishList.contains(fish.fish.name))return
 
         player.addAllowedCaughtFish(fish)
 

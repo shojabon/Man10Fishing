@@ -15,7 +15,7 @@ class MaxAmountFishContest:AbstractFishContest() {
 
 
     //configからとるもの
-    private var targetFishList:List<String>?=null
+    private lateinit var targetFishList:List<String>
     private var targetFishName="魚"
     private var winningPlayerLimit=10
     private var rewardCommands = HashMap<Int,List<String>>()
@@ -24,7 +24,7 @@ class MaxAmountFishContest:AbstractFishContest() {
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
-        if(targetFishList!=null&&!targetFishList!!.contains(fish.fish.name))return
+        if(targetFishList.isNotEmpty() &&!targetFishList!!.contains(fish.fish.name))return
 
         player.addAllowedCaughtFish(fish)
 

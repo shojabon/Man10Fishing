@@ -12,7 +12,7 @@ class FastFishingContest:AbstractFishContest() {
 
 
     //configからとるもの
-    private var targetFishList:List<String>?=null
+    private lateinit var targetFishList:List<String>
     private var targetFishName=""
     private var targetFishAmount=1
     private var winningPlayerLimit=3
@@ -24,7 +24,7 @@ class FastFishingContest:AbstractFishContest() {
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
-        if(targetFishList!=null&&!targetFishList!!.contains(fish.fish.name))return
+        if(targetFishList.isNotEmpty()&&!targetFishList!!.contains(fish.fish.name))return
         player.addAllowedCaughtFish(fish)
 
         broadCastPlayers("§f${player.name}§aが§e${players[player.uuid]?.allowedCaughtFish?.size}匹目§aの${targetFishName}を釣り上げた!")
