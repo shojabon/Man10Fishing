@@ -29,7 +29,10 @@ class FastFishingContest:AbstractFishContest() {
 
         broadCastPlayers("§f${player.name}§aが§e${players[player.uuid]?.allowedCaughtFish?.size}匹目§aの${targetFishName}を釣り上げた!")
 
-        if(player.allowedCaughtFish.size >= targetFishAmount)end()
+        if(player.allowedCaughtFish.size >= targetFishAmount){
+            winner=Bukkit.getPlayer(player.uuid)
+            end()
+        }
     }
 
     override fun onStart() {
