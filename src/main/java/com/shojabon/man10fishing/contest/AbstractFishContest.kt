@@ -60,7 +60,7 @@ abstract class AbstractFishContest() {
         //ランキング更新用の変数
         var beforeRank=rankingSize
 
-        for (i in ranking.size-1 downTo 1){
+        for (i in ranking.size downTo 1){
             //ランキング下位から順に比較を行い、自分以上の評価を持つ順位になった場合ifの中を通す
             if(rankingDefinition(player,ranking[i]!!)){
 
@@ -76,8 +76,7 @@ abstract class AbstractFishContest() {
 
                 //ここを通るのはiがplayerの一つ上の順位になったときなので、それの１つ下にplayerを配置する
                 //構造上beforeRank>=i+1は保証されている
-                for(j in beforeRank downTo i+1) {
-                    if(j==i+1)break
+                for(j in beforeRank downTo i+2) {
                     ranking[j] = ranking[j - 1]!!
                 }
                 ranking[i+1]=player
@@ -87,6 +86,13 @@ abstract class AbstractFishContest() {
                 return
             }
         }
+
+        //ここを通るのは、１位になるとき
+        for(i in beforeRank downTo 2){
+            ranking[i] = ranking[i - 1]!!
+        }
+        ranking[1]=player
+        broadCastPlayers("§e§l[§fランキング更新§e§l]§f${player.name}§aが§e1位§aにランクイン!")
     }
 
     //順位の定義
