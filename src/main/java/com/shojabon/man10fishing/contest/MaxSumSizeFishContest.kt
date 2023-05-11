@@ -55,14 +55,15 @@ class MaxSumSizeFishContest:AbstractFishContest() {
         }
 
 
-        for(i in 1..ranking.size){
-            broadCastPlayers("§a${i}位: §e${ranking[i]?.name}§7:§b合計${ranking[i]?.allowedCaughtFish?.sumOf { it.size }}cm")
-            val player= Bukkit.getPlayer(ranking[i]!!.uuid)?:continue
-            rewardCommands[i]?.forEach {
+        ranking.forEach { (t, u) ->
+            broadCastPlayers("§a${t}位: §e${u.name}§7:§b${u.allowedCaughtFish.size}匹")
+            val player = Bukkit.getPlayer(u.uuid)?:return@forEach
+            if(!rewardCommands.containsKey(t))return@forEach
+            rewardCommands[t]?.forEach {
                 dispatchCommand(it.replace("&", "§")
                         .replace("<name>", player.name)
                         .replace("<uuid>", player.uniqueId.toString())
-                        .replace("<count>", ranking[i]!!.allowedCaughtFish.size.toString())
+                        .replace("<count>", u.allowedCaughtFish.size.toString())
                         .replace("<world>", player.world.name)
                         .replace("<and>", "&"))
             }
