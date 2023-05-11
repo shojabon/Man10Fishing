@@ -89,7 +89,9 @@ class ItemIndexInventory(private val rarityName : String, private val plugin: Ja
         item.lore = mutableListOf("§d長さ：${parameter.size}cm","§6釣れた日：${sdFormat}")
         val foodList = parameter.fish.config.getString("fishFactors.food.matrix")!!.split(",").map { it.toDouble() }
         if (!parameter.fish.config.getBoolean("fishFactors.food.hide")){
-            item.lore.addAll(FishFood.getFoodTypeLore(foodList))
+            FishFood.getFoodTypeLore(foodList).forEach {
+                item.addLore(it)
+            }
         }
         item.addLore(" ")
         item.addLore(Man10FishingAPI.rarity[parameter.fish.rarity]!!.loreDisplayName)
