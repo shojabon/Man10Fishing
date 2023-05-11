@@ -47,6 +47,7 @@ abstract class AbstractFishContest() {
 
     //データの変動があったプレイヤーを指定し、ランキングを更新する
     //ランキングシステムを使う場合はonCatchFishでこれを呼び出せばOK
+    //可読性はお察し
     protected fun updateRanking(player:FishContestPlayer){
 
         //ランキングに上限人数未満のプレイヤーしか登録されていない場合
@@ -81,18 +82,20 @@ abstract class AbstractFishContest() {
                 }
                 ranking[i+1]=player
 
-                broadCastPlayers("§e§l[§fランキング更新§e§l]§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
+                broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
 
                 return
             }
         }
+
+        if(beforeRank==1)return
 
         //ここを通るのは、１位になるとき
         for(i in beforeRank downTo 2){
             ranking[i] = ranking[i - 1]!!
         }
         ranking[1]=player
-        broadCastPlayers("§e§l[§fランキング更新§e§l]§f${player.name}§aが§e1位§aにランクイン!")
+        broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e1位§aにランクイン!")
     }
 
     //順位の定義
