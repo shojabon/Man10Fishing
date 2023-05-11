@@ -8,14 +8,12 @@ import org.bukkit.boss.BarStyle
 
 class MaxSizeFishContest: AbstractFishContest() {
 
-    private var maxSizePlayers = ArrayList<Pair<FishContestPlayer, FishParameter>>()
-    private var winnerPlayerLimit = 3
     private var rewardCommands = HashMap<Int,List<String>>()
 
 
     override fun onStart() {
         time.setRemainingTime(config.getInt("time", 60))
-        winnerPlayerLimit = config.getInt("winnerPlayerLimit", 3)
+        rankingSize = config.getInt("winnerPlayerLimit", 3)
         config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {
             rewardCommands[it.toIntOrNull()?:return@forEach] = config.getStringList("rewardCommands.$it")
         }
@@ -53,24 +51,33 @@ class MaxSizeFishContest: AbstractFishContest() {
     }
 
     override fun onEnd() {
-        if (maxSizePlayers.isEmpty()) {
+        if (ranking.isEmpty()) {
             broadCastPlayers("§c§l魚が一匹も釣られませんでした")
             return
         }
 
         broadCastPlayers("§c§lコンテスト終了!!")
+
+        Thread.sleep(4000)
+
         broadCastPlayers("§c§l順位")
-        maxSizePlayers.sortedBy { it.second.size }.forEachIndexed { index, pair ->
-            broadCastPlayers("§a${index + 1}位: §e${pair.first.name}§7:§b${pair.second.fish.alias}§d(${pair.second.size}cm)")
-            val commands = rewardCommands[index + 1]?:return@forEachIndexed
-            val player = Bukkit.getPlayer(pair.first.uuid)?:return@forEachIndexed
+
+        Thread.sleep(500)
+
+        ranking.forEach { (i, data) ->
+            val fish = data.allowedCaughtFish.firstOrNull()?:return@forEach
+            broadCastPlayers("§a${i}位: §e${data.name}§7:" +
+                    "§b${fish.name}" +
+                    "§d(${fish.size}cm)")
+            val commands = rewardCommands[i]?:return@forEach
+            val player = Bukkit.getPlayer(data.uuid)?:return@forEach
             commands.forEach {
                 dispatchCommand(it
                     .replace("&", "§")
-                    .replace("<name>", pair.first.name)
-                    .replace("<uuid>", pair.first.uuid.toString())
-                    .replace("<fish>", pair.second.fish.alias)
-                    .replace("<size>", pair.second.size.toString())
+                    .replace("<name>", data.name)
+                    .replace("<uuid>", data.uuid.toString())
+                    .replace("<fish>", fish.name)
+                    .replace("<size>", fish.size.toString())
                     .replace("<world>", player.world.name)
                     .replace("<and>", "&"))
             }
