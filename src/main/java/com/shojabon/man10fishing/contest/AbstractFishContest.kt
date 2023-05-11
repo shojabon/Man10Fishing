@@ -63,7 +63,6 @@ abstract class AbstractFishContest() {
         if(ranking.size<rankingSize&&!ranking.containsValue(player)){
             ranking[ranking.size + 1] = player
             broadCastPlayers("§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
-            displayScoreboardRanking()
             return
 
         }
@@ -93,7 +92,6 @@ abstract class AbstractFishContest() {
                 ranking[i+1]=player
 
                 broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
-                displayScoreboardRanking()
                 return
             }
         }
@@ -105,8 +103,7 @@ abstract class AbstractFishContest() {
             ranking[i] = ranking[i - 1]!!
         }
         ranking[1]=player
-        broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e1位§aにランクイン!")
-        displayScoreboardRanking()
+        broadCastPlayers("§fランキング更新§e§l：§c${player.name}§aが§e1位§aにランクイン!")
     }
 
     //順位の定義
@@ -123,14 +120,14 @@ abstract class AbstractFishContest() {
     private fun displayScoreboardRanking(){
         if(!useRanking)return
         val rankingScoreBoard=Bukkit.getScoreboardManager().newScoreboard
-        val rankingObjective=rankingScoreBoard.registerNewObjective("fish_con","Dummy", Component.text("§6§l釣り大会ランキング"))
+        val rankingObjective=rankingScoreBoard.registerNewObjective("fish_con","Dummy", Component.text("§e§l釣り大会ランキング"))
         rankingObjective.displaySlot=DisplaySlot.SIDEBAR
         for(i in 1..min(10,rankingSize)){
             if(ranking.containsKey(i)){
-                rankingObjective.getScore("§e${i}§f:§e${ranking[i]!!.name}§f,§b${rankingLowerPrefix(ranking[i]!!)}§r").score=rankingSize-i
+                rankingObjective.getScore("§6${i}§f:§e${ranking[i]!!.name}§f,§b${rankingLowerPrefix(ranking[i]!!)}§r").score=rankingSize-i
             }
             else{
-                rankingObjective.getScore("§e${i}§f:§c無し").score=rankingSize-i
+                rankingObjective.getScore("§6${i}§f:§c無し").score=rankingSize-i
             }
         }
         for(player in Bukkit.getServer().onlinePlayers){
@@ -187,6 +184,7 @@ abstract class AbstractFishContest() {
         onCaughtFish(contestPlayer,fish)
         if(useRanking){
             updateRanking(contestPlayer)
+            displayScoreboardRanking()
         }
     }
 
