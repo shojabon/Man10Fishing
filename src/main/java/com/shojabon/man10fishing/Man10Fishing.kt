@@ -6,6 +6,7 @@ import com.shojabon.man10fishing.commands.Man10FishingCommand
 import com.shojabon.man10fishing.contest.AbstractFishContest
 import com.shojabon.man10fishing.dataClass.enums.Season
 import com.shojabon.man10fishing.itemindex.ItemIndexListener
+import com.shojabon.man10fishing.scheduler.SchedulerManager
 import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SInventory.SInventory
@@ -26,6 +27,8 @@ class Man10Fishing : JavaPlugin() {
         lateinit var prefix: String
 
         var nowContest : AbstractFishContest? = null
+
+        lateinit var schedulerManager: SchedulerManager
 
         //WorldGuard
         var regionContainer : RegionContainer? = null
@@ -73,6 +76,10 @@ class Man10Fishing : JavaPlugin() {
                 spawnPoints[season]=loc
             }
         }
+
+        schedulerManager = SchedulerManager()
+        api.loadSchedulers()
+        schedulerManager.start()
     }
 
     override fun onDisable() {

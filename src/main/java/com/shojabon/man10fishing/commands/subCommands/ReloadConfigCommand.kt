@@ -18,6 +18,7 @@ class ReloadConfigCommand(var plugin: Man10Fishing) : CommandExecutor {
         plugin.reloadConfig()
         SInventory.closeAllSInventories()
         Man10Fishing.foodConfig = SConfigFile.getConfigFile(plugin.dataFolder.toString() + File.separator + "foodConfig.yml")
+        Man10Fishing.api.loadSchedulers()
         sender.sendMessage(Man10Fishing.prefix + "§a§lプラグインがリロードされました")
         return true
     }

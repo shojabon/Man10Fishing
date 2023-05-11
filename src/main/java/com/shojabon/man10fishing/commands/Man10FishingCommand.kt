@@ -83,8 +83,9 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
         )
 
         val contestArgs = SCommandArgument()
+        contestArgs.addAlias("コンテスト名")
         Man10Fishing.api.getContestList().forEach {
-            contestArgs.addAllowedString(it)
+            contestArgs.addAlias(it)
         }
 
         addCommand(

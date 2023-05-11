@@ -4,6 +4,7 @@ import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishRarity
 import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.dataClass.enums.Season
+import com.shojabon.man10fishing.scheduler.FishingScheduler
 import com.shojabon.mcutils.Utils.SConfigFile
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -132,6 +133,13 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             result.add(file.nameWithoutExtension)
         }
         return result
+    }
+
+    fun loadSchedulers(){
+        Man10Fishing.schedulerManager.schedulers.clear()
+        for (file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.path + File.separator + "schedulers")){
+            Man10Fishing.schedulerManager.schedulers.add(FishingScheduler.newInstance(file.nameWithoutExtension)?:continue)
+        }
     }
 
     //DB作成

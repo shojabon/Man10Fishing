@@ -1,0 +1,6 @@
+timings:
+  - dayOfTheWeek: SUNDAY
+    time: 18:00
+    action:
+      type: START_CONTEST
+      value: test_maxsizefish
