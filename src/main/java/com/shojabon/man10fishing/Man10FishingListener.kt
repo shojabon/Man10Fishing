@@ -82,9 +82,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onJoin(e: PlayerJoinEvent){
         val contest = Man10Fishing.nowContest?:return
-        contest.bossBar.addPlayer(e.player)
-        if (contest.players.containsKey(e.player.uniqueId))return
-        contest.players[e.player.uniqueId] = FishContestPlayer(e.player.uniqueId, e.player.name)
+        contest.onJoin(e)
     }
 
 

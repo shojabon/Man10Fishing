@@ -19,8 +19,6 @@ class ManyTypesFishContest:AbstractFishContest() {
 
         player.addAllowedCaughtFish(fish)
 
-        updateRanking(player)
-
     }
 
     override fun onStart() {
@@ -65,6 +63,10 @@ class ManyTypesFishContest:AbstractFishContest() {
 
     override fun rankingDefinition(lowerPlayer: FishContestPlayer, higherPlayer: FishContestPlayer): Boolean {
         return lowerPlayer.allowedCaughtFish.size<=higherPlayer.allowedCaughtFish.size
+    }
+
+    override fun rankingLowerPrefix(player: FishContestPlayer): String {
+        return "${player.allowedCaughtFish.size}種類"
     }
 
 }

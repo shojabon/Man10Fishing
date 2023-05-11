@@ -68,4 +68,8 @@ class FastFishingContest:AbstractFishContest() {
                     .replace("<world>",winner!!.world.name))
         }
     }
+
+    override fun rankingLowerPrefix(player: FishContestPlayer): String {
+        return "${player.allowedCaughtFish.size}匹"
+    }
 }

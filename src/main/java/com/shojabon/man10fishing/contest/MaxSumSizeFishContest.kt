@@ -23,7 +23,6 @@ class MaxSumSizeFishContest:AbstractFishContest() {
 
         Bukkit.getPlayer(player.uuid)?.sendMessage("§c現在のサイズ合計：§e${player.allowedCaughtFish.sumOf { it.size }}cm")
 
-        updateRanking(player)
 
     }
 
@@ -74,5 +73,9 @@ class MaxSumSizeFishContest:AbstractFishContest() {
 
     override fun rankingDefinition(lowerPlayer: FishContestPlayer, higherPlayer: FishContestPlayer): Boolean {
         return lowerPlayer.allowedCaughtFish.sumOf { it.size }<=higherPlayer.allowedCaughtFish.sumOf { it.size }
+    }
+
+    override fun rankingLowerPrefix(player: FishContestPlayer): String {
+        return "${player.allowedCaughtFish.sumOf { it.size }}cm"
     }
 }

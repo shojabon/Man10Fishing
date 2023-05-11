@@ -35,7 +35,6 @@ class MaxSizeFishContest: AbstractFishContest() {
             bossBar.setTitle("§e§l最も大きい魚を釣れ！§b${fish.fish.alias}§d(${fish.size}cm)")
         }
 
-        updateRanking(player)
     }
 
     override fun rankingDefinition(lowerPlayer: FishContestPlayer, higherPlayer: FishContestPlayer): Boolean {
@@ -48,6 +47,10 @@ class MaxSizeFishContest: AbstractFishContest() {
         }
 
         return lowerPlayer.allowedCaughtFish.first().size > higherPlayer.allowedCaughtFish.first().size
+    }
+
+    override fun rankingLowerPrefix(player: FishContestPlayer): String {
+        return "${player.allowedCaughtFish.first().size}cm"
     }
 
     override fun onEnd() {

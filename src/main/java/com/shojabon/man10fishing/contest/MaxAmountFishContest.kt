@@ -29,8 +29,6 @@ class MaxAmountFishContest:AbstractFishContest() {
         player.addAllowedCaughtFish(fish)
 
         broadCastPlayers("${player.name}§aが§e${fish.fish.alias}§aを釣り上げた!")
-
-        updateRanking(player)
     }
 
     override fun onStart() {
@@ -82,5 +80,8 @@ class MaxAmountFishContest:AbstractFishContest() {
         return lowerPlayer.allowedCaughtFish.size<=higherPlayer.allowedCaughtFish.size
     }
 
+    override fun rankingLowerPrefix(player: FishContestPlayer): String {
+        return "${player.allowedCaughtFish.size}匹"
+    }
 
 }

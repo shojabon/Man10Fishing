@@ -4,12 +4,20 @@ import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.STimer
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.scoreboard.DisplaySlot
+import org.bukkit.scoreboard.Objective
+import org.bukkit.scoreboard.ScoreboardManager
 import java.io.File
 import java.util.UUID
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * コンテストの基盤
@@ -26,10 +34,11 @@ abstract class AbstractFishContest() {
     //コンテスト表示用のボスバー
     val bossBar=Bukkit.createBossBar("§e§l魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
-    //ランキング用のマップ
+    //ランキング用
     val ranking= HashMap<Int,FishContestPlayer>()
-    //ランキングのサイズ
+    private var useRanking=false
     var rankingSize=10
+    val hideRanking= mutableListOf<UUID>()
 
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
@@ -37,23 +46,24 @@ abstract class AbstractFishContest() {
     }
 
     //始まったときの処理
-    abstract fun onStart()
+    protected abstract fun onStart()
 
     //釣れたときの処理
-    open fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {}
+    protected open fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {}
 
     //終わったときの処理
-    abstract fun onEnd()
+    protected abstract fun onEnd()
 
     //データの変動があったプレイヤーを指定し、ランキングを更新する
-    //ランキングシステムを使う場合はonCatchFishでこれを呼び出せばOK
+    //ランキングシステムを使う場合はconfigのuseRankingをtrueにする
     //可読性はお察し
-    protected fun updateRanking(player:FishContestPlayer){
+    private fun updateRanking(player:FishContestPlayer){
 
         //ランキングに上限人数未満のプレイヤーしか登録されていない場合
         if(ranking.size<rankingSize&&!ranking.containsValue(player)){
             ranking[ranking.size + 1] = player
             broadCastPlayers("§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
+            displayScoreboardRanking()
             return
 
         }
@@ -83,7 +93,7 @@ abstract class AbstractFishContest() {
                 ranking[i+1]=player
 
                 broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
-
+                displayScoreboardRanking()
                 return
             }
         }
@@ -96,12 +106,37 @@ abstract class AbstractFishContest() {
         }
         ranking[1]=player
         broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e1位§aにランクイン!")
+        displayScoreboardRanking()
     }
 
     //順位の定義
     //lowerPlayer<=higherPlayerであるときにtrueを返すようにする
-    open fun rankingDefinition(lowerPlayer:FishContestPlayer,higherPlayer:FishContestPlayer):Boolean{
+    protected open fun rankingDefinition(lowerPlayer:FishContestPlayer,higherPlayer:FishContestPlayer):Boolean{
         return false
+    }
+
+    //ランキング表示における追加情報
+    protected open fun rankingLowerPrefix(player: FishContestPlayer):String{
+        return ""
+    }
+
+    private fun displayScoreboardRanking(){
+        if(!useRanking)return
+        val rankingScoreBoard=Bukkit.getScoreboardManager().newScoreboard
+        val rankingObjective=rankingScoreBoard.registerNewObjective("fish_con","Dummy", Component.text("§6§l釣り大会ランキング"))
+        rankingObjective.displaySlot=DisplaySlot.SIDEBAR
+        for(i in 1..min(10,rankingSize)){
+            if(ranking.containsKey(i)){
+                rankingObjective.getScore("§e${i}§f:§e${ranking[i]!!.name}§f,§b${rankingLowerPrefix(ranking[i]!!)}§r").score=rankingSize-i
+            }
+            else{
+                rankingObjective.getScore("§e${i}§f:§c無し").score=rankingSize-i
+            }
+        }
+        for(player in Bukkit.getServer().onlinePlayers){
+            if(hideRanking.contains(player.uniqueId))continue
+            player.scoreboard=rankingScoreBoard
+        }
     }
 
 
@@ -112,8 +147,15 @@ abstract class AbstractFishContest() {
         if (time.originalTime != 0){
             time.start()
         }
+
+        useRanking=config.getBoolean("useRanking",false)
+        if(useRanking){
+            displayScoreboardRanking()
+        }
+
         players.keys.forEach {
-            bossBar.addPlayer(Bukkit.getPlayer(it)?:return@forEach)
+            val player=Bukkit.getPlayer(it)?:return@forEach
+            bossBar.addPlayer(player)
         }
         time.linkBossBar(bossBar, true)
     }
@@ -126,6 +168,26 @@ abstract class AbstractFishContest() {
             onEnd()
         }.start()
         bossBar.removeAll()
+        if(useRanking){
+            Bukkit.getScheduler().runTask(Man10Fishing.instance, Runnable {
+                val scoreboard=Bukkit.getScoreboardManager().newScoreboard
+                for(player in Bukkit.getOnlinePlayers()){
+                    if(hideRanking.contains(player.uniqueId))continue
+                    player.scoreboard=scoreboard
+                }
+            })
+
+        }
+    }
+
+    fun caughtFish(player:Player,fish: FishParameter){
+        if (!players.containsKey(player.uniqueId))return
+        val contestPlayer =players[player.uniqueId]!!
+        contestPlayer.caughtFish.add(fish)
+        onCaughtFish(contestPlayer,fish)
+        if(useRanking){
+            updateRanking(contestPlayer)
+        }
     }
 
     //プレイヤー全員にメッセージを送信する
@@ -141,6 +203,17 @@ abstract class AbstractFishContest() {
         Bukkit.getScheduler().runTask(Man10Fishing.instance,Runnable{
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),command)
         })
+    }
+
+    fun onJoin(e:PlayerJoinEvent){
+        val player=e.player
+        bossBar.addPlayer(player)
+        if (!players.containsKey(player.uniqueId)) {
+            players[player.uniqueId] = FishContestPlayer(player.uniqueId, player.name)
+        }
+        if(useRanking){
+            displayScoreboardRanking()
+        }
     }
 
     companion object{
