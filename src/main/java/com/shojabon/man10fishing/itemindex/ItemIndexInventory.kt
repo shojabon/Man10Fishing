@@ -4,6 +4,7 @@ import ToolMenu.LargeSInventoryMenu
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.Fish
+import com.shojabon.man10fishing.dataClass.FishFood
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
@@ -14,6 +15,7 @@ import org.bukkit.Sound
 import org.bukkit.plugin.java.JavaPlugin
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.contracts.contract
 import kotlin.math.abs
 
 
@@ -29,7 +31,7 @@ class ItemIndexInventory(private val rarityName : String, private val plugin: Ja
                 it.value.firstOrNull()?.fish?.rarity == rarityName
             }
         }
-        if (fishdexList == null || fishdexList.isEmpty()){
+        if (fishdexList.isNullOrEmpty()){
             Bukkit.getPlayer(uuid)?.sendMessage(Man10Fishing.prefix + "§4図鑑情報がありません")
             return
         }
@@ -87,34 +89,10 @@ class ItemIndexInventory(private val rarityName : String, private val plugin: Ja
         item.lore = mutableListOf("§d長さ：${parameter.size}cm","§6釣れた日：${sdFormat}")
         val foodList = parameter.fish.config.getString("fishFactors.food.matrix")!!.split(",").map { it.toDouble() }
         if (!parameter.fish.config.getBoolean("fishFactors.food.hide")){
-            listOf("§b甘","§f塩","§2苦","§e酸","§4旨").forEachIndexed { i, str ->
-                val distance = (foodList[i].toInt()) - 500
-                if (abs(distance) < 10)return@forEachIndexed
-                val boldAmount = distance / 100
-                val smallAmount = (distance - boldAmount * 100) / 10
-
-                val isMinus = distance < 0
-                val strBuilder = SStringBuilder(str)
-                if (boldAmount != 0){
-                    strBuilder.text(if (isMinus) "§c§l" else "§a§l")
-
-                    IntProgression.fromClosedRange(if (isMinus) boldAmount else 1, if (isMinus) -1 else boldAmount, 1).forEach {
-                        strBuilder.text(if (isMinus) "↓" else "↑")
-                    }
-                }
-
-                if (smallAmount != 0){
-                    strBuilder.text(if (isMinus) "§c" else "§a")
-                    IntProgression.fromClosedRange(if (isMinus) smallAmount else 1, if (isMinus) -1 else smallAmount, 1).forEach {
-                        strBuilder.text(if (isMinus) "↓" else "↑")
-                    }
-                }
-
-                item.addLore(strBuilder.build())
-            }
+            item.lore.addAll(FishFood.getFoodTypeLore(foodList))
         }
         item.addLore(" ")
-        item.addLore(Man10FishingAPI.rarity[parameter.fish.rarity]!!.alias)
+        item.addLore(Man10FishingAPI.rarity[parameter.fish.rarity]!!.loreDisplayName)
 
         setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
         renderInventory()

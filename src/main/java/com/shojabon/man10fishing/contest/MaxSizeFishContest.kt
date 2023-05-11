@@ -17,46 +17,39 @@ class MaxSizeFishContest: AbstractFishContest() {
         time.setRemainingTime(config.getInt("time", 60))
         winnerPlayerLimit = config.getInt("winnerPlayerLimit", 3)
         config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {
-            rewardCommands[it.toInt()] = config.getStringList("rewardCommands.$it")
+            rewardCommands[it.toIntOrNull()?:return@forEach] = config.getStringList("rewardCommands.$it")
         }
 
         bossBar.setTitle("§e§l最も大きい魚を釣れ！")
-
-//        players.keys.forEach {
-//            bossBar.addPlayer(Bukkit.getPlayer(it)?:return@forEach)
-//        }
-//        time.linkBossBar(bossBar, true)
     }
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
         Bukkit.getPlayer(player.uuid)?.sendMessage(Man10Fishing.prefix + "${fish.fish.alias}§aを釣り上げた！§d(${fish.size}cm)")
 
-        val find = maxSizePlayers.find { it.first.uuid == player.uuid }
-        if (find != null){
-            if (find.second.size <= fish.size){
-                maxSizePlayers.remove(find)
-            } else return
+        if (player.allowedCaughtFish.isNotEmpty() && player.allowedCaughtFish[0].size < fish.size){
+            player.allowedCaughtFish.removeFirstOrNull()
         }
 
-        val filter = maxSizePlayers.filter { it.second.size < fish.size }
+        player.addAllowedCaughtFish(fish)
 
-        if (filter.isNotEmpty()){
-
-            if (maxSizePlayers.size >= winnerPlayerLimit){
-                val min = filter.minByOrNull { it.second.size }!!
-                maxSizePlayers.remove(min)
-            }
-            maxSizePlayers.add(Pair(player, fish))
-            broadCastPlayers("§e§l${player.name}が§b${fish.fish.alias}§e§lを釣り上げた！§d§l(${fish.size}cm)")
-        } else {
-            if (maxSizePlayers.size >= winnerPlayerLimit)return
-            maxSizePlayers.add(Pair(player, fish))
-            broadCastPlayers("§e§l${player.name}が§b${fish.fish.alias}§e§lを釣り上げた！§d§l(${fish.size}cm)")
-        }
-
-        if (maxSizePlayers.maxOf { it.second.size } == fish.size){
+        val max = players.values.mapNotNull { it.allowedCaughtFish.firstOrNull()?.size }.maxOrNull()
+        if (max != null && max == fish.size){
             bossBar.setTitle("§e§l最も大きい魚を釣れ！§b${fish.fish.alias}§d(${fish.size}cm)")
         }
+
+        updateRanking(player)
+    }
+
+    override fun rankingDefinition(lowerPlayer: FishContestPlayer, higherPlayer: FishContestPlayer): Boolean {
+        if (lowerPlayer.allowedCaughtFish.isEmpty()){
+            return higherPlayer.allowedCaughtFish.isNotEmpty()
+        }
+
+        if (higherPlayer.allowedCaughtFish.isEmpty()){
+            return false
+        }
+
+        return lowerPlayer.allowedCaughtFish.first().size > higherPlayer.allowedCaughtFish.first().size
     }
 
     override fun onEnd() {
@@ -65,6 +58,7 @@ class MaxSizeFishContest: AbstractFishContest() {
             return
         }
 
+        broadCastPlayers("§c§lコンテスト終了!!")
         broadCastPlayers("§c§l順位")
         maxSizePlayers.sortedBy { it.second.size }.forEachIndexed { index, pair ->
             broadCastPlayers("§a${index + 1}位: §e${pair.first.name}§7:§b${pair.second.fish.alias}§d(${pair.second.size}cm)")
