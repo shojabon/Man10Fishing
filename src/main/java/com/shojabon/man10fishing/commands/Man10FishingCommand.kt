@@ -149,8 +149,8 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
 
         addCommand(
                 SCommandObject()
-                        .addArgument(SCommandArgument().addAllowedString("hideRanking"))
-                        .addExplanation("ランキングを非表示にする")
+                        .addArgument(SCommandArgument().addAllowedString("showRanking"))
+                        .addExplanation("ランキングを表示する")
                         .addRequiredPermission("man10fishing.showranking")
                         .setExecutor(ShowRanking(plugin))
         )
