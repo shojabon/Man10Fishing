@@ -9,7 +9,7 @@ import org.bukkit.entity.Player
 
 class ShowRanking(val plugin: Man10Fishing): CommandExecutor {
 
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) return true
         if (Man10Fishing.nowContest == null) return true
         val uuid=sender.uniqueId
