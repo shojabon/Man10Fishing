@@ -117,7 +117,7 @@ abstract class AbstractFishContest() {
         return ""
     }
 
-    private fun displayScoreboardRanking(){
+    fun displayScoreboardRanking(){
         if(!useRanking)return
         val rankingScoreBoard=Bukkit.getScoreboardManager().newScoreboard
         val rankingObjective=rankingScoreBoard.registerNewObjective("fish_con","Dummy", Component.text("§e§l釣り大会ランキング"))

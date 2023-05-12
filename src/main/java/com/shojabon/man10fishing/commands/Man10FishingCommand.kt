@@ -5,9 +5,7 @@ import com.shojabon.man10fishing.commands.subCommands.OpenItemIndexMenuCommand
 import com.shojabon.man10fishing.commands.subCommands.RegisterSpawnLocationCommand
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
-import com.shojabon.man10fishing.commands.subCommands.contest.InfoContest
-import com.shojabon.man10fishing.commands.subCommands.contest.StartContest
-import com.shojabon.man10fishing.commands.subCommands.contest.StopContest
+import com.shojabon.man10fishing.commands.subCommands.contest.*
 import com.shojabon.man10fishing.commands.subCommands.fish.GetFishCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
@@ -139,6 +137,22 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addExplanation("季節のスポーン地点を設定する")
                         .addRequiredPermission("man10fishing.registerspawn")
                         .setExecutor(RegisterSpawnLocationCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("hideRanking"))
+                        .addExplanation("ランキングを非表示にする")
+                        .addRequiredPermission("man10fishing.hideranking")
+                        .setExecutor(HideRanking(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("hideRanking"))
+                        .addExplanation("ランキングを非表示にする")
+                        .addRequiredPermission("man10fishing.showranking")
+                        .setExecutor(ShowRanking(plugin))
         )
     }
 
