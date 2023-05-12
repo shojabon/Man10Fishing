@@ -5,6 +5,7 @@ import com.shojabon.man10fishing.contest.AbstractFishContest
 import com.shojabon.man10fishing.contest.FishContestPlayer
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
+import org.bukkit.Server
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.*
@@ -72,25 +73,29 @@ class FishingScheduler {
 
             private val prefix = "§7[§cMFishScheduler§7]§r"
 
+            fun startContest(contestName: String){
+                val contest = AbstractFishContest.newInstance(contestName)
+                if (contest == null){
+                    Bukkit.broadcast(Component.text("$prefix§c§lコンテストが存在しません §7$name"))
+                    return
+                }
+
+                if (Man10Fishing.nowContest != null){
+                    Bukkit.broadcast(Component.text("$prefix§c§lコンテストが開始されています §7$name"))
+                    return
+                }
+
+                Bukkit.getOnlinePlayers().forEach {
+                    contest.players[it.uniqueId] = FishContestPlayer(it.uniqueId, it.name)
+                }
+
+                contest.start()
+            }
+
             fun invoke(){
                 when(action){
                     ActionEnum.START_CONTEST->{
-                        val contest = AbstractFishContest.newInstance(actionValue)
-                        if (contest == null){
-                            Bukkit.broadcast(Component.text("$prefix§c§lコンテストが存在しません §7$name"))
-                            return
-                        }
-
-                        if (Man10Fishing.nowContest != null){
-                            Bukkit.broadcast(Component.text("$prefix§c§lコンテストが開始されています §7$name"))
-                            return
-                        }
-
-                        Bukkit.getOnlinePlayers().forEach {
-                            contest.players[it.uniqueId] = FishContestPlayer(it.uniqueId, it.name)
-                        }
-
-                        contest.start()
+                        startContest(actionValue)
                     }
                     ActionEnum.RANDOM_START_CONTEST->{
 
@@ -101,23 +106,14 @@ class FishingScheduler {
                             return
                         }
 
-
-                        val contest = AbstractFishContest.newInstance(pick)
-                        if (contest == null){
-                            Bukkit.broadcast(Component.text("$prefix§c§lコンテストが存在しません §7$name"))
-                            return
-                        }
-
-                        if (Man10Fishing.nowContest != null){
-                            Bukkit.broadcast(Component.text("$prefix§c§lコンテストが開始されています §7$name"))
-                            return
-                        }
-
-                        Bukkit.getOnlinePlayers().forEach {
-                            contest.players[it.uniqueId] = FishContestPlayer(it.uniqueId, it.name)
-                        }
-
-                        contest.start()
+                        startContest(pick)
+                    }
+                    ActionEnum.MESSAGE->{
+                        Bukkit.broadcast(Component.text(
+                            actionValue
+                                .replace("&","§")
+                                .replace("<and>","&"))
+                            , Server.BROADCAST_CHANNEL_USERS)
                     }
                 }
             }
@@ -125,7 +121,8 @@ class FishingScheduler {
 
         enum class ActionEnum{
             START_CONTEST,
-            RANDOM_START_CONTEST;
+            RANDOM_START_CONTEST,
+            MESSAGE;
 
             companion object{
                 fun getActionEnum(string: String?): ActionEnum? {
@@ -161,15 +158,17 @@ class FishingScheduler {
 
     companion object{
         fun newInstance(name: String): FishingScheduler? {
+            val scheduler = FishingScheduler()
             return try {
-                val config = YamlConfiguration.loadConfiguration(File("${Man10Fishing.instance.dataFolder.path}/contests/${name}.yml"))
-                val scheduler = FishingScheduler()
+                val config = YamlConfiguration.loadConfiguration(File("${Man10Fishing.instance.dataFolder.path}/schedulers/${name}.yml"))
+
                 config.getMapList("timings").forEach {
                     scheduler.timings.add(Timing().setConfig(it))
                 }
                 scheduler.timings.forEach {
                     if (it.month == null && it.day == null && it.dayOfTheWeek == null && it.hour == null && it.minute == null){
-                        throw NullPointerException("Scheduler Error. 月、日、時間、または曜日を必ず指定してください")
+                        Man10Fishing.instance.logger.warning("Scheduler Error. 月、日、時間、または曜日を必ず指定してください")
+                        return@forEach
                     }
                 }
                 scheduler
