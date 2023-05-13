@@ -9,6 +9,7 @@ import org.bukkit.Server
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class FishingScheduler {
@@ -49,6 +50,7 @@ class FishingScheduler {
         var minute: Int? = null
         var name: String? = null
         lateinit var action: Action
+        val actions = ArrayList<Action>()
 
         fun setConfig(config: Map<*, *>): Timing {
             dayOfTheWeek = DayOfTheWeek.getDayOfTheWeek(config["dayOfTheWeek"] as? String)
@@ -60,22 +62,33 @@ class FishingScheduler {
             day = config["day"] as? Int
 
             val configTime = config["time"] as? String
-            if (configTime != null){
+            if (configTime != null) {
                 val split = configTime.split(":")
-                hour = split.getOrNull(0)?.toIntOrNull()?:0
-                minute = split.getOrNull(1)?.toIntOrNull()?:0
+                hour = split.getOrNull(0)?.toIntOrNull() ?: 0
+                minute = split.getOrNull(1)?.toIntOrNull() ?: 0
             }
 
-            name = config["name"] as? String?:config["fileName"] as String
+            name = config["name"] as? String ?: config["fileName"] as String
 
-            action = Action(ActionEnum.getActionEnum(
-                (config["action"] as Map<*, *>)["type"] as String)!!,
-                (config["action"] as Map<*, *>)["value"] as String)
+            action = Action(
+                ActionEnum.getActionEnum(
+                    (config["action"] as Map<*, *>)["type"] as String
+                )!!,
+                (config["action"] as Map<*, *>)["value"]!!
+            )
+
+            (config["actions"] as? List<*>)?.forEach {
+                val map = it as? Map<*, *>?:return@forEach
+                val actionType = ActionEnum.getActionEnum(map["type"] as String)!!
+                val actionValue = map["value"]!!
+                actions.add(Action(actionType,actionValue))
+            }
+
 
             return this
         }
 
-        inner class Action(private val action: ActionEnum, private val actionValue: String){
+        inner class Action(private val action: ActionEnum, private val actionValue: Any){
 
             private val prefix = "§7[§cMFishScheduler§7]§r"
 
@@ -101,25 +114,25 @@ class FishingScheduler {
             fun invoke(){
                 when(action){
                     ActionEnum.START_CONTEST->{
-                        startContest(actionValue)
-                    }
-                    ActionEnum.RANDOM_START_CONTEST->{
-
-                        val pick = actionValue.split(",").randomOrNull()
-
-                        if (pick == null){
-                            Bukkit.broadcast(Component.text("$prefix§c§lランダムなコンテストを取れませんでした §7$name"))
-                            return
-                        }
-
-                        startContest(pick)
+                        startContest(actionValue as String)
                     }
                     ActionEnum.MESSAGE->{
                         Bukkit.broadcast(Component.text(
-                            actionValue
+                            (actionValue as String)
                                 .replace("&","§")
                                 .replace("<and>","&"))
                             , Server.BROADCAST_CHANNEL_USERS)
+                    }
+                    ActionEnum.RANDOM->{
+                        val list = actionValue as List<*>
+                        val random = list.random()
+                        val map = random as? Map<*, *>?:return
+                        (map["actions"] as? Map<*, *>?:return).forEach { any ->
+                            if (any !is Map<*, *>)return
+                            val actionType = ActionEnum.getActionEnum(any["type"] as String)!!
+                            val actionValue = any["value"]!!
+                            Action(actionType,actionValue).invoke()
+                        }
                     }
                 }
             }
@@ -127,8 +140,8 @@ class FishingScheduler {
 
         enum class ActionEnum{
             START_CONTEST,
-            RANDOM_START_CONTEST,
-            MESSAGE;
+            MESSAGE,
+            RANDOM;
 
             companion object{
                 fun getActionEnum(string: String?): ActionEnum? {
@@ -172,17 +185,10 @@ class FishingScheduler {
                     it["fileName"] = name
                     scheduler.timings.add(Timing().setConfig(it))
                 }
-                scheduler.timings.forEach {
-                    if (it.month == null && it.day == null && it.dayOfTheWeek == null && it.hour == null && it.minute == null){
-                        Man10Fishing.instance.logger.warning("Scheduler Error. 月、日、時間、または曜日を必ず指定してください")
-                        return@forEach
-                    }
-                }
                 scheduler
             } catch (e: Exception) {
                 null
             }
-
         }
     }
 }

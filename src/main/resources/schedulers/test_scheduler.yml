@@ -1,6 +1,22 @@
 timings:
-  - dayOfTheWeek: SUNDAY
+  - dayOfTheWeek: MONDAY
     time: 18:00
+    week: 3
     action:
       type: START_CONTEST
       value: test_maxsizefish
+  - dayOfTheWeek: SUNDAY
+    time: 10:00
+    actions:
+      - type: RANDOM
+        value:
+          - actions:
+              - type: START_CONTEST
+                value: test_maxsizefish
+              - type: MESSAGE
+                value: "あああ"
+          - actions:
+              - type: START_CONTEST
+                value: test_maxamountfish
+              - type: MESSAGE
+                value: "いいい"
