@@ -9,15 +9,18 @@ import org.bukkit.Server
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.*
+import kotlin.collections.HashMap
 
 class FishingScheduler {
 
     val timings = ArrayList<Timing>()
 
-    fun next(){
-        val now = Calendar.getInstance()
+    fun next(now: Calendar){
         timings.forEach {
             if (it.month != null && it.month != now.get(Calendar.MONTH)){
+                return@forEach
+            }
+            if (it.week != null && it.week != now.get(Calendar.DAY_OF_WEEK_IN_MONTH)){
                 return@forEach
             }
             if (it.day != null && it.day != now.get(Calendar.DAY_OF_MONTH)){
@@ -40,6 +43,7 @@ class FishingScheduler {
     class Timing {
         var dayOfTheWeek: DayOfTheWeek? = null
         var month: Int? = null
+        var week: Int? = null
         var day: Int? = null
         var hour: Int? = null
         var minute: Int? = null
@@ -51,16 +55,18 @@ class FishingScheduler {
 
             month = config["month"] as? Int
 
+            week = config["week"] as? Int
+
             day = config["day"] as? Int
 
             val configTime = config["time"] as? String
             if (configTime != null){
                 val split = configTime.split(":")
-                hour = split.getOrNull(0)?.toIntOrNull()
-                minute = split.getOrNull(1)?.toIntOrNull()
+                hour = split.getOrNull(0)?.toIntOrNull()?:0
+                minute = split.getOrNull(1)?.toIntOrNull()?:0
             }
 
-            name = config["name"] as? String
+            name = config["name"] as? String?:config["fileName"] as String
 
             action = Action(ActionEnum.getActionEnum(
                 (config["action"] as Map<*, *>)["type"] as String)!!,
@@ -73,15 +79,15 @@ class FishingScheduler {
 
             private val prefix = "§7[§cMFishScheduler§7]§r"
 
-            fun startContest(contestName: String){
+            private fun startContest(contestName: String){
                 val contest = AbstractFishContest.newInstance(contestName)
                 if (contest == null){
-                    Bukkit.broadcast(Component.text("$prefix§c§lコンテストが存在しません §7$name"))
+                    Bukkit.broadcast(Component.text("$prefix§c§lコンテストが存在しません §7$name"),Server.BROADCAST_CHANNEL_ADMINISTRATIVE)
                     return
                 }
 
                 if (Man10Fishing.nowContest != null){
-                    Bukkit.broadcast(Component.text("$prefix§c§lコンテストが開始されています §7$name"))
+                    Bukkit.broadcast(Component.text("$prefix§c§lコンテストが開始されています §7$name"),Server.BROADCAST_CHANNEL_ADMINISTRATIVE)
                     return
                 }
 
@@ -162,7 +168,8 @@ class FishingScheduler {
             return try {
                 val config = YamlConfiguration.loadConfiguration(File("${Man10Fishing.instance.dataFolder.path}/schedulers/${name}.yml"))
 
-                config.getMapList("timings").forEach {
+                config.getMapList("timings").map { HashMap(it) }.forEach {
+                    it["fileName"] = name
                     scheduler.timings.add(Timing().setConfig(it))
                 }
                 scheduler.timings.forEach {
