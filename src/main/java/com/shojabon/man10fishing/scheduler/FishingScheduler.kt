@@ -37,7 +37,9 @@ class FishingScheduler {
                 return@forEach
             }
 
-            it.action.invoke()
+            it.actions.forEach { action ->
+                action.invoke()
+            }
         }
     }
 
@@ -49,7 +51,6 @@ class FishingScheduler {
         var hour: Int? = null
         var minute: Int? = null
         var name: String? = null
-        lateinit var action: Action
         val actions = ArrayList<Action>()
 
         fun setConfig(config: Map<*, *>): Timing {
@@ -69,13 +70,6 @@ class FishingScheduler {
             }
 
             name = config["name"] as? String ?: config["fileName"] as String
-
-            action = Action(
-                ActionEnum.getActionEnum(
-                    (config["action"] as Map<*, *>)["type"] as String
-                )!!,
-                (config["action"] as Map<*, *>)["value"]!!
-            )
 
             (config["actions"] as? List<*>)?.forEach {
                 val map = it as? Map<*, *>?:return@forEach
