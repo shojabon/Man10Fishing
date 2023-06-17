@@ -25,7 +25,13 @@ class SizeFactor(fish: Fish) : FishFactor(fish) {
 
     fun generateRandomSize(): Double {
         if(max.get() < min.get()) return -1.0
-        return round(Random.nextDouble(min.get(), max.get()) * 10) / 10
+        val min=min.get()
+        val max=max.get()
+
+        //1.97は97.5%の場所
+        var size=java.util.Random().nextGaussian()*((max-min)/1.97)+(min+max)/2
+        if(size<=0)size=min
+        return round(size*10) / 10
     }
 
 
