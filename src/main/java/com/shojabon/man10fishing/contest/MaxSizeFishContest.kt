@@ -24,11 +24,13 @@ class MaxSizeFishContest: AbstractFishContest() {
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
         Bukkit.getPlayer(player.uuid)?.sendMessage(Man10Fishing.prefix + "${fish.fish.alias}§aを釣り上げた！§d(${fish.size}cm)")
 
-        if (player.allowedCaughtFish.isNotEmpty() && player.allowedCaughtFish[0].size < fish.size){
-            player.allowedCaughtFish.removeFirstOrNull()
+        if(player.allowedCaughtFish.isEmpty()){
+            player.addAllowedCaughtFish(fish)
         }
-
-        player.addAllowedCaughtFish(fish)
+        else if (player.allowedCaughtFish[0].size < fish.size){
+            player.allowedCaughtFish.removeFirstOrNull()
+            player.addAllowedCaughtFish(fish)
+        }
 
         val max = players.values.mapNotNull { it.allowedCaughtFish.firstOrNull()?.size }.maxOrNull()
         if (max != null && max == fish.size){
@@ -46,7 +48,7 @@ class MaxSizeFishContest: AbstractFishContest() {
             return false
         }
 
-        return lowerPlayer.allowedCaughtFish.first().size > higherPlayer.allowedCaughtFish.first().size
+        return lowerPlayer.allowedCaughtFish.first().size <= higherPlayer.allowedCaughtFish.first().size
     }
 
     override fun rankingLowerPrefix(player: FishContestPlayer): String {
