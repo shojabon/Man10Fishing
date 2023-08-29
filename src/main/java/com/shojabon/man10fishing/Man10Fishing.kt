@@ -10,6 +10,7 @@ import com.shojabon.man10fishing.scheduler.SchedulerManager
 import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SInventory.SInventory
+import com.shojabon.mcutils.Utils.SLongTextInput
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
@@ -62,6 +63,11 @@ class Man10Fishing : JavaPlugin() {
             null
         }
 
+        schedulerManager = SchedulerManager()
+        api.loadSchedulers()
+        api.loadItemIndexes()
+        schedulerManager.start()
+
         val commandRouter = Man10FishingCommand(this)
         getCommand("mfish")!!.setExecutor(commandRouter)
         getCommand("mfish")!!.tabCompleter = commandRouter
@@ -77,14 +83,12 @@ class Man10Fishing : JavaPlugin() {
             }
         }
 
-        schedulerManager = SchedulerManager()
-        api.loadSchedulers()
-        schedulerManager.start()
+
     }
 
     override fun onDisable() {
         // Plugin shutdown logic
-
+        schedulerManager.interrupt()
         SInventory.closeAllSInventories()
     }
 }

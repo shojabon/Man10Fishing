@@ -1,13 +1,9 @@
 package com.shojabon.man10fishing.commands.subCommands.rod
 
 import com.shojabon.man10fishing.Man10Fishing
-import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.FishingRod
-import com.shojabon.man10fishing.itemindex.ItemIndexCategory
-import com.shojabon.man10fishing.itemindex.ItemIndexInventory
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

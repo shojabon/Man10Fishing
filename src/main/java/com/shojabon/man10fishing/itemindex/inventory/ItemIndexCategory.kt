@@ -1,8 +1,8 @@
-package com.shojabon.man10fishing.itemindex
+package com.shojabon.man10fishing.itemindex.inventory
 
 import ToolMenu.LargeSInventoryMenu
 import com.shojabon.man10fishing.Man10FishingAPI
-import com.shojabon.mcutils.Utils.SInventory.SInventory
+import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
@@ -16,9 +16,9 @@ class ItemIndexCategory(val plugin: JavaPlugin, val uuid : UUID) : LargeSInvento
     override fun renderMenu() {
         val items = ArrayList<SInventoryItem>()
 
-        for (rarity in Man10FishingAPI.rarity){
-            items.add(SInventoryItem(SItemStack(rarity.value.material).setDisplayName(rarity.value.alias).build()).clickable(false)
-                .setEvent { ItemIndexInventory(rarity.key,plugin,uuid,true).open(Bukkit.getPlayer(uuid)) })
+        for (itemIndex in ItemIndex.itemIndexes.values){
+            items.add(SInventoryItem(SItemStack(itemIndex.displayItem).setDisplayName(itemIndex.displayName).build()).clickable(false)
+                .setEvent { ItemIndexInventory(plugin,itemIndex.displayName,itemIndex,uuid,true).open(Bukkit.getPlayer(uuid)) })
         }
 
         setItems(items)

@@ -2,9 +2,9 @@ timings:
   - dayOfTheWeek: MONDAY
     time: 18:00
     week: 3
-    action:
-      type: START_CONTEST
-      value: test_maxsizefish
+    actions:
+      - type: START_CONTEST
+        value: test_maxsizefish
   - dayOfTheWeek: SUNDAY
     time: 10:00
     actions:

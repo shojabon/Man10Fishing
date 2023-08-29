@@ -4,6 +4,7 @@ import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishRarity
 import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.dataClass.enums.Season
+import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.scheduler.FishingScheduler
 import com.shojabon.mcutils.Utils.SConfigFile
 import org.bukkit.Bukkit
@@ -40,11 +41,12 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             val material = Material.getMaterial(configSection.getString("$rarityName.material")?:"STONE")?:Material.STONE
             val namePrefix=configSection.getString("$rarityName.namePrefix")?:""
             val loreDisplayName=configSection.getString("$rarityName.loreDisplayName")?:"未設定"
+            val enabledItemIndex = configSection.getBoolean("$rarityName.enabledItemIndex", true)
             if(alias == null || weight == 0){
                 Bukkit.getLogger().info("レアリティ$rarityName でエラーが発生しました")
                 continue
             }
-            val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix, loreDisplayName)
+            val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix, loreDisplayName, enabledItemIndex)
             rarity[rarityName] = rarityObject
         }
     }
@@ -139,6 +141,18 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         Man10Fishing.schedulerManager.schedulers.clear()
         for (file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.path + File.separator + "schedulers")){
             Man10Fishing.schedulerManager.schedulers.add(FishingScheduler.newInstance(file.nameWithoutExtension)?:continue)
+        }
+    }
+
+    fun loadItemIndexes(){
+        ItemIndex.itemIndexes.clear()
+        for (file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.path + File.separator + "itemIndexes")){
+            ItemIndex.itemIndexes[file.nameWithoutExtension] = ItemIndex.fromConfig(file)
+        }
+
+        for (rarity in rarity.values){
+            if(!rarity.enabledItemIndex) continue
+            ItemIndex.itemIndexes[rarity.name] = ItemIndex.fromRarity(rarity)
         }
     }
 

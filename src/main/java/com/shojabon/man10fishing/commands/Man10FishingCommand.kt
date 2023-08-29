@@ -1,7 +1,6 @@
 package com.shojabon.man10fishing.commands
 
 import com.shojabon.man10fishing.Man10Fishing
-import com.shojabon.man10fishing.commands.subCommands.OpenItemIndexMenuCommand
 import com.shojabon.man10fishing.commands.subCommands.RegisterSpawnLocationCommand
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
@@ -10,8 +9,11 @@ import com.shojabon.man10fishing.commands.subCommands.fish.GetFishCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
-import com.shojabon.man10fishing.itemindex.ItemIndexInventory
+import com.shojabon.man10fishing.itemindex.ItemIndex
+import com.shojabon.man10fishing.itemindex.inventory.CreateItemIndex
+import com.shojabon.man10fishing.itemindex.inventory.ItemIndexCategory
 import com.shojabon.mcutils.Utils.SCommandRouter.*
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 
 class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
@@ -41,18 +43,33 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                 .addExplanation("図鑑を見る")
                 .setExecutor { sender, _, _, _ ->
                     if (sender !is Player)return@setExecutor true
-                    ItemIndexInventory("all", plugin, sender.uniqueId, false).open(sender)
+                    sender.playSound(sender.location, Sound.BLOCK_CHEST_OPEN,1f,1f)
+                    ItemIndexCategory(plugin, sender.uniqueId).open(sender)
                     return@setExecutor true
                 }
         )
 
+        val itemIndexArgs = SCommandArgument().addAllowedType(SCommandArgumentType.STRING)
+                .addAlias("内部名")
+
+        ItemIndex.itemIndexes.forEach {
+            if (it.value.fromRarity) return@forEach
+            itemIndexArgs.addAlias(it.key)
+        }
+
         addCommand(
-            SCommandObject()
-                .addArgument(SCommandArgument().addAllowedString("ii"))
-                .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING).addAlias("レアリティ名").addAlias("list"))
-                .addRequiredPermission("man10fishing.ii")
-                .addExplanation("図鑑を見る")
-                .setExecutor(OpenItemIndexMenuCommand(plugin))
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("ii"))
+                        .addArgument(SCommandArgument().addAllowedString("create"))
+                        .addArgument(itemIndexArgs)
+                        .addRequiredPermission("man10fishing.ii.create")
+                        .addExplanation("図鑑を作成する")
+                        .setExecutor { sender, _, _, args ->
+                            if (sender !is Player)return@setExecutor true
+                            val data = ItemIndex.itemIndexes[args[2]]
+                            CreateItemIndex(args[2], data?: ItemIndex()).open(sender)
+                            return@setExecutor true
+                        }
         )
 
         addCommand(

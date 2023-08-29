@@ -25,9 +25,9 @@ class ItemIndexFactor(fish : Fish) : FishFactor(fish){
             fishdexList[fisher.uniqueId] = hashMapOf()
         }
 
-        val playerData = fishdexList[fisher.uniqueId]
+        val playerData = fishdexList[fisher.uniqueId]!!
 
-        if (!playerData!!.containsKey(fish.name)) {
+        if (!playerData.containsKey(fish.name)) {
             playerData[fish.name] = arrayListOf()
         }
 
