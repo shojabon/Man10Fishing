@@ -1,17 +1,11 @@
 package com.shojabon.man10fishing.factors
 
-import com.shojabon.man10fishing.Man10Fishing.Companion.foodInRangeMultiplier
-import org.bukkit.Material
-import com.shojabon.man10fishing.dataClass.FishFactor
-import org.bukkit.entity.Player
-import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
 import com.shojabon.man10fishing.dataClass.Fish
+import com.shojabon.man10fishing.dataClass.FishFactor
 import com.shojabon.man10fishing.dataClass.FishSettingVariable
-import org.bukkit.Bukkit
-import kotlin.math.pow
+import org.bukkit.Material
 import kotlin.math.round
-import kotlin.random.Random
 
 @FishFactorDefinition(name = "サイズ設定",
         iconMaterial = Material.CHEST,

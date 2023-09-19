@@ -24,7 +24,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
                          private val uuid : UUID, private val fromCategory : Boolean
 ) : LargeSInventoryMenu(name, plugin) {
 
-    var completed = false
+    private var completed = false
 
     init {
         setOnClickEvent {

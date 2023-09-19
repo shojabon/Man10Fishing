@@ -17,7 +17,7 @@ import org.bukkit.entity.Player
 /**
  * サウンドロジック
  * sound:
- *   name: <サウンド名(大文字、.を_にする必要あり)>
+ *   name: <サウンド名(.を_にする必要あり)>
  *   volume: 0f~2f
  *   pitch: 0f~2f
  */
@@ -29,6 +29,6 @@ class SoundFactor(fish : Fish) : FishFactor(fish) {
 
     override fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {
         if (!Sound.values().equals(sound.get()))return
-        fisher.playSound(fisher.location,Sound.valueOf(sound.get()),volume.get(),pitch.get())
+        fisher.playSound(fisher.location,Sound.valueOf(sound.get().toUpperCase()),volume.get(),pitch.get())
     }
 }
