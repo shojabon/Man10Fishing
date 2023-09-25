@@ -80,7 +80,7 @@ class FishSellMenu: SInventory("§b魚を売る", 4, Man10Fishing.instance) {
             SItemStack(Material.RED_STAINED_GLASS_PANE)
                 .setDisplayName("§c§l売却").addLore("§a${getSumSellPrice()}円で売る").build()
         ).clickable(false)
-            .setAsyncEvent {
+            .setEvent {
                 val money = getSumSellPrice()
 
                 (0..26).forEach { map ->
