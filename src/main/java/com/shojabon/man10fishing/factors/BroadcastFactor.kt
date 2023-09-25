@@ -35,7 +35,7 @@ class BroadcastFactor(fish: Fish) : FishFactor(fish) {
             else->{}
         }
         if(enabled.get()){
-            Bukkit.broadcast(Component.text(Man10Fishing.prefix + "§f§l${fisher.name}が${rarityData.namePrefix}§l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§f§lを釣り上げた!"), Server.BROADCAST_CHANNEL_USERS)
+            Bukkit.broadcast(Component.text(Man10Fishing.prefix + "§f§l${fisher.name}が${rarityData.namePrefix}${rarityData.loreDisplayName} §l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§f§lを釣り上げた!"), Server.BROADCAST_CHANNEL_USERS)
             return
         }
         fisher.sendMessage(Man10Fishing.prefix+"${rarityData.namePrefix}§l${parameter.fish.alias}§e(§f${parameter.size}cm§e)§f§lを釣り上げた!")

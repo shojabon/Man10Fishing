@@ -1,8 +1,11 @@
 package com.shojabon.man10fishing.contest
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.FishParameter
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
+import org.bukkit.Server
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 
@@ -28,6 +31,10 @@ class MaxSizeFishContest: AbstractFishContest() {
         else if (player.allowedCaughtFish[0].size < fish.size){
             player.allowedCaughtFish.removeFirstOrNull()
             player.addAllowedCaughtFish(fish)
+        }
+
+        if(fish==player.getMinSizeAllowedFish()){
+            Bukkit.broadcast(Component.text(Man10Fishing.prefix + "§f§l${player.name}が${Man10FishingAPI.rarity[fish.fish.rarity]!!.namePrefix}§l${fish.fish.alias}§e§l(§f${fish.size}cm§e§l)§f§lを釣り上げて自己ベスト更新!"), Server.BROADCAST_CHANNEL_USERS)
         }
 
         val max = players.values.mapNotNull { it.allowedCaughtFish.firstOrNull()?.size }.maxOrNull()
