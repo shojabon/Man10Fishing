@@ -6,6 +6,8 @@ import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
+import kotlin.math.floor
+import kotlin.math.pow
 
 class FishFood(var food: ItemStack) {
     companion object {
@@ -40,9 +42,18 @@ class FishFood(var food: ItemStack) {
             val food1Type = food1.getFoodTypeList() ?: return null
             val food2Type = food2.getFoodTypeList() ?: return null
 
-            for(i in food1Type.indices){
+            for(i in food1Type.indices-1){
                 result.add((food1Type[i] + food2Type[i])/2)
             }
+
+            val distance= nDimensionDistanceSquared(food1Type,food2Type)
+            val multiply=((7.0*distance/1400000.0)+2.0)/3
+            val rawFoodRange=floor(multiply*(food1Type[5]+food2Type[5])/2)
+            val foodRange=if(rawFoodRange>500)500.0 else rawFoodRange
+
+
+            result.add(foodRange)
+
             return result
         }
 
@@ -117,6 +128,14 @@ class FishFood(var food: ItemStack) {
 
             return lore
         }
+        private fun nDimensionDistanceSquared(origin: List<Double>, target: List<Double?>?): Double {
+            var result = 0.0
+            if (origin.size != target!!.size) return (-1).toDouble()
+            for (i in origin.indices) {
+                result += (target[i]!! - origin[i]).pow(2.0)
+            }
+            return result
+        }
     }
 
     fun getFoodTypeString(): String?{
@@ -169,4 +188,5 @@ class FishFood(var food: ItemStack) {
         val result = SItemStack(food).setCustomData(Man10Fishing.instance, "foodType", resultData)
         food = result.build()
     }
+
 }
