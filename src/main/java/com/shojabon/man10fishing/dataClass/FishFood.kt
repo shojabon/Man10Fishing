@@ -42,15 +42,15 @@ class FishFood(var food: ItemStack) {
             val food1Type = food1.getFoodTypeList() ?: return null
             val food2Type = food2.getFoodTypeList() ?: return null
 
-            for(i in food1Type.indices-1){
+            for(i in 0..food1Type.size-2){
                 result.add((food1Type[i] + food2Type[i])/2)
             }
 
-            val distance= nDimensionDistanceSquared(food1Type,food2Type)
+
+            val distance= nDimensionDistanceSquared(food1Type.subList(0,5),food2Type.subList(0,5))
             val multiply=((7.0*distance/1400000.0)+2.0)/3
             val rawFoodRange=floor(multiply*(food1Type[5]+food2Type[5])/2)
             val foodRange=if(rawFoodRange>500)500.0 else rawFoodRange
-
 
             result.add(foodRange)
 
