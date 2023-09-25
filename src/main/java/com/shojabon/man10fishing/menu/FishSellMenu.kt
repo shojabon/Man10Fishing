@@ -119,7 +119,7 @@ class FishSellMenu: SInventory("§b魚を売る", 4, Man10Fishing.instance) {
         val size = fish.size
         val rarity = Man10FishingAPI.rarity[fish.fish.rarity]?:return 0.0
         //sizeが大きさの幅の何%にあるか
-        val sizePercentage = (size - minSize) / (maxSize - minSize)
+        val sizePercentage = (size - minSize) / (maxSize - minSize) * 100
         return floor(rarity.minSellPrice + (rarity.priceMultiplier * sizePercentage))
     }
 }
