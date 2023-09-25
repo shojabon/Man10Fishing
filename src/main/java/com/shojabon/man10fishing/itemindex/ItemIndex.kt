@@ -64,8 +64,6 @@ class ItemIndex {
         config.set("onCompleteCommands", onCompleteCommands)
         config.set("completedPlayers", completedPlayers.map { it.toString() })
         config.set("fish", fish)
-        val file = File(Man10Fishing.instance.dataFolder.path + "/itemIndexes/${internalName}.yml")
-        if (!file.exists()) file.createNewFile()
-        config.save(file)
+        SConfigFile.saveConfig(config, Man10Fishing.instance.dataFolder.path + "/itemIndexes/${internalName}.yml")
     }
 }

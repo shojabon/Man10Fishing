@@ -233,7 +233,7 @@ class CreateItemIndex(private val internalName: String, private val data: ItemIn
                 }
         )
 
-        setItem(37, SInventoryItem(
+        setItem(46, SInventoryItem(
             SItemStack(Material.PAPER)
                 .setDisplayName("§a§l未登録の魚の名前を表示するか")
                 .addLore("§7現在の値: ${data.showFishName}").build())

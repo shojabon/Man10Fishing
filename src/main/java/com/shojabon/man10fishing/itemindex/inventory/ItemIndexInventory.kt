@@ -56,6 +56,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         for ((index, fishdex) in fishdexList.entries.sortedBy { getFishIndex(it.value.first()) }.withIndex()){
             if (fishdex.value.firstOrNull()?.loaded == false)continue
             val oneData = fishdex.value.maxByOrNull { it.size }!!
+            oneData.dateTime = fishdex.value.minByOrNull { it.dateTime }!!.dateTime
             val item = (oneData.generateIndexItem()?.clickable(false)?:continue).setEvent { changeMoreInfoItem(it.slot,oneData) }
             items[index] = item
         }
@@ -146,7 +147,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
         val sdFormat = SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(parameter.dateTime)
         val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
-        item.lore = mutableListOf("§d長さ：${parameter.size}cm","§6釣れた日：${sdFormat}")
+        item.lore = mutableListOf("§d最大の大きさ：${parameter.size}cm","§6初めて釣れた日：${sdFormat}")
         val foodList = parameter.fish.config.getString("fishFactors.food.matrix")!!.split(",").map { it.toDouble() }
         if (!parameter.fish.config.getBoolean("fishFactors.food.hide")){
             getFishTypeLore(foodList).forEach {
