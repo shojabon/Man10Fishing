@@ -45,11 +45,14 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             val namePrefix=configSection.getString("$rarityName.namePrefix")?:""
             val loreDisplayName=configSection.getString("$rarityName.loreDisplayName")?:"未設定"
             val enabledItemIndex = configSection.getBoolean("$rarityName.enabledItemIndex", true)
+            val minSellPrice = configSection.getDouble("$rarityName.minSellPrice", 0.0)
+            val priceMultiplier = configSection.getDouble("$rarityName.priceMultiplier", 0.0)
             if(alias == null || weight == 0){
                 Bukkit.getLogger().info("レアリティ$rarityName でエラーが発生しました")
                 continue
             }
-            val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix, loreDisplayName, enabledItemIndex)
+            val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix,
+                loreDisplayName, enabledItemIndex, minSellPrice, priceMultiplier)
             if(configSection.getBoolean("broadcast")) broadcastRarity.add(rarityObject)
             rarity[rarityName] = rarityObject
         }

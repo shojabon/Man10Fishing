@@ -12,6 +12,7 @@ import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
 import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.itemindex.inventory.CreateItemIndex
 import com.shojabon.man10fishing.itemindex.inventory.ItemIndexCategory
+import com.shojabon.man10fishing.menu.FishSellMenu
 import com.shojabon.mcutils.Utils.SCommandRouter.*
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -170,6 +171,18 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addExplanation("ランキングを表示する")
                         .addRequiredPermission("man10fishing.showranking")
                         .setExecutor(ShowRanking(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("sell"))
+                        .addExplanation("魚を売る")
+                        .addRequiredPermission("man10fishing.sell")
+                        .setExecutor { sender, _, _, _ ->
+                            if (sender !is Player)return@setExecutor true
+                            FishSellMenu().open(sender)
+                            return@setExecutor true
+                        }
         )
     }
 

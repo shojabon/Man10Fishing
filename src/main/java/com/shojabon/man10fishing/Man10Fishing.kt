@@ -11,6 +11,7 @@ import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.SLongTextInput
+import com.shojabon.mcutils.Utils.VaultAPI
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
@@ -22,6 +23,7 @@ class Man10Fishing : JavaPlugin() {
     companion object{
         lateinit var api: Man10FishingAPI
         lateinit var mysql : ThreadedMySQLAPI
+        lateinit var vault: VaultAPI
         lateinit var instance : Man10Fishing
         lateinit var foodConfig : ConfigurationSection
         var foodInRangeMultiplier: Int = 1
@@ -75,6 +77,7 @@ class Man10Fishing : JavaPlugin() {
         instance = this
         api = Man10FishingAPI(this)
         mysql = ThreadedMySQLAPI(this)
+        vault = VaultAPI()
         api.createTables()
 
         loadConfig()
