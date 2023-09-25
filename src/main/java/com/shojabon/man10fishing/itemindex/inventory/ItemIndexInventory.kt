@@ -45,11 +45,12 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
             return
         }
 
-        for (index in Man10FishingAPI.fish
+        for ((index, fishData) in Man10FishingAPI.fish
                 .filter { fish.contains(it.key) && getFishIndex(it.value) != -1 }
-                .entries.sortedBy { getFishIndex(it.value) }
-                .indices){
-            items.add(SInventoryItem(SItemStack(Material.GLASS_PANE).setDisplayName("$index").build()).clickable(false))
+                .entries.sortedBy { getFishIndex(it.value) }.withIndex()
+        ){
+            items.add(SInventoryItem(SItemStack(Material.GLASS_PANE)
+                .setDisplayName(if (itemIndex.showFishName) fishData.value.alias else "$index").build()).clickable(false))
         }
 
         for ((index, fishdex) in fishdexList.entries.sortedBy { getFishIndex(it.value.first()) }.withIndex()){
@@ -148,7 +149,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         item.lore = mutableListOf("§d長さ：${parameter.size}cm","§6釣れた日：${sdFormat}")
         val foodList = parameter.fish.config.getString("fishFactors.food.matrix")!!.split(",").map { it.toDouble() }
         if (!parameter.fish.config.getBoolean("fishFactors.food.hide")){
-            FishFood.getFoodTypeLore(foodList).forEach {
+            getFishTypeLore(foodList).forEach {
                 item.addLore(it)
             }
         }
@@ -164,5 +165,22 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         val item = parameter.generateIndexItem()?:return
         setItem(slot, item.clickable(false).setEvent { changeMoreInfoItem(it.slot,parameter) })
         renderInventory()
+    }
+
+    fun getFishTypeLore(data: List<Double>):List<String>{
+
+        if(data.size<5)return listOf("§4不正なデータ")
+        val lore= mutableListOf("§e甘味§3：§f§l■","§e酸味§3：§f§l■","§e旨味§3：§f§l■","§e苦味§3：§f§l■","§e匂い§3：§f§l■")
+
+        for(i in 0 until 5){
+            var count=-400
+            for(j in 0 until 9){
+                if(data[i]<count)break
+                lore[i]+="■"
+                count+=100
+            }
+        }
+
+        return lore
     }
 }

@@ -233,6 +233,18 @@ class CreateItemIndex(private val internalName: String, private val data: ItemIn
                 }
         )
 
+        setItem(37, SInventoryItem(
+            SItemStack(Material.PAPER)
+                .setDisplayName("§a§l未登録の魚の名前を表示するか")
+                .addLore("§7現在の値: ${data.showFishName}").build())
+            .clickable(false)
+            .setEvent {
+                data.showFishName = !data.showFishName
+                renderMenu()
+                renderInventory()
+            }
+        )
+
         setItem(49, SInventoryItem(
                 SItemStack(Material.LIME_STAINED_GLASS_PANE).setDisplayName("§b§l図鑑を作成する").build())
                 .clickable(false)
