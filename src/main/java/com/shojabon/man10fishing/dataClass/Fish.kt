@@ -2,9 +2,11 @@ package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
+import com.shojabon.man10fishing.dataClass.enums.SizeRank
 import com.shojabon.man10fishing.factors.*
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
@@ -102,9 +104,9 @@ class Fish (val name: String, val config: ConfigurationSection){
         return null
     }
 
-    fun isFishEnabled(fisher: Player, rod: FishingRod): Boolean{
+    fun isFishEnabled(fisher: Player, rod: FishingRod,hookLocation: Location): Boolean{
         for(factor in fishFactors){
-            if(!factor.fishEnabled(this, fisher, rod)){
+            if(!factor.fishEnabled(this, fisher, rod,hookLocation)){
                 return false
             }
         }
@@ -126,6 +128,17 @@ class Fish (val name: String, val config: ConfigurationSection){
 
         val contest = Man10Fishing.nowContest
         contest?.caughtFish(fisher,parameter)
+    }
+
+    fun getDetailedItem(parameter:FishParameter):ItemStack{
+        val sItem=SItemStack(item.clone())
+        val text="§f大きさ: ${parameter.size}cm"+ when(parameter.sizeRank){
+            SizeRank.SMALL-> "§e§lSMALLSIZE!"
+            SizeRank.BIG->" §e§lBIGSIZE!"
+            else->""
+        }
+        sItem.addLore(text)
+        return sItem.build()
     }
 
 }

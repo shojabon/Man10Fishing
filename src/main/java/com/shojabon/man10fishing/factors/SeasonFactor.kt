@@ -5,6 +5,7 @@ import com.shojabon.man10fishing.annotations.Author
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
 import com.shojabon.man10fishing.dataClass.*
 import com.shojabon.man10fishing.dataClass.enums.Season
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -31,7 +32,7 @@ class SeasonFactor(fish: Fish) : FishFactor(fish) {
 
     val seasons= FishSettingVariable("season", listOf("ALL"))
 
-    override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod): Boolean {
+    override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod,hookLocation: Location): Boolean {
 
         val currentSeason=Man10Fishing.api.getCurrentSeason()
 

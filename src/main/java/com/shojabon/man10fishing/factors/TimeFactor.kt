@@ -7,6 +7,7 @@ import org.bukkit.entity.Player
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
 import com.shojabon.man10fishing.dataClass.*
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import java.util.*
 import kotlin.math.pow
 
@@ -25,7 +26,7 @@ class TimeFactor(fish: Fish) : FishFactor(fish) {
 
     var timesOfDay = FishSettingVariable("time", listOf("0000-2359"))
 
-    override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod): Boolean {
+    override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod,hookLocation: Location): Boolean {
         val time=getTime()
         for(timeSlot in timesOfDay.get()){
             //時刻を開始と終了で分ける

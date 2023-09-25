@@ -5,16 +5,19 @@ rarity:
     weight: 1
     namePrefix: "§4§l"
     loreDisplayName: "§4§l§oSECRET"
+    broadcast: true
   crystal:
     alias: "クリスタル"
     weight: 10
     namePrefix: "§d§l"
     loreDisplayName: "§d§l§oCRYSTAL"
+    broadcast: true
   legendary:
     alias: "レジェンダリー"
     weight: 11
     namePrefix: "§6§l"
     loreDisplayName: "§6§l§oLEGENDARY"
+    broadcast: true
   epic:
     alias: "エピック"
     weight: 12

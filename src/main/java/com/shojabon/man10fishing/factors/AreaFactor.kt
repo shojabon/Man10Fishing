@@ -5,6 +5,7 @@ import com.shojabon.man10fishing.annotations.Author
 import com.shojabon.man10fishing.annotations.FishFactorDefinition
 import com.shojabon.man10fishing.dataClass.*
 import com.sk89q.worldedit.bukkit.BukkitAdapter
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -23,13 +24,13 @@ class AreaFactor(fish : Fish) : FishFactor(fish){
 
     val areas = FishSettingVariable("area",ArrayList<String>(mutableListOf("none")))
 
-     override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod): Boolean {
+     override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod, hookLocation: Location): Boolean {
          if (areas.get().contains("none"))return true
          if (Man10Fishing.regionContainer == null)return false
          for (region in Man10Fishing.regionContainer!![BukkitAdapter.adapt(fisher.world)]!!.regions){
              for (area in areas.get()){
                  if (region.key.startsWith(area)){
-                     if (region.value.contains(BukkitAdapter.asBlockVector(fisher.location)))return true
+                     if (region.value.contains(BukkitAdapter.asBlockVector(hookLocation)))return true
                  }
              }
          }

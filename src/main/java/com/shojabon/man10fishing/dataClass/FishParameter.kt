@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10FishingAPI
+import com.shojabon.man10fishing.dataClass.enums.SizeRank
 import com.shojabon.mcutils.Utils.MySQL.MySQLCachedResultSet
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import org.bukkit.entity.Player
@@ -14,6 +15,7 @@ class FishParameter {
     lateinit var uuid : UUID
     var size : Double = 0.0
     lateinit var dateTime : Date
+    lateinit var sizeRank: SizeRank
 
 
     var loaded = false
@@ -41,7 +43,9 @@ class FishParameter {
         this.fish = fish
         name = fisher.name
         uuid = fisher.uniqueId
-        size = fish.sizeFactor.generateRandomSize()
+        val rawSize=fish.sizeFactor.generateRandomSize()
+        size = rawSize.first
+        sizeRank=rawSize.second
 
         dateTime = Date()
 

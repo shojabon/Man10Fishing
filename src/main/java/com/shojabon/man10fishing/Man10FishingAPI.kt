@@ -7,6 +7,7 @@ import com.shojabon.man10fishing.dataClass.enums.Season
 import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.scheduler.FishingScheduler
 import com.shojabon.mcutils.Utils.SConfigFile
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -23,6 +24,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     companion object {
         val rarity = HashMap<String, FishRarity>()
         val fish = HashMap<String, Fish>()
+        val broadcastRarity=ArrayList<FishRarity>()
     }
 
     init {
@@ -35,6 +37,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     //レアリティロード
     private fun loadRarity(){
         val configSection = plugin.config.getConfigurationSection("rarity") ?: return
+        broadcastRarity.clear()
         for(rarityName in configSection.getKeys(false)){
             val alias = configSection.getString("$rarityName.alias")
             val weight = configSection.getInt("$rarityName.weight")
@@ -47,6 +50,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
                 continue
             }
             val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix, loreDisplayName, enabledItemIndex)
+            if(configSection.getBoolean("broadcast")) broadcastRarity.add(rarityObject)
             rarity[rarityName] = rarityObject
         }
     }
@@ -94,9 +98,9 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     }
 
     //魚選択
-    fun pickFish(fisher: Player,rod: FishingRod): Fish? {
+    fun pickFish(fisher: Player,rod: FishingRod,hookLocation: Location): Fish? {
         val rarity = pickRarity()?: return null
-        val fishGroup = createFishTable(rarity.fishInGroup, fisher,rod)
+        val fishGroup = createFishTable(rarity.fishInGroup, fisher,rod,hookLocation)
 
         var total = 0
         for(weight in fishGroup.values){
@@ -118,10 +122,10 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
     }
 
     //抽選のための魚テーブル作成 (内部名, 出現確立)
-    fun createFishTable(fishAvailableToFish: ArrayList<Fish>, fisher: Player,rod: FishingRod): HashMap<String, Float>{
+    fun createFishTable(fishAvailableToFish: ArrayList<Fish>, fisher: Player,rod: FishingRod,hookLocation: Location): HashMap<String, Float>{
         val result = HashMap<String, Float>()
         for(fish in fishAvailableToFish){
-            if(!fish.isFishEnabled(fisher, rod)) continue
+            if(!fish.isFishEnabled(fisher, rod,hookLocation)) continue
             result[fish.name] = fish.getRarityMultiplier(fisher, rod)
         }
         return result
@@ -171,6 +175,11 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
                 "COLLATE='utf8mb4_0900_ai_ci'\n" +
                 "ENGINE=InnoDB\n" +
                 ";\n") {}
+    }
+
+    //prefix付きの全体メッセージを流す
+    fun broadcastPlMessage(message:String){
+        Bukkit.getServer().broadcast(Component.text(Man10Fishing.prefix+message))
     }
 
     //現在の季節を返す
