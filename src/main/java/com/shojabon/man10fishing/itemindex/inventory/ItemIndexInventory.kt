@@ -49,8 +49,9 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
                 .filter { fish.contains(it.key) && getFishIndex(it.value) != -1 }
                 .entries.sortedBy { getFishIndex(it.value) }.withIndex()
         ){
+            val rarity = Man10FishingAPI.rarity[fishData.value.rarity]!!
             items.add(SInventoryItem(SItemStack(Material.GLASS_PANE)
-                .setDisplayName(if (itemIndex.showFishName) fishData.value.alias else "$index").build()).clickable(false))
+                .setDisplayName(if (itemIndex.showFishName) "${rarity.namePrefix}${fishData.value.alias}" else "$index").build()).clickable(false))
         }
 
         for ((index, fishdex) in fishdexList.entries.sortedBy { getFishIndex(it.value.first()) }.withIndex()){
