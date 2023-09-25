@@ -24,6 +24,7 @@ class ItemIndex {
             itemIndex.internalName = file.nameWithoutExtension
             itemIndex.displayName = config.getString("displayName")?:""
             itemIndex.displayItem = Material.getMaterial(config.getString("displayItem")?:"STONE")!!
+            itemIndex.showFishName = config.getBoolean("showFishName")
             itemIndex.onCompleteItemStack = config.getItemStack("onCompleteItemStack")
             itemIndex.onCompleteCommands.addAll(config.getStringList("onCompleteCommands"))
             itemIndex.completedPlayers.addAll(config.getStringList("completedPlayers").map { UUID.fromString(it) })
@@ -45,6 +46,7 @@ class ItemIndex {
     var internalName = ""
     var displayName = "図鑑"
     var displayItem: Material = Material.STONE
+    var showFishName = false
     var onCompleteItemStack: ItemStack? = null
     val onCompleteCommands = ArrayList<String>()
     val completedPlayers = ArrayList<UUID>()
@@ -57,6 +59,7 @@ class ItemIndex {
                 ?:YamlConfiguration()
         config.set("displayName", displayName)
         config.set("displayItem", displayItem.name)
+        config.set("showFishName", showFishName)
         config.set("onCompleteItemStack", onCompleteItemStack)
         config.set("onCompleteCommands", onCompleteCommands)
         config.set("completedPlayers", completedPlayers.map { it.toString() })
