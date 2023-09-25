@@ -22,8 +22,6 @@ class MaxSizeFishContest: AbstractFishContest() {
     }
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
-        Bukkit.getPlayer(player.uuid)?.sendMessage(Man10Fishing.prefix + "${fish.fish.alias}§aを釣り上げた！§d(${fish.size}cm)")
-
         if(player.allowedCaughtFish.isEmpty()){
             player.addAllowedCaughtFish(fish)
         }
@@ -56,14 +54,14 @@ class MaxSizeFishContest: AbstractFishContest() {
     }
 
     override fun onEnd() {
-        if (ranking.isEmpty()) {
-            broadCastPlayers("§c§l魚が一匹も釣られませんでした")
-            return
-        }
-
         broadCastPlayers("§c§lコンテスト終了!!")
 
         Thread.sleep(4000)
+
+        if (ranking.isEmpty()) {
+            broadCastPlayers("§c§l魚を釣ったプレイヤーはいませんでした")
+            return
+        }
 
         broadCastPlayers("§c§l順位")
 
@@ -72,7 +70,7 @@ class MaxSizeFishContest: AbstractFishContest() {
         ranking.forEach { (i, data) ->
             val fish = data.allowedCaughtFish.firstOrNull()?:return@forEach
             broadCastPlayers("§a${i}位: §e${data.name}§7:" +
-                    "§b${fish.name}" +
+                    "§b${fish.fish.alias}" +
                     "§d(${fish.size}cm)")
             val commands = rewardCommands[i]?:return@forEach
             val player = Bukkit.getPlayer(data.uuid)?:return@forEach

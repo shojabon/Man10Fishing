@@ -16,7 +16,9 @@ class FishSellMenu: SInventory("§b魚を売る", 4, Man10Fishing.instance) {
         }
         setItem((27..35).toList().toIntArray(), SInventoryItem(SItemStack(Material.LIME_STAINED_GLASS_PANE).setDisplayName(" ").build()).clickable(false))
 
-
+        setItem((30..32).toList().toIntArray(), SInventoryItem(SItemStack(Material.RED_STAINED_GLASS_PANE).setDisplayName("§c§l売却").build()).clickable(false).setAsyncEvent {
+            val fish = it.inventory
+        })
     }
 
     fun getSellPrice(fish: FishParameter): Double {
