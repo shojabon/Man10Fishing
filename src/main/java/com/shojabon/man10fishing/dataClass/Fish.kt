@@ -8,9 +8,11 @@ import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -99,7 +101,10 @@ class Fish (val name: String, val config: ConfigurationSection){
         itemStack.lore = lore
 
         item = itemStack.build()?: return "不正アイテム"
+        val itemMeta=item.itemMeta
+        itemMeta.persistentDataContainer.set(NamespacedKey(Man10Fishing.instance,"fish"), PersistentDataType.STRING,name)
 
+        item.itemMeta=itemMeta
 
         return null
     }
@@ -133,7 +138,7 @@ class Fish (val name: String, val config: ConfigurationSection){
     fun getDetailedItem(parameter:FishParameter):ItemStack{
         val sItem=SItemStack(item.clone())
         val text="§f大きさ: ${parameter.size}cm"+ when(parameter.sizeRank){
-            SizeRank.SMALL-> "§e§lSMALLSIZE!"
+            SizeRank.SMALL-> " §e§lSMALLSIZE!"
             SizeRank.BIG->" §e§lBIGSIZE!"
             else->""
         }

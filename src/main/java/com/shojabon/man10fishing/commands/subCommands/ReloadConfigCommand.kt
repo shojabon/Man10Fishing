@@ -24,6 +24,7 @@ class ReloadConfigCommand(var plugin: Man10Fishing) : CommandExecutor {
         Man10Fishing.api = Man10FishingAPI(plugin)
         Man10Fishing.api.loadSchedulers()
         Man10Fishing.api.loadItemIndexes()
+        plugin.loadConfig()
         sender.sendMessage(Man10Fishing.prefix + "§a§lプラグインがリロードされました")
         return true
     }

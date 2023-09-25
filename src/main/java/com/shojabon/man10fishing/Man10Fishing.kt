@@ -37,13 +37,7 @@ class Man10Fishing : JavaPlugin() {
         val spawnPoints=HashMap<Season, Location>()
     }
 
-    override fun onEnable() {
-        // Plugin startup logic
-        saveDefaultConfig()
-        instance = this
-        api = Man10FishingAPI(this)
-        mysql = ThreadedMySQLAPI(this)
-        api.createTables()
+    fun loadConfig(){
         val file = File(dataFolder.toString() + File.separator + "fish" + File.separator)
         file.mkdir()
         Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
@@ -63,6 +57,29 @@ class Man10Fishing : JavaPlugin() {
             null
         }
 
+        //季節ごとのスポーン地点読み取り
+        val configSection=config.getConfigurationSection("spawnPoints")
+        spawnPoints.clear()
+        for(strSeason in configSection?.getKeys(false)?: listOf()){
+            val season=Season.valueOf(strSeason)
+            val loc=configSection?.getLocation(strSeason)
+            if(loc!=null){
+                spawnPoints[season]=loc
+            }
+        }
+    }
+
+    override fun onEnable() {
+        // Plugin startup logic
+        saveDefaultConfig()
+        instance = this
+        api = Man10FishingAPI(this)
+        mysql = ThreadedMySQLAPI(this)
+        api.createTables()
+
+        loadConfig()
+
+
         schedulerManager = SchedulerManager()
         api.loadSchedulers()
         api.loadItemIndexes()
@@ -72,16 +89,6 @@ class Man10Fishing : JavaPlugin() {
         getCommand("mfish")!!.setExecutor(commandRouter)
         getCommand("mfish")!!.tabCompleter = commandRouter
 
-
-        //季節ごとのスポーン地点読み取り
-        val configSection=config.getConfigurationSection("spawnPoints")
-        for(strSeason in configSection?.getKeys(false)?: listOf()){
-            val season=Season.valueOf(strSeason)
-            val loc=configSection?.getLocation(strSeason)
-            if(loc!=null){
-                spawnPoints[season]=loc
-            }
-        }
 
 
     }
