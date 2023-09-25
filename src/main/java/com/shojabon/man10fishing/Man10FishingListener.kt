@@ -99,8 +99,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     private fun messageRegardingOfSize(player: Player, parameter: FishParameter):Boolean{
         val rarityData=Man10FishingAPI.rarity[parameter.fish.rarity]!!
         when(parameter.sizeRank){
-            SizeRank.BIG->Man10Fishing.api.broadcastPlMessage("§f§l${player.name}§aが巨大サイズの${rarityData.namePrefix}${rarityData.loreDisplayName} ${parameter.fish.name}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた!")
-            SizeRank.SMALL->Man10Fishing.api.broadcastPlMessage("§f§l${player.name}§aがミニサイズの${rarityData.namePrefix}${rarityData.loreDisplayName} ${parameter.fish.name}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた!")
+            SizeRank.BIG->Man10Fishing.api.broadcastPlMessage("§f§l${player.name}§aが巨大サイズの${rarityData.namePrefix}${rarityData.loreDisplayName} ${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた!")
+            SizeRank.SMALL->Man10Fishing.api.broadcastPlMessage("§f§l${player.name}§aがミニサイズの${rarityData.namePrefix}${rarityData.loreDisplayName} ${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた!")
             else -> {return false}
             }
         return true
@@ -109,10 +109,10 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     private fun messageRegardingOfRarity(player: Player, parameter: FishParameter):Boolean{
         val rarityData=Man10FishingAPI.rarity[parameter.fish.rarity]!!
         if(Man10FishingAPI.broadcastRarity.contains(rarityData)){
-            Man10Fishing.api.broadcastPlMessage("§f§l${player.name}が${rarityData.loreDisplayName}${rarityData.name} ${parameter.fish.name}§f(${parameter.size}cm)§f§lを釣り上げた!")
+            Man10Fishing.api.broadcastPlMessage("§f§l${player.name}が${rarityData.loreDisplayName}${rarityData.name} ${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§f§lを釣り上げた!")
             return true
         }
-        player.sendMessage(Man10Fishing.prefix+"${rarityData.namePrefix}${rarityData.loreDisplayName} ${parameter.fish.name}§f(${parameter.size}cm)§f§lを釣り上げた!")
+        player.sendMessage(Man10Fishing.prefix+"${rarityData.namePrefix}${rarityData.loreDisplayName} ${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§f§lを釣り上げた!")
         return false
     }
 }
