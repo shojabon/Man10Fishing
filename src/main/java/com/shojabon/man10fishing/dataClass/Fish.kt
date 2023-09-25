@@ -143,7 +143,11 @@ class Fish (val name: String, val config: ConfigurationSection){
             else->""
         }
         sItem.addLore(text)
-        return sItem.build()
+        val fishItem=sItem.build()
+        val itemMeta=fishItem.itemMeta
+        itemMeta.persistentDataContainer.set(NamespacedKey(Man10Fishing.instance,"size"), PersistentDataType.DOUBLE,parameter.size)
+        fishItem.itemMeta = itemMeta
+        return fishItem
     }
 
 }
