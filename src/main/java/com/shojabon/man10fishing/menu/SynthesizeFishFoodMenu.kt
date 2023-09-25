@@ -9,6 +9,7 @@ import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 import java.util.function.Consumer
 
@@ -52,7 +53,9 @@ class SynthesizeFishFoodMenu: SInventory("§6§l餌合成", 4, Man10Fishing.inst
     fun onClick(): Consumer<InventoryClickEvent> {
         return Consumer<InventoryClickEvent> {
             if(it.currentItem == null){
-                it.isCancelled = true
+                if(it.clickedInventory?.type==InventoryType.CHEST&&it.slot!=11&&it.slot!=15){
+                    it.isCancelled=true
+                }
                 return@Consumer
             }
             if(!FishFood.isFood(it.currentItem!!)){
