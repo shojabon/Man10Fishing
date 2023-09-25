@@ -62,6 +62,11 @@ class SynthesizeFishFoodMenu: SInventory("§6§l餌合成", 4, Man10Fishing.inst
                 it.isCancelled = true
                 return@Consumer
             }
+
+            if(FishFood(it.currentItem!!).isUnMixable()){
+                it.isCancelled=true
+                return@Consumer
+            }
         }
     }
 

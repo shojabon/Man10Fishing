@@ -7,6 +7,7 @@ import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
 import com.shojabon.man10fishing.commands.subCommands.contest.*
 import com.shojabon.man10fishing.commands.subCommands.fish.GetFishCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
+import com.shojabon.man10fishing.commands.subCommands.food.SetMixablityCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
 import com.shojabon.man10fishing.itemindex.ItemIndex
@@ -96,6 +97,14 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10fishing.food.mix")
                         .addExplanation("餌を合成する")
                         .setExecutor(SynthesizeFishFoodCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("food")).addArgument(SCommandArgument().addAllowedString("unmixable"))
+                        .addRequiredPermission("man10fishing.food.unmiable")
+                        .addExplanation("餌を合成不可にする")
+                        .setExecutor(SetMixablityCommand(plugin))
         )
 
         val contestArgs = SCommandArgument()
