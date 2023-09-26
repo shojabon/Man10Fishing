@@ -47,6 +47,9 @@ class FishSellMenu: SInventory("§b魚を売る", 4, Man10Fishing.instance) {
                         item.setCanMobPickup(false)
                     }
                 }
+
+                renderMenu()
+                renderInventory()
             }
 
         }

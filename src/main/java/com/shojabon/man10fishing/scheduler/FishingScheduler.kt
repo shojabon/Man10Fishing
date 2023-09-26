@@ -6,6 +6,7 @@ import com.shojabon.man10fishing.contest.FishContestPlayer
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Server
+import org.bukkit.Sound
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.*
@@ -117,6 +118,15 @@ class FishingScheduler {
                                 .replace("<and>","&"))
                             , Server.BROADCAST_CHANNEL_USERS)
                     }
+                    ActionEnum.PLAY_SOUND->{
+                        val split = (actionValue as String).split(",")
+                        val sound = Sound.valueOf(split[0])
+                        val volume = split.getOrNull(1)?.toFloat()?:1f
+                        val pitch = split.getOrNull(2)?.toFloat()?:1f
+                        Bukkit.getOnlinePlayers().forEach {
+                            it.playSound(it.location, sound, volume, pitch)
+                        }
+                    }
                     ActionEnum.RANDOM->{
                         val list = actionValue as List<*>
                         val random = list.random()
@@ -135,6 +145,7 @@ class FishingScheduler {
         enum class ActionEnum{
             START_CONTEST,
             MESSAGE,
+            PLAY_SOUND,
             RANDOM;
 
             companion object{
