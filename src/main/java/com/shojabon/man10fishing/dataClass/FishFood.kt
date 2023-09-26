@@ -1,11 +1,14 @@
 package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.mcutils.Utils.BaseUtils
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
+import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 import kotlin.math.floor
 import kotlin.math.pow
 
@@ -62,6 +65,7 @@ class FishFood(var food: ItemStack) {
             data.forEach { numData.add(it.toDoubleOrNull()?:return "§4不正なデータ") }
             return getFoodTypeName(numData)
         }
+
 
         fun getFoodTypeName(data:List<Double>):String{
             if(data.size<6)return "§4不正なデータ"
@@ -136,6 +140,12 @@ class FishFood(var food: ItemStack) {
             }
             return result
         }
+    }
+
+    fun isUnMixable():Boolean{
+        if(!food.itemMeta.persistentDataContainer.has(NamespacedKey(Man10Fishing.instance,"unmixable"), PersistentDataType.INTEGER))return false
+
+        return food.itemMeta.persistentDataContainer.get(NamespacedKey(Man10Fishing.instance,"unmixable"), PersistentDataType.INTEGER)==1
     }
 
     fun getFoodTypeString(): String?{
