@@ -52,6 +52,10 @@ class SynthesizeFishFoodMenu: SInventory("§6§l餌合成", 4, Man10Fishing.inst
 
     fun onClick(): Consumer<InventoryClickEvent> {
         return Consumer<InventoryClickEvent> {
+            if(it.click.isKeyboardClick){
+                it.isCancelled=true
+                return@Consumer
+            }
             if(it.currentItem == null){
                 if(it.clickedInventory?.type==InventoryType.CHEST&&it.slot!=11&&it.slot!=15){
                     it.isCancelled=true
