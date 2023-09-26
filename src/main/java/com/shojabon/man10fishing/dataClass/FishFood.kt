@@ -51,7 +51,7 @@ class FishFood(var food: ItemStack) {
 
 
             val distance= nDimensionDistanceSquared(food1Type.subList(0,5),food2Type.subList(0,5))
-            val multiply=((7.0*distance/1400000.0)+2.0)/3
+            val multiply=((7.0*distance/1400000.0)/3.0)+(3.0/4.0)
             val rawFoodRange=floor(multiply*(food1Type[5]+food2Type[5])/2)
             val foodRange=if(rawFoodRange>500)500.0 else rawFoodRange
 
