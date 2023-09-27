@@ -138,7 +138,7 @@ class Fish (val name: String, val config: ConfigurationSection){
     fun getDetailedItem(parameter:FishParameter):ItemStack{
         val sItem=SItemStack(item.clone())
         val text="§f大きさ: ${parameter.size}cm"+ when(parameter.sizeRank){
-            SizeRank.SMALL-> " §e§lSMALLSIZE!"
+            SizeRank.SMALL-> " §e§lMINISIZE!"
             SizeRank.BIG->" §e§lBIGSIZE!"
             else->""
         }
