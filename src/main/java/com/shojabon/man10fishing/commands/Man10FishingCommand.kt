@@ -5,6 +5,8 @@ import com.shojabon.man10fishing.commands.subCommands.RegisterSpawnLocationComma
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
 import com.shojabon.man10fishing.commands.subCommands.contest.*
+import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodDataCommand
+import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodTableCommand
 import com.shojabon.man10fishing.commands.subCommands.fish.GetFishCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SetMixablityCommand
@@ -192,6 +194,22 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                             FishSellMenu().open(sender)
                             return@setExecutor true
                         }
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("debug")).addArgument(SCommandArgument().addAllowedString("checkFoodTable"))
+                        .addExplanation("餌で釣れやすくなる魚をチェックする")
+                        .addRequiredPermission("man10fishing.debug")
+                        .setExecutor(CheckFoodTableCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("debug")).addArgument(SCommandArgument().addAllowedString("checkFoodData"))
+                        .addExplanation("餌の内部値をチェックする")
+                        .addRequiredPermission("man10fishing.debug")
+                        .setExecutor(CheckFoodDataCommand(plugin))
         )
     }
 

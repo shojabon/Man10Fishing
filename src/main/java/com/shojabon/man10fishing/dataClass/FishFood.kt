@@ -9,8 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
-import kotlin.math.floor
-import kotlin.math.pow
+import kotlin.math.*
 
 class FishFood(var food: ItemStack) {
     companion object {
@@ -51,9 +50,12 @@ class FishFood(var food: ItemStack) {
 
 
             val distance= nDimensionDistanceSquared(food1Type.subList(0,5),food2Type.subList(0,5))
-            val multiply=((7.0*distance/1400000.0)/3.0)+(3.0/4.0)
+            val food1Amount=food1.food.amount.toDouble()
+            val food2Amount=food2.food.amount.toDouble()
+            val amountDif= max(food1Amount/food2Amount,food2Amount/food1Amount)-1
+            val multiply=((log(10.0+(distance/50000.0)*amountDif,10.0)*7.0*distance/1400000.0)/3.0)+(3.0/4.0)
             val rawFoodRange=floor(multiply*(food1Type[5]+food2Type[5])/2)
-            val foodRange=if(rawFoodRange>500)500.0 else rawFoodRange
+            val foodRange=(if(rawFoodRange>1100)1100.0 else rawFoodRange)
 
             result.add(foodRange)
 
@@ -123,11 +125,11 @@ class FishFood(var food: ItemStack) {
             }
 
             when{
-                (data[5]<100)->{lore[6]=lore[6]+"極めて小さい"}
-                (100<=data[5]&&data[5]<200)->{lore[6]=lore[6]+"小さい"}
-                (200<=data[5]&&data[5]<300)->{lore[6]=lore[6]+"普通"}
-                (300<=data[5]&&data[5]<400)->{lore[6]=lore[6]+"大きい"}
-                (400<=data[5])->{lore[6]=lore[6]+"極めて大きい"}
+                (data[5]<150)->{lore[6]=lore[6]+"極めて小さい"}
+                (150<=data[5]&&data[5]<400)->{lore[6]=lore[6]+"小さい"}
+                (400<=data[5]&&data[5]<600)->{lore[6]=lore[6]+"普通"}
+                (600<=data[5]&&data[5]<800)->{lore[6]=lore[6]+"大きい"}
+                (800<=data[5])->{lore[6]=lore[6]+"極めて大きい"}
             }
 
             return lore
