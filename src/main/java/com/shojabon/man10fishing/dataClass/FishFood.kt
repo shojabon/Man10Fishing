@@ -55,7 +55,7 @@ class FishFood(var food: ItemStack) {
             val amountDif= max(food1Amount/food2Amount,food2Amount/food1Amount)-1
             val multiply=((log(10.0+(distance/50000.0)*amountDif,10.0)*7.0*distance/1400000.0)/3.0)+(3.0/4.0)
             val rawFoodRange=floor(multiply*(food1Type[5]+food2Type[5])/2)
-            val foodRange=(if(rawFoodRange>1100)1100.0 else rawFoodRange)
+            val foodRange=(if(rawFoodRange>800)800.0 else rawFoodRange)
 
             result.add(foodRange)
 
@@ -126,10 +126,10 @@ class FishFood(var food: ItemStack) {
 
             when{
                 (data[5]<150)->{lore[6]=lore[6]+"極めて小さい"}
-                (150<=data[5]&&data[5]<400)->{lore[6]=lore[6]+"小さい"}
-                (400<=data[5]&&data[5]<600)->{lore[6]=lore[6]+"普通"}
-                (600<=data[5]&&data[5]<800)->{lore[6]=lore[6]+"大きい"}
-                (800<=data[5])->{lore[6]=lore[6]+"極めて大きい"}
+                (150<=data[5]&&data[5]<300)->{lore[6]=lore[6]+"小さい"}
+                (300<=data[5]&&data[5]<500)->{lore[6]=lore[6]+"普通"}
+                (500<=data[5]&&data[5]<650)->{lore[6]=lore[6]+"大きい"}
+                (650<=data[5])->{lore[6]=lore[6]+"極めて大きい"}
             }
 
             return lore
