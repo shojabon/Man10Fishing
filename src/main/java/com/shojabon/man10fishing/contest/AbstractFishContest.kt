@@ -145,7 +145,7 @@ abstract class AbstractFishContest() {
             time.start()
         }
 
-        useRanking=config.getBoolean("useRanking",false)
+        useRanking=config.getBoolean("useRanking",true)
         if(useRanking){
             displayScoreboardRanking()
         }

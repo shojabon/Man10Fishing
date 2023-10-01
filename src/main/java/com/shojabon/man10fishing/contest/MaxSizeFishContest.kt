@@ -9,6 +9,8 @@ import org.bukkit.boss.BarStyle
 class MaxSizeFishContest: AbstractFishContest() {
 
     private var rewardCommands = HashMap<Int,List<String>>()
+    private var targetFishName="魚"
+    private lateinit var targetFishList:List<String>
 
 
     override fun onStart() {
@@ -17,11 +19,16 @@ class MaxSizeFishContest: AbstractFishContest() {
         config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {
             rewardCommands[it.toIntOrNull()?:return@forEach] = config.getStringList("rewardCommands.$it")
         }
+        targetFishList=config.getStringList("targetFishes")
+        targetFishName=config.getString("targetFishName","魚")!!
 
-        bossBar.setTitle("§e§l最も大きい魚を釣れ！")
+        bossBar.setTitle("§e§l最も大きい${targetFishName}を釣れ！")
     }
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
+
+        if(targetFishList.isNotEmpty() &&!targetFishList.contains(fish.fish.name))return
+
         if(player.allowedCaughtFish.isEmpty()){
             player.addAllowedCaughtFish(fish)
         }
@@ -59,7 +66,7 @@ class MaxSizeFishContest: AbstractFishContest() {
         Thread.sleep(4000)
 
         if (ranking.isEmpty()) {
-            broadCastPlayers("§c§l魚を釣ったプレイヤーはいませんでした")
+            broadCastPlayers("§c§l${targetFishName}を釣ったプレイヤーはいませんでした")
             return
         }
 

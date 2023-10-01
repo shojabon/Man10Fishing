@@ -32,7 +32,7 @@ class CheckFoodTableCommand (var plugin: Man10Fishing) : CommandExecutor {
         for(fish in Man10FishingAPI.fish.values){
             if(fish.foodFactor.rarityMultiplier(fish,1.0F,sender,dummyRod)!=1.0F){
                 count++
-                p.sendMessage("${Man10FishingAPI.rarity[fish.rarity]!!.loreDisplayName}§f${fish.name}:${fish.alias}")
+                p.sendMessage("${Man10FishingAPI.rarity[fish.rarity]?.namePrefix}${fish.alias}:§f${fish.name}:${fish.seasonFactor.seasons.get()}:${fish.areaFactor.areas.get()}")
             }
         }
 
