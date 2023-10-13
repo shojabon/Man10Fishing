@@ -33,7 +33,7 @@ class SizeFactor(fish: Fish) : FishFactor(fish) {
         }
 
         if(gaussiann>1.64)sizeRank=SizeRank.BIG
-        var size=gaussiann*((max-min)/1.97)+(min+max)/2
+        var size=gaussiann*((max-min)/2/1.97)+(min+max)/2
         if(size<=0)size=min
         return Pair(round(size*10) / 10,sizeRank)
     }
