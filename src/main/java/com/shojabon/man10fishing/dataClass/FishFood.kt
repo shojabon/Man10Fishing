@@ -55,7 +55,7 @@ class FishFood(var food: ItemStack) {
             val amountDif= max(food1Amount/food2Amount,food2Amount/food1Amount)-1
             val multiply=((log(10.0+(distance/50000.0)*amountDif,10.0)*7.0*distance/1400000.0)/3.0)+(3.0/4.0)
             val rawFoodRange=floor(multiply*(food1Type[5]+food2Type[5])/2)
-            val foodRange=(if(rawFoodRange>800)800.0 else rawFoodRange)
+            val foodRange=(if(rawFoodRange>800)800.0 else if(rawFoodRange<0) 0.0 else rawFoodRange)
 
             result.add(foodRange)
 
