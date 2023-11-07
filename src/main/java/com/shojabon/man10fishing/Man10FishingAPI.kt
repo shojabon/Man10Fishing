@@ -163,12 +163,12 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         }
     }
 
-    fun getFishingAmount(uuid: UUID, fish: String? = null, rarity: String? = null): Int {
+    fun getFishingAmount(uuid: UUID, fish: String? = null, rarity: String? = null): Long {
         val query = StringBuilder("SELECT COUNT(*) FROM fish_log WHERE uuid = '${uuid}'")
         if(fish != null) query.append(" AND fish = '${fish}'")
         if(rarity != null) query.append(" AND rarity = '${rarity}'")
         val future = Man10Fishing.mysql.futureQuery(query.toString())
-        return future.get()[0].getInt("COUNT(*)")
+        return future.get()[0].getLong("COUNT(*)")
     }
 
     //DB作成
