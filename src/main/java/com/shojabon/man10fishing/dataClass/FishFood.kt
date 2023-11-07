@@ -6,6 +6,7 @@ import com.shojabon.mcutils.Utils.BaseUtils
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
+import org.bukkit.Color
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -108,6 +109,25 @@ class FishFood(var food: ItemStack) {
             val numData= mutableListOf<Double>()
             data.forEach { numData.add(it.toDoubleOrNull()?:return listOf("§4不正なデータ")) }
             return getFoodTypeLore(numData)
+        }
+
+        fun getColor(data:List<Double>):Color{
+
+            val tasteData=data.subList(0,5)
+
+            val sum=tasteData.sum()
+
+            if(sum<-1750)return Color.GRAY
+            if(sum>1750)return Color.BLACK
+            val max=tasteData.maxOrNull()?:0.0
+            return when(tasteData.indexOf(max)) {
+                0 -> Color.MAROON
+                1 -> Color.YELLOW
+                2 -> Color.ORANGE
+                3 -> Color.GREEN
+                4 -> Color.SILVER
+                else -> Color.WHITE
+            }
         }
 
         fun getFoodTypeLore(data: List<Double>):List<String>{

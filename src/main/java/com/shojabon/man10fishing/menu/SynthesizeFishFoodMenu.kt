@@ -7,10 +7,12 @@ import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
+import org.bukkit.FireworkEffect
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.FireworkEffectMeta
 import java.util.function.Consumer
 
 
@@ -87,8 +89,14 @@ class SynthesizeFishFoodMenu: SInventory("§6§l餌合成", 4, Man10Fishing.inst
 
         val item = SItemStack(Material.FIREWORK_STAR).setLore(lore).setDisplayName(name).setCustomModelData(0)
         item.amount = this.getFinalAmount(food1, food2)
+        val foodItem=item.build()
+        val meta=foodItem.itemMeta as FireworkEffectMeta
+        meta.effect=FireworkEffect.builder().withColor(FishFood.getColor(mixedType)).build()
+        foodItem.itemMeta = meta
 
-        val result = FishFood(item.build())
+        val result = FishFood(foodItem)
+
+
 
         result.setFoodTypeList(mixedType)
 
