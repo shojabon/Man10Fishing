@@ -60,11 +60,10 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             //////////////
             //宝箱を釣った場合
             if(java.util.Random().nextDouble()<Man10Fishing.probOfTreasure) {
-                e.player.sendMessage("aaa")
                 val pickedTreasure=Man10Fishing.api.pickTreasure(e.player,e.hook.location)?:return
 
 
-                e.player.sendMessage("aaai")
+                (e.caught as Item).itemStack=ItemStack(Material.AIR)
                 TreasureBoxMenu(e.player,pickedTreasure).open(e.player)
             }
             //
