@@ -54,12 +54,13 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
                 .setDisplayName(if (itemIndex.showFishName) "${rarity.namePrefix}${fishData.value.alias}" else "$index").build()).clickable(false))
         }
 
-        for (fishdex in fishdexList.entries.sortedBy { getFishIndex(it.value.first()) }){
-            if (fishdex.value.firstOrNull()?.loaded == false)continue
-            val oneData = fishdex.value.maxByOrNull { it.size }!!
-            oneData.dateTime = fishdex.value.minByOrNull { it.dateTime }!!.dateTime
+        for ((index, fishName) in fish.withIndex()) {
+            if (!fishdexList.containsKey(fishName)) continue
+            val fishdex = fishdexList[fishName]!!
+            if (fishdex.isEmpty()) continue
+            val oneData = fishdex.maxByOrNull { it.size }!!
+            oneData.dateTime = fishdex.minByOrNull { it.dateTime }!!.dateTime
             val item = (oneData.generateIndexItem()?.clickable(false)?:continue).setEvent { changeMoreInfoItem(it.slot,oneData) }
-            val index = getFishIndex(oneData)
             items[index] = item
         }
 
