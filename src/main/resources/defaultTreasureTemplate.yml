@@ -1,0 +1,15 @@
+garbage:
+  alias: "§aゴミ"
+  item:
+    material: DIAMOND
+    lore:
+      - "開発時に作られた謎のお宝"
+    customModelData: 1
+
+garbage2:
+  alias: "§cテスト用だよ"
+  item:
+    material: DIAMOND
+    lore:
+      - "開発時に作られた謎すぎるお宝"
+    customModelData: 2

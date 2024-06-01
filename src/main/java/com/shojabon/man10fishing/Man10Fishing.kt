@@ -10,15 +10,18 @@ import com.shojabon.man10fishing.scheduler.SchedulerManager
 import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SInventory.SInventory
-import com.shojabon.mcutils.Utils.SLongTextInput
 import com.shojabon.mcutils.Utils.VaultAPI
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.util.UUID
+import kotlin.properties.Delegates
 
 class Man10Fishing : JavaPlugin() {
+
 
     companion object{
         lateinit var api: Man10FishingAPI
@@ -27,7 +30,9 @@ class Man10Fishing : JavaPlugin() {
         lateinit var instance : Man10Fishing
         lateinit var foodConfig : ConfigurationSection
         var foodInRangeMultiplier: Int = 1
+        var probOfTreasure=0.0
         lateinit var prefix: String
+        var playerAlert=""
 
         var nowContest : AbstractFishContest? = null
 
@@ -37,6 +42,14 @@ class Man10Fishing : JavaPlugin() {
         var regionContainer : RegionContainer? = null
 
         val spawnPoints=HashMap<Season, Location>()
+
+        val playersOpeningTreasure=ArrayList<Player>()
+        lateinit var treasureArea: List<String>
+
+
+        val fishers=HashMap<String,UUID>()
+        val fisherWithBiteRod=HashMap<UUID,Long>()
+        var biteTime by Delegates.notNull<Long>()
     }
 
     fun loadConfig(){
@@ -45,7 +58,11 @@ class Man10Fishing : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
         Bukkit.getPluginManager().registerEvents(ItemIndexListener(), this)
         foodInRangeMultiplier = config.getInt("foodInRangeMultiplier")
+        probOfTreasure=config.getDouble("probabilityOfTreasure",0.0)
+        treasureArea=config.getStringList("treasureArea")
+        playerAlert=config.getString("playerAlert","")!!
         prefix = config.getString("prefix")!!
+        biteTime=config.getLong("biteTime",500)
 
         if(!File(dataFolder.toString() + File.separator + "foodConfig.yml").exists()){
             SConfigFile(this).saveResource("foodConfig.yml", dataFolder.toString() + File.separator + "foodConfig.yml")

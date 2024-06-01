@@ -4,9 +4,12 @@ import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishRarity
 import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.dataClass.enums.Season
+import com.shojabon.man10fishing.dataClass.treasure.Treasure
+import com.shojabon.man10fishing.dataClass.treasure.TreasureTable
 import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.scheduler.FishingScheduler
 import com.shojabon.mcutils.Utils.SConfigFile
+import com.sk89q.worldedit.bukkit.BukkitAdapter
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -21,15 +24,21 @@ import kotlin.random.Random
 
 class Man10FishingAPI(private val plugin: Man10Fishing) {
 
+
     companion object {
         val rarity = HashMap<String, FishRarity>()
         val fish = HashMap<String, Fish>()
         val broadcastRarity=ArrayList<FishRarity>()
+
+        val treasure=HashMap<String,Treasure>()
+        val treasureTables=HashMap<String, TreasureTable>()
     }
 
     init {
         loadRarity()
         loadFish()
+        loadTreasures()
+        loadTreasureTables()
     }
 
     //　=========  コンフィグロード系統　=========
@@ -133,6 +142,56 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         }
         return result
     }
+
+    private fun loadTreasures(){
+        treasure.clear()
+        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.toString() + File.separator + "treasure")){
+            val config = SConfigFile.getConfigFile(file.path)?: continue
+            for(key in config.getKeys(false)){
+                treasure[key]=Treasure(key,config.getConfigurationSection(key)!!)
+            }
+        }
+    }
+
+    private fun loadTreasureTables(){
+        treasureTables.clear()
+
+        val tmpTable=HashMap<String,TreasureTable>()
+
+        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.toString() + File.separator + "treasureTable")){
+            val config = SConfigFile.getConfigFile(file.path)?: continue
+            for(key in config.getKeys(false)){
+                tmpTable[key]=TreasureTable(key,config.getConfigurationSection(key)!!)
+            }
+        }
+
+        treasureTables.putAll(
+                tmpTable.toList().sortedBy { it.second.priority }.toMap()
+        )
+
+    }
+
+    fun pickTreasure(fisher: Player,hookLocation: Location):Treasure?{
+
+        var broken=false
+        for(region in Man10Fishing.regionContainer!![BukkitAdapter.adapt(fisher.world)]!!.regions) {
+            Man10Fishing.treasureArea.forEach {
+                if(region.key.startsWith(it)&&region.value.contains(BukkitAdapter.asBlockVector(hookLocation))){
+                    broken=true
+                    return@forEach
+                }
+            }
+            if(broken)break
+        }
+        if(!broken)return null
+
+        treasureTables.values.forEach {
+            if(it.hasPermission(fisher))return it.getTreasure()
+        }
+
+        return null
+    }
+
 
     //contest一覧取得
     fun getContestList(): ArrayList<String>{

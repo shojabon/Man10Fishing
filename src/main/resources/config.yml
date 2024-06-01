@@ -36,6 +36,24 @@ rarity:
 
 foodInRangeMultiplier: 100
 
+treasureArea:
+  - sea
+  - river
+  - pond
+treasureIcons:
+  GOLD:
+    material: STONE_HOE
+    name: "§e§l金の宝箱"
+    customModelData: 28
+  SILVER:
+    material: STONE_HOE
+    name: "§7銀の宝箱"
+    customModelData: 27
+  WOODEN:
+    material: STONE_HOE
+    name: "§6木の宝箱"
+    customModelData: 26
+
 mysql:
   host: localhost
   port: 3306

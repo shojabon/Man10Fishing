@@ -1,0 +1,5 @@
+beginner:
+  permission: "mfish.beginner"
+  treasures:
+    garbage: 2
+    garbage2: 1
