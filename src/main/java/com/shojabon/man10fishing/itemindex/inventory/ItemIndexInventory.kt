@@ -54,11 +54,12 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
                 .setDisplayName(if (itemIndex.showFishName) "${rarity.namePrefix}${fishData.value.alias}" else "$index").build()).clickable(false))
         }
 
-        for ((index, fishdex) in fishdexList.entries.sortedBy { getFishIndex(it.value.first()) }.withIndex()){
+        for (fishdex in fishdexList.entries.sortedBy { getFishIndex(it.value.first()) }){
             if (fishdex.value.firstOrNull()?.loaded == false)continue
             val oneData = fishdex.value.maxByOrNull { it.size }!!
             oneData.dateTime = fishdex.value.minByOrNull { it.dateTime }!!.dateTime
             val item = (oneData.generateIndexItem()?.clickable(false)?:continue).setEvent { changeMoreInfoItem(it.slot,oneData) }
+            val index = getFishIndex(oneData)
             items[index] = item
         }
 
@@ -66,7 +67,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
             completed = true
         }
 
-        Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.BLOCK_CHEST_OPEN,1f,2f) }
+        Bukkit.getPlayer(uuid)?.let { it.playSound(it.location, Sound.BLOCK_CHEST_OPEN, 1f, 1f) }
         setItems(items)
 
         setOnCloseEvent {
