@@ -211,6 +211,16 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10fishing.debug")
                         .setExecutor(CheckFoodDataCommand(plugin))
         )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("treasure"))
+                        .addArgument(SCommandArgument().addAllowedString("get"))
+                        .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING))
+                        .addRequiredPermission("man10fishing.treasure.get")
+                        .addExplanation("お宝を取得する")
+                        .setExecutor(GetFishCommand(plugin))
+        )
     }
 
     init {
