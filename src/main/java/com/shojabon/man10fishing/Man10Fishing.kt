@@ -52,11 +52,14 @@ class Man10Fishing : JavaPlugin() {
         var biteTime by Delegates.notNull<Long>()
     }
 
+    private fun registerEvents(){
+        Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
+        Bukkit.getPluginManager().registerEvents(ItemIndexListener(), this)
+    }
+
     fun loadConfig(){
         val file = File(dataFolder.toString() + File.separator + "fish" + File.separator)
         file.mkdir()
-        Bukkit.getPluginManager().registerEvents(Man10FishingListener(this), this)
-        Bukkit.getPluginManager().registerEvents(ItemIndexListener(), this)
         foodInRangeMultiplier = config.getInt("foodInRangeMultiplier")
         probOfTreasure=config.getDouble("probabilityOfTreasure",0.0)
         treasureArea=config.getStringList("treasureArea")
@@ -98,6 +101,7 @@ class Man10Fishing : JavaPlugin() {
         api.createTables()
 
         loadConfig()
+        registerEvents()
 
 
         schedulerManager = SchedulerManager()
