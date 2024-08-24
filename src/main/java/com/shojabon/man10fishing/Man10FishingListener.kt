@@ -45,7 +45,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             e.caught ?: return
 
 
-            if (Man10Fishing.playersOpeningTreasure.contains(e.player)) plugin.logger.log(Level.WARNING, Man10Fishing.playerAlert)
+            if (Man10Fishing.playersOpeningTreasure.contains(e.player)) plugin.logger.log(Level.WARNING, "${e.player.name}${Man10Fishing.playerAlert}")
 
 //            if (Man10Fishing.fishers[e.player.address.address.hostAddress] != e.player.uniqueId) {
 //                return
