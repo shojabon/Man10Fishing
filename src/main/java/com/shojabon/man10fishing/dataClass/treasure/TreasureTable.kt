@@ -35,8 +35,6 @@ class TreasureTable(val key:String,configurationSection: ConfigurationSection) {
             totalWeight+=it
         }
 
-//        chanceTable.entries.sortedBy { it.value }.toHashSet()
-
 
     }
 
