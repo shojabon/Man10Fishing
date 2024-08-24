@@ -12,6 +12,7 @@ import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SetMixablityCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
+import com.shojabon.man10fishing.commands.subCommands.treasure.GetTreasureCommand
 import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.itemindex.inventory.CreateItemIndex
 import com.shojabon.man10fishing.itemindex.inventory.ItemIndexCategory
@@ -219,7 +220,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING))
                         .addRequiredPermission("man10fishing.treasure.get")
                         .addExplanation("お宝を取得する")
-                        .setExecutor(GetFishCommand(plugin))
+                        .setExecutor(GetTreasureCommand(plugin))
         )
     }
 
