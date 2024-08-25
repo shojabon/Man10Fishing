@@ -39,7 +39,7 @@ class FishingScheduler {
             if (it.dayOfTheWeek != null && it.dayOfTheWeek!!.int != now.get(Calendar.DAY_OF_WEEK)){
                 return@forEach
             }
-            if(!it.seasons.contains(Man10Fishing.api.getCurrentSeason())){
+            if(!it.seasons.contains(Season.ALL)&&!it.seasons.contains(Man10Fishing.api.getCurrentSeason())){
                 return@forEach
             }
 
@@ -76,7 +76,7 @@ class FishingScheduler {
                 }catch (e:Exception){
                     Man10Fishing.instance.logger.log(Level.WARNING, "${name}でエラー:${strSeason}は存在しません")
                 }
-            }
+            }?: kotlin.run { seasons.add(Season.ALL) }
 
             val configTime = config["time"] as? String
             if (configTime != null) {
