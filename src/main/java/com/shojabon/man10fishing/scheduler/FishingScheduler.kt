@@ -3,6 +3,7 @@ package com.shojabon.man10fishing.scheduler
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.contest.AbstractFishContest
 import com.shojabon.man10fishing.contest.FishContestPlayer
+import com.shojabon.man10fishing.dataClass.enums.Season
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Server
@@ -10,6 +11,7 @@ import org.bukkit.Sound
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.*
+import java.util.logging.Level
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -37,6 +39,10 @@ class FishingScheduler {
             if (it.dayOfTheWeek != null && it.dayOfTheWeek!!.int != now.get(Calendar.DAY_OF_WEEK)){
                 return@forEach
             }
+            if(!it.seasons.contains(Man10Fishing.api.getCurrentSeason())){
+                return@forEach
+            }
+
 
             it.actions.forEach { action ->
                 action.invoke()
@@ -53,6 +59,7 @@ class FishingScheduler {
         var minute: Int? = null
         var name: String? = null
         val actions = ArrayList<Action>()
+        val seasons=ArrayList<Season>()
 
         fun setConfig(config: Map<*, *>): Timing {
             dayOfTheWeek = DayOfTheWeek.getDayOfTheWeek(config["dayOfTheWeek"] as? String)
@@ -62,6 +69,14 @@ class FishingScheduler {
             week = config["week"] as? Int
 
             day = config["day"] as? Int
+
+            (config["season"] as? String)?.split(",")?.forEach { strSeason ->
+                try {
+                    seasons.add(Season.valueOf(strSeason.toUpperCase()))
+                }catch (e:Exception){
+                    Man10Fishing.instance.logger.log(Level.WARNING, "${name}でエラー:${strSeason}は存在しません")
+                }
+            }
 
             val configTime = config["time"] as? String
             if (configTime != null) {
