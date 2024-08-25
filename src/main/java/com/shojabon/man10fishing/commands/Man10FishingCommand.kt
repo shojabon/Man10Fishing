@@ -7,6 +7,7 @@ import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
 import com.shojabon.man10fishing.commands.subCommands.contest.*
 import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodDataCommand
 import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodTableCommand
+import com.shojabon.man10fishing.commands.subCommands.debug.FillAllItemIndexCommand
 import com.shojabon.man10fishing.commands.subCommands.fish.GetFishCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SetMixablityCommand
@@ -221,6 +222,14 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10fishing.treasure.get")
                         .addExplanation("お宝を取得する")
                         .setExecutor(GetTreasureCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("debug")).addArgument(SCommandArgument().addAllowedString("fillAllItemIndex"))
+                        .addExplanation("全ての魚の図鑑を埋める")
+                        .addRequiredPermission("man10fishing.debug")
+                        .setExecutor(FillAllItemIndexCommand(plugin))
         )
     }
 

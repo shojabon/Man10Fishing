@@ -16,9 +16,11 @@ import java.text.SimpleDateFormat
 class LoggingFactor(fish : Fish) : FishFactor(fish) {
 
     override fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {
-        if (!Man10Fishing.mysql.execute("insert into fish_log (fish, rarity, date_time, name, uuid, size) VALUES " +
-                    "('${fish.name}', '${fish.rarity}', '${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(parameter.dateTime)}', '${fisher.name}', '${fisher.uniqueId}', ${parameter.size})")){
-            fisher.sendMessage(Man10Fishing.prefix + "§4データベースエラー。 運営に報告してください save log error.")
+        Man10Fishing.mysql.asyncExecute("insert into fish_log (fish, rarity, date_time, name, uuid, size) VALUES " +
+                "('${fish.name}', '${fish.rarity}', '${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(parameter.dateTime)}', '${fisher.name}', '${fisher.uniqueId}', ${parameter.size})") {
+            if (!it) {
+                fisher.sendMessage(Man10Fishing.prefix + "§4データベースエラー。 運営に報告してください save log error.")
+            }
         }
     }
 }
