@@ -168,6 +168,7 @@ class FishingScheduler {
                     return try {
                         ActionEnum.valueOf((string?:return null).toUpperCase())
                     } catch (e: Exception){
+                        Man10Fishing.instance.logger.warning("${Man10Fishing.prefix}§c${string}は有効なアクションではありません。")
                         null
                     }
                 }

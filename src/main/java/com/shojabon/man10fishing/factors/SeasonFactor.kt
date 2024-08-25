@@ -24,8 +24,8 @@ import org.bukkit.entity.Player
     例
     season:
     - AUTUMN
-    使えるものは[SPRING,SUMMER,AUTUMN,WINTER]
-    それ以外の文字列を入れると全ての季節で釣れるようになる
+    使えるものは[SPRING,SUMMER,AUTUMN,WINTER,ALL]
+    未指定だとALL
     日曜日〜土曜日を１週間とした
  */
 class SeasonFactor(fish: Fish) : FishFactor(fish) {
@@ -46,7 +46,7 @@ class SeasonFactor(fish: Fish) : FishFactor(fish) {
 
 
     private fun checkSeason(strSeason:String,current:Season):Boolean{
-        val season=Season.valueOf(strSeason.toUpperCase())
+        val season=Season.stringToSeason(strSeason)
         return season==Season.ALL||season==current
     }
 }

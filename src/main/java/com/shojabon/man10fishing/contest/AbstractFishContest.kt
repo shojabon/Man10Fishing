@@ -47,7 +47,7 @@ abstract class AbstractFishContest() {
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
         config.getString("season")?.split(",")?.forEach {
-            seasons.add(Season.valueOf(it.toUpperCase()))
+            seasons.add(Season.stringToSeason(it))
         }?: kotlin.run { seasons.add(Season.ALL) }
         return this
     }
