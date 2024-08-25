@@ -3,6 +3,7 @@ package com.shojabon.man10fishing.contest
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.dataClass.FishParameter
+import com.shojabon.man10fishing.dataClass.enums.Season
 import com.shojabon.mcutils.Utils.STimer
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
@@ -31,6 +32,9 @@ abstract class AbstractFishContest() {
     //コンフィグ
     protected lateinit var config: YamlConfiguration
 
+    //対応する季節
+    val seasons=ArrayList<Season>()
+
     //コンテスト表示用のボスバー
     val bossBar=Bukkit.createBossBar("§e§l魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
 
@@ -42,6 +46,9 @@ abstract class AbstractFishContest() {
 
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
+        config.getString("season")?.split(",")?.forEach {
+            seasons.add(Season.valueOf(it.toUpperCase()))
+        }?: kotlin.run { seasons.add(Season.ALL) }
         return this
     }
 
