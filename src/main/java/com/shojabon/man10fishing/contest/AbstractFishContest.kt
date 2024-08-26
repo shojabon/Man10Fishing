@@ -59,7 +59,7 @@ abstract class AbstractFishContest() {
     //データの変動があったプレイヤーを指定し、ランキングを更新する
     //ランキングシステムを使う場合はconfigのuseRankingをtrueにする
     //可読性はお察し
-    private fun updateRanking(player: FishContestPlayer){
+    fun updateRanking(player: FishContestPlayer){
 
         //ランキングに上限人数未満のプレイヤーしか登録されていない場合
         if(ranking.size<rankingSize&&!ranking.containsValue(player)){
@@ -204,9 +204,9 @@ abstract class AbstractFishContest() {
         Man10Fishing.nowContest = null
         Thread{
             onEnd()
+            executeRewardCommands()
         }.start()
         bossBar.removeAll()
-        executeRewardCommands()
         if(useRanking){
             Bukkit.getScheduler().runTask(Man10Fishing.instance, Runnable {
                 val scoreboard=Bukkit.getScoreboardManager().newScoreboard
@@ -223,11 +223,11 @@ abstract class AbstractFishContest() {
         if (!players.containsKey(player.uniqueId))return
         val contestPlayer =players[player.uniqueId]!!
         contestPlayer.caughtFish.add(fish)
+        onCaughtFish(contestPlayer,fish)
         updateRanking(contestPlayer)
         if(useRanking){
             displayScoreboardRanking()
         }
-        onCaughtFish(contestPlayer,fish)
     }
 
     //プレイヤー全員にメッセージを送信する
