@@ -28,6 +28,8 @@ abstract class AbstractFishContest() {
     //コンフィグ
     protected lateinit var config: YamlConfiguration
 
+    val rewardCommands=HashMap<String,List<String>>()
+
     //対応する季節
 //    val seasons=ArrayList<Season>()
 
@@ -42,9 +44,6 @@ abstract class AbstractFishContest() {
 
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
-//        config.getString("season")?.split(",")?.forEach {
-//            seasons.add(Season.stringToSeason(it))
-//        }?: kotlin.run { seasons.add(Season.ALL) }
         return this
     }
 
@@ -65,7 +64,7 @@ abstract class AbstractFishContest() {
         //ランキングに上限人数未満のプレイヤーしか登録されていない場合
         if(ranking.size<rankingSize&&!ranking.containsValue(player)){
             ranking[ranking.size + 1] = player
-            broadCastPlayers("§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
+            if(useRanking)broadCastPlayers("§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
             return
 
         }
@@ -94,7 +93,7 @@ abstract class AbstractFishContest() {
                 }
                 ranking[i+1]=player
 
-                broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
+                if(useRanking)broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
                 return
             }
         }
@@ -106,7 +105,34 @@ abstract class AbstractFishContest() {
             ranking[i] = ranking[i - 1]!!
         }
         ranking[1]=player
-        broadCastPlayers("§fランキング更新§e§l：§c${player.name}§aが§e1位§aにランクイン!")
+        if(useRanking)broadCastPlayers("§fランキング更新§e§l：§c${player.name}§aが§e1位§aにランクイン!")
+    }
+
+    private fun executeRewardCommands(){
+        rewardCommands.forEach { (t, u) ->
+            if(t!="all"){
+                val num=t.toInt()
+                ranking[num]?.let { player->
+                    u.forEach{
+                        dispatchCommand(applyAdditionalPlaceHolder(applyPlaceHolder(it,player),player))
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun applyPlaceHolder(str:String,contestPlayer: FishContestPlayer):String{
+        return str
+                .replace("<player>",contestPlayer.name)
+                .replace("<uuid>", contestPlayer.uuid.toString())
+                .replace("<count>", contestPlayer.allowedCaughtFish.size.toString())
+                .replace("<and>", "&")
+    }
+
+    //
+    protected open fun applyAdditionalPlaceHolder(str:String,contestPayer: FishContestPlayer):String{
+        return str
     }
 
     //順位の定義
@@ -157,6 +183,11 @@ abstract class AbstractFishContest() {
             val player=Bukkit.getPlayer(it)?:return@forEach
             bossBar.addPlayer(player)
         }
+
+        //rewardコマンド読み込み
+        config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {
+            rewardCommands[it] = config.getStringList("rewardCommands.$it")
+        }
         time.linkBossBar(bossBar, true)
     }
 
@@ -168,6 +199,7 @@ abstract class AbstractFishContest() {
             onEnd()
         }.start()
         bossBar.removeAll()
+        executeRewardCommands()
         if(useRanking){
             Bukkit.getScheduler().runTask(Man10Fishing.instance, Runnable {
                 val scoreboard=Bukkit.getScoreboardManager().newScoreboard
@@ -184,11 +216,11 @@ abstract class AbstractFishContest() {
         if (!players.containsKey(player.uniqueId))return
         val contestPlayer =players[player.uniqueId]!!
         contestPlayer.caughtFish.add(fish)
-        onCaughtFish(contestPlayer,fish)
+        updateRanking(contestPlayer)
         if(useRanking){
-            updateRanking(contestPlayer)
             displayScoreboardRanking()
         }
+        onCaughtFish(contestPlayer,fish)
     }
 
     //プレイヤー全員にメッセージを送信する

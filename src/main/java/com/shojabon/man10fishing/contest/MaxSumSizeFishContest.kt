@@ -11,7 +11,6 @@ class MaxSumSizeFishContest:AbstractFishContest() {
     //configからとるもの
     private lateinit var targetFishList:List<String>
     private var targetFishName="魚"
-    private var rewardCommands = HashMap<Int,List<String>>()
 
 
     private var winner: Player?=null
@@ -33,9 +32,6 @@ class MaxSumSizeFishContest:AbstractFishContest() {
         targetFishName=config.getString("targetFishName","魚")!!
         rankingSize=config.getInt("rankingSize",10)
 
-        config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {
-            rewardCommands[it.toInt()] = config.getStringList("rewardCommands.$it")
-        }
 
         bossBar.setTitle("§e§l大きな§c§l${targetFishName}§e§lをたくさん釣れ！")
 
@@ -57,18 +53,12 @@ class MaxSumSizeFishContest:AbstractFishContest() {
 
         ranking.forEach { (t, u) ->
             broadCastPlayers("§a${t}位: §e${u.name}§7:§b${u.allowedCaughtFish.size}匹")
-            val player = Bukkit.getPlayer(u.uuid)?:return@forEach
-            if(!rewardCommands.containsKey(t))return@forEach
-            rewardCommands[t]?.forEach {
-                dispatchCommand(it.replace("&", "§")
-                        .replace("<name>", player.name)
-                        .replace("<uuid>", player.uniqueId.toString())
-                        .replace("<count>", u.allowedCaughtFish.size.toString())
-                        .replace("<world>", player.world.name)
-                        .replace("<and>", "&"))
-            }
         }
 
+    }
+
+    override fun applyAdditionalPlaceHolder(str: String, contestPayer: FishContestPlayer): String {
+        return str.replace("<count>",contestPayer.allowedCaughtFish.size.toString())
     }
 
 

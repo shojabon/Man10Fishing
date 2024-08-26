@@ -13,8 +13,6 @@ class FastFishingContest:AbstractFishContest() {
     private var targetFishName=""
     private var targetFishAmount=1
     private var winningPlayerLimit=3
-    //rewardCommandsの名前はここだけ変えた方が良いかもしれない
-    private var rewardCommands:List<String>?=null
 
 
     private var winner:Player?=null
@@ -37,7 +35,6 @@ class FastFishingContest:AbstractFishContest() {
         targetFishName= config.getString("targetFishName","魚")!!
         targetFishAmount=config.getInt("amount",1)
         winningPlayerLimit=config.getInt("winnerPlayerLimit", 3)
-        rewardCommands=config.getStringList("rewardCommands")
 
         bossBar.setTitle("§e§l一番はじめに§c§l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！")
 
@@ -58,12 +55,6 @@ class FastFishingContest:AbstractFishContest() {
         broadCastPlayers("§c§l達成者：§e${winner!!.name}")
         Thread.sleep(1000)
         broadCastPlayers("§c§lおめでとうございます!!")
-        rewardCommands?.forEach {
-            dispatchCommand(it
-                    .replace("<player>",winner!!.name)
-                    .replace("<uuid>",winner!!.uniqueId.toString())
-                    .replace("<world>",winner!!.world.name))
-        }
     }
 
     override fun rankingLowerPrefix(player: FishContestPlayer): String {

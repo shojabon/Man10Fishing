@@ -6,7 +6,6 @@ import org.bukkit.Bukkit
 
 class MaxSizeFishContest: AbstractFishContest() {
 
-    private var rewardCommands = HashMap<Int,List<String>>()
     private var targetFishName="魚"
     private lateinit var targetFishList:List<String>
 
@@ -14,9 +13,6 @@ class MaxSizeFishContest: AbstractFishContest() {
     override fun onStart() {
         time.setRemainingTime(config.getInt("time", 60))
         rankingSize = config.getInt("winnerPlayerLimit", 3)
-        config.getConfigurationSection("rewardCommands")?.getKeys(false)?.forEach {
-            rewardCommands[it.toIntOrNull()?:return@forEach] = config.getStringList("rewardCommands.$it")
-        }
         targetFishList=config.getStringList("targetFishes")
         targetFishName=config.getString("targetFishName","魚")!!
 
@@ -77,18 +73,12 @@ class MaxSizeFishContest: AbstractFishContest() {
             broadCastPlayers("§a${i}位: §e${data.name}§7:" +
                     "§b${fish.fish.alias}" +
                     "§d(${fish.size}cm)")
-            val commands = rewardCommands[i]?:return@forEach
-            val player = Bukkit.getPlayer(data.uuid)?:return@forEach
-            commands.forEach {
-                dispatchCommand(it
-                    .replace("&", "§")
-                    .replace("<name>", data.name)
-                    .replace("<uuid>", data.uuid.toString())
-                    .replace("<fish>", fish.name)
-                    .replace("<size>", fish.size.toString())
-                    .replace("<world>", player.world.name)
-                    .replace("<and>", "&"))
-            }
         }
+    }
+
+    override fun applyAdditionalPlaceHolder(str: String, contestPayer: FishContestPlayer): String {
+        val fish=contestPayer.getMaxSizeFish()
+        return str.replace("<fish>",fish?.name?:"")
+                .replace("<size>",fish?.size?.toString()?:"")
     }
 }
