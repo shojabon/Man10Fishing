@@ -118,10 +118,17 @@ abstract class AbstractFishContest() {
                     }
                 }
             }
+            if(t=="all"){
+                rewardCommands[t]?.forEach { str ->
+                    players.values.forEach { player ->
+                        dispatchCommand(applyAdditionalPlaceHolder(applyPlaceHolder(str, player), player))
+                    }
+                }
+            }
         }
     }
 
-
+    //全てのイベントで共通のplaceholder
     private fun applyPlaceHolder(str:String,contestPlayer: FishContestPlayer):String{
         return str
                 .replace("<player>",contestPlayer.name)
