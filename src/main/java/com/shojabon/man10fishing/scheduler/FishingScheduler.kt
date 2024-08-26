@@ -3,7 +3,7 @@ package com.shojabon.man10fishing.scheduler
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.contest.AbstractFishContest
-import com.shojabon.man10fishing.contest.FishContestPlayer
+import com.shojabon.man10fishing.contest.data.FishContestPlayer
 import com.shojabon.man10fishing.dataClass.enums.Season
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit

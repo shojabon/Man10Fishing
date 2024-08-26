@@ -1,9 +1,8 @@
 package com.shojabon.man10fishing.contest
 
+import com.shojabon.man10fishing.contest.data.FishContestPlayer
 import com.shojabon.man10fishing.dataClass.FishParameter
 import org.bukkit.Bukkit
-import org.bukkit.boss.BarColor
-import org.bukkit.boss.BarStyle
 
 /*
 
@@ -76,7 +75,7 @@ class MaxAmountFishContest:AbstractFishContest() {
         }
     }
 
-    override fun rankingDefinition(lowerPlayer:FishContestPlayer,higherPlayer:FishContestPlayer):Boolean{
+    override fun rankingDefinition(lowerPlayer: FishContestPlayer, higherPlayer: FishContestPlayer):Boolean{
         return lowerPlayer.allowedCaughtFish.size<=higherPlayer.allowedCaughtFish.size
     }
 

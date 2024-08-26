@@ -1,4 +1,4 @@
-package com.shojabon.man10fishing.contest
+package com.shojabon.man10fishing.contest.data
 
 import com.shojabon.man10fishing.dataClass.FishParameter
 import java.util.UUID

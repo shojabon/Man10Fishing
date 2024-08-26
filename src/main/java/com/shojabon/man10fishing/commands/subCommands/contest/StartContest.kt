@@ -2,7 +2,7 @@ package com.shojabon.man10fishing.commands.subCommands.contest
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.contest.AbstractFishContest
-import com.shojabon.man10fishing.contest.FishContestPlayer
+import com.shojabon.man10fishing.contest.data.FishContestPlayer
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor

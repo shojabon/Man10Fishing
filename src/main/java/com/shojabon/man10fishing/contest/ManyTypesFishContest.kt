@@ -1,5 +1,6 @@
 package com.shojabon.man10fishing.contest
 
+import com.shojabon.man10fishing.contest.data.FishContestPlayer
 import com.shojabon.man10fishing.dataClass.FishParameter
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player

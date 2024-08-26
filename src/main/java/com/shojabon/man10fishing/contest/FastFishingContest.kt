@@ -1,12 +1,9 @@
 package com.shojabon.man10fishing.contest
 
+import com.shojabon.man10fishing.contest.data.FishContestPlayer
 import com.shojabon.man10fishing.dataClass.FishParameter
 import org.bukkit.Bukkit
-import org.bukkit.boss.BarColor
-import org.bukkit.boss.BarStyle
 import org.bukkit.entity.Player
-import java.util.*
-import kotlin.collections.HashMap
 
 class FastFishingContest:AbstractFishContest() {
 
