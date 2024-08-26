@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.scheduler
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.contest.AbstractFishContest
 import com.shojabon.man10fishing.contest.FishContestPlayer
 import com.shojabon.man10fishing.dataClass.enums.Season
@@ -153,6 +154,14 @@ class FishingScheduler {
                             Action(actionType,actionValue).invoke()
                         }
                     }
+                    ActionEnum.RANDOM_START_CONTEST_IN_CATEGORY->{
+                        val categories=(actionValue as String).split(",")
+                        var contests= Man10FishingAPI.seasonContests[Man10Fishing.api.getCurrentSeason()]!!.toSet()
+                        categories.forEach {
+                            contests=contests.intersect((Man10FishingAPI.categorizedContests[it]?: emptySet()).toSet())
+                        }
+                        startContest(contests.random())
+                    }
                 }
             }
         }
@@ -161,6 +170,7 @@ class FishingScheduler {
             START_CONTEST,
             MESSAGE,
             PLAY_SOUND,
+            RANDOM_START_CONTEST_IN_CATEGORY,
             RANDOM;
 
             companion object{

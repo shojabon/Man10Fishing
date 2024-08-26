@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack
 import java.util.Date
 import java.util.UUID
 import java.util.logging.Level
+import kotlin.math.min
 
 class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
@@ -55,7 +56,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         e.player.sendMessage((Date().time-(Man10Fishing.fisherWithBiteRod[e.player.uniqueId]?:0L)).toString())
 
         //魚釣り成功
-        if(Date().time-(Man10Fishing.fisherWithBiteRod[e.player.uniqueId]?:0L)<=Man10Fishing.biteTime) {
+        //ブレが小さいほど釣り成功の受付時間UP
+        if(Date().time-(Man10Fishing.fisherWithBiteRod[e.player.uniqueId]?:0L)<=Man10Fishing.biteTime*(2-min(rodItem.currentFood[5]/500.0,1.0))) {
 
             //////////////
             //宝箱を釣った場合

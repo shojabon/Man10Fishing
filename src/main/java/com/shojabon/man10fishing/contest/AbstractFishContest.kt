@@ -33,7 +33,7 @@ abstract class AbstractFishContest() {
     protected lateinit var config: YamlConfiguration
 
     //対応する季節
-    val seasons=ArrayList<Season>()
+//    val seasons=ArrayList<Season>()
 
     //コンテスト表示用のボスバー
     val bossBar=Bukkit.createBossBar("§e§l魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)
@@ -46,9 +46,9 @@ abstract class AbstractFishContest() {
 
     fun setConfig(config: YamlConfiguration): AbstractFishContest {
         this.config = config
-        config.getString("season")?.split(",")?.forEach {
-            seasons.add(Season.stringToSeason(it))
-        }?: kotlin.run { seasons.add(Season.ALL) }
+//        config.getString("season")?.split(",")?.forEach {
+//            seasons.add(Season.stringToSeason(it))
+//        }?: kotlin.run { seasons.add(Season.ALL) }
         return this
     }
 

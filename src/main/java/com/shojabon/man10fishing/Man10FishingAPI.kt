@@ -15,7 +15,6 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,6 +31,14 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
 
         val treasure=HashMap<String,Treasure>()
         val treasureTables=HashMap<String, TreasureTable>()
+
+
+
+        //コンテストをseason/categoryごとに分けるためのlist
+        //あとで実装方法変えるかも
+        //category名-contest名のリスト
+        val seasonContests=HashMap<Season,ArrayList<String>>()
+        val categorizedContests=HashMap<String,ArrayList<String>>()
     }
 
     init {
@@ -39,6 +46,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         loadFish()
         loadTreasures()
         loadTreasureTables()
+        loadContestName()
     }
 
     //　=========  コンフィグロード系統　=========
@@ -80,6 +88,68 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
                 rarity.fishInGroup.add(fishObject)
             }
 
+        }
+    }
+
+    private fun loadTreasures(){
+        treasure.clear()
+        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.toString() + File.separator + "treasure")){
+            val config = SConfigFile.getConfigFile(file.path)?: continue
+            for(key in config.getKeys(false)){
+                treasure[key]=Treasure(key,config.getConfigurationSection(key)!!)
+            }
+        }
+    }
+
+    private fun loadTreasureTables(){
+        treasureTables.clear()
+
+        val tmpTable=HashMap<String,TreasureTable>()
+
+        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.toString() + File.separator + "treasureTable")){
+            val config = SConfigFile.getConfigFile(file.path)?: continue
+            for(key in config.getKeys(false)){
+                tmpTable[key]=TreasureTable(key,config.getConfigurationSection(key)!!)
+            }
+        }
+
+        treasureTables.putAll(
+                tmpTable.toList().sortedBy { it.second.priority }.toMap()
+        )
+
+    }
+
+    fun loadContestName(){
+        seasonContests.clear()
+        seasonContests[Season.SPRING]= arrayListOf()
+        seasonContests[Season.SUMMER]= arrayListOf()
+        seasonContests[Season.AUTUMN]= arrayListOf()
+        seasonContests[Season.WINTER]= arrayListOf()
+
+        categorizedContests.clear()
+
+        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.toString() + File.separator + "contests")){
+            val config = SConfigFile.getConfigFile(file.path)?: continue
+            config.getString("category")?.split(",")?.forEach {
+                categorizedContests[it]?.add(file.nameWithoutExtension)?: kotlin.run {
+                    categorizedContests[it]= arrayListOf(file.nameWithoutExtension)
+                }
+            }
+            val seasons=config.getString("season")?.split(",")?.forEach{
+                val season=Season.stringToSeason(it)
+                if(season!=Season.ALL&&season!=Season.ERROR) seasonContests[season]!!.add(file.nameWithoutExtension)
+                if(season==Season.ALL){
+                    seasonContests[Season.SPRING]!!.add(file.nameWithoutExtension)
+                    seasonContests[Season.SUMMER]!!.add(file.nameWithoutExtension)
+                    seasonContests[Season.AUTUMN]!!.add(file.nameWithoutExtension)
+                    seasonContests[Season.WINTER]!!.add(file.nameWithoutExtension)
+                }
+            }?: kotlin.run {
+                seasonContests[Season.SPRING]!!.add(file.nameWithoutExtension)
+                seasonContests[Season.SUMMER]!!.add(file.nameWithoutExtension)
+                seasonContests[Season.AUTUMN]!!.add(file.nameWithoutExtension)
+                seasonContests[Season.WINTER]!!.add(file.nameWithoutExtension)
+            }
         }
     }
 
@@ -141,34 +211,6 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             result[fish.name] = fish.getRarityMultiplier(fisher, rod)
         }
         return result
-    }
-
-    private fun loadTreasures(){
-        treasure.clear()
-        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.toString() + File.separator + "treasure")){
-            val config = SConfigFile.getConfigFile(file.path)?: continue
-            for(key in config.getKeys(false)){
-                treasure[key]=Treasure(key,config.getConfigurationSection(key)!!)
-            }
-        }
-    }
-
-    private fun loadTreasureTables(){
-        treasureTables.clear()
-
-        val tmpTable=HashMap<String,TreasureTable>()
-
-        for(file in SConfigFile.getAllFileNameInPath(plugin.dataFolder.toString() + File.separator + "treasureTable")){
-            val config = SConfigFile.getConfigFile(file.path)?: continue
-            for(key in config.getKeys(false)){
-                tmpTable[key]=TreasureTable(key,config.getConfigurationSection(key)!!)
-            }
-        }
-
-        treasureTables.putAll(
-                tmpTable.toList().sortedBy { it.second.priority }.toMap()
-        )
-
     }
 
     fun pickTreasure(fisher: Player,hookLocation: Location):Treasure?{
