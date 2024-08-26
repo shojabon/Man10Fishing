@@ -29,6 +29,7 @@ abstract class AbstractFishContest() {
     protected lateinit var config: YamlConfiguration
 
     val rewardCommands=HashMap<String,List<String>>()
+    var updating=false
 
     //対応する季節
 //    val seasons=ArrayList<Season>()
@@ -204,6 +205,9 @@ abstract class AbstractFishContest() {
         Man10Fishing.nowContest = null
         Thread{
             onEnd()
+            while (updating){
+                Thread.sleep(1000)
+            }
             executeRewardCommands()
         }.start()
         bossBar.removeAll()
@@ -223,11 +227,13 @@ abstract class AbstractFishContest() {
         if (!players.containsKey(player.uniqueId))return
         val contestPlayer =players[player.uniqueId]!!
         contestPlayer.caughtFish.add(fish)
+        updating=true
         onCaughtFish(contestPlayer,fish)
         updateRanking(contestPlayer)
         if(useRanking){
             displayScoreboardRanking()
         }
+        updating=false
     }
 
     //プレイヤー全員にメッセージを送信する
