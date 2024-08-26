@@ -206,7 +206,7 @@ abstract class AbstractFishContest() {
         Thread{
             onEnd()
             while (updating){
-                Thread.sleep(1000)
+                Thread.sleep(1)
             }
             executeRewardCommands()
         }.start()
