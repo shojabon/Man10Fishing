@@ -28,8 +28,8 @@ abstract class AbstractFishContest() {
     //コンフィグ
     protected lateinit var config: YamlConfiguration
 
-    val rewardCommands=HashMap<String,List<String>>()
-    var updating=false
+    private val rewardCommands=HashMap<String,List<String>>()
+    private var updating=false
 
     //対応する季節
 //    val seasons=ArrayList<Season>()
