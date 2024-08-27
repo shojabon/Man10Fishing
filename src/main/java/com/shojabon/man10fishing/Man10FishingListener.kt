@@ -157,7 +157,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onSwap(e:PlayerSwapHandItemsEvent){
         if(e.mainHandItem?.type==Material.FISHING_ROD&&e.offHandItem?.type==Material.FISHING_ROD){
-            e.player.sendMessage("${Man10Fishing.prefix}§cおおっと!あなたは釣り竿を強く握りしめているので、他の釣り竿と入れ替えることができない!")
+            e.player.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、他の釣り竿と入れ替えることができない!")
             e.isCancelled=true
         }
     }
@@ -167,7 +167,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         val player=e.whoClicked as Player
         if(player.inventory.heldItemSlot!=e.slot&&player.inventory.heldItemSlot!=e.hotbarButton)return
         if(player.inventory.itemInMainHand.type!=Material.FISHING_ROD)return
-        e.whoClicked.sendMessage("${Man10Fishing.prefix}§cおおっと!あなたは釣り竿を強く握りしめているので、他のスロットに移動させることができない!")
+        e.whoClicked.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、他のスロットに移動させることができない!")
         e.isCancelled=true
     }
 
