@@ -45,9 +45,7 @@ class TreasureBoxMenu(private val player:Player, private val treasure:Treasure):
 
         private fun getIconData(conSection:ConfigurationSection,rank:TreasureRank):SItemStack{
             return try {
-                val item=SItemStack(Material.valueOf(conSection.getString("${rank}.material")?:"STONE"))
-                        .setDisplayName(conSection.getString("${rank}.name","未設定"))
-                        .setCustomModelData(conSection.getInt("${rank}.customModelData",0))
+                val item=TreasureRank.getRankIcon(rank)
                 if(conSection.contains("${rank}.lore")){
                     item.lore = conSection.getStringList("${rank}.lore")
                 }
@@ -61,9 +59,7 @@ class TreasureBoxMenu(private val player:Player, private val treasure:Treasure):
 
         private fun getUnlockedIconData(conSection:ConfigurationSection,rank:TreasureRank):SItemStack{
             return try {
-                val item=SItemStack(Material.valueOf(conSection.getString("${rank}.material")?:"STONE"))
-                        .setDisplayName(conSection.getString("${rank}.name","未設定"))
-                        .setCustomModelData(conSection.getInt("${rank}.customModelData",0))
+                val item=TreasureRank.getRankIcon(rank)
                 if(conSection.contains("${rank}.lore")){
                     item.lore = conSection.getStringList("${rank}.lore")
                 }
