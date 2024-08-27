@@ -120,6 +120,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
     @EventHandler
     fun onClick(e: PlayerInteractEvent){
+        //釣り竿を持って右クリックすると左クリックも呼び出されるというminecraftのわけわかんねぇバグがあるので
+        //左クリックで餌guiを開くみたいなことができません
         if(e.action != Action.LEFT_CLICK_BLOCK)return
         if(e.player.inventory.itemInMainHand.type != Material.FISHING_ROD) return
         if(!FishingRod.isRod(e.player.inventory.itemInMainHand)) return
