@@ -11,6 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
@@ -68,7 +69,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             //宝箱を釣った場合
             if(java.util.Random().nextDouble()<Man10Fishing.probOfTreasure) {
                 val pickedTreasure=Man10Fishing.api.pickTreasure(e.player,e.hook.location)?:return
-
+                
 
                 (e.caught as Item).itemStack=ItemStack(Material.AIR)
                 Man10Fishing.playersOpeningTreasure.remove(e.player)
@@ -143,6 +144,11 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     fun onJoin(e: PlayerJoinEvent){
         val contest = Man10Fishing.nowContest?:return
         contest.onJoin(e)
+    }
+
+    @EventHandler
+    fun onPickUp(e:PlayerAttemptPickupItemEvent){
+        e.player.sendMessage("拾おうとした")
     }
 
 }
