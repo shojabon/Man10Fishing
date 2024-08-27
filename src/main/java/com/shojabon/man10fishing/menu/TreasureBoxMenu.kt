@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack
 class TreasureBoxMenu(private val player:Player, private val treasure:Treasure): SInventory("§e宝箱", 5, Man10Fishing.instance) {
 
 
-    private val numOfRedPanel=5
+    private val numOfRedPanel=8
     private var numOfClickedRedPanel=0
     private var isOpened=false
 
@@ -130,6 +130,7 @@ class TreasureBoxMenu(private val player:Player, private val treasure:Treasure):
                     player.playSound(player.location,Sound.ENTITY_PLAYER_LEVELUP,1F,2F)
                     player.inventory.addItem(treasure.getItem())
                     closeNoEvent(player,Man10Fishing.instance)
+                    Man10Fishing.playersOpeningTreasure.remove(player)
                 }
                 .clickable(false)
         setItem(22,result)

@@ -46,14 +46,19 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             e.caught ?: return
 
 
-            if (Man10Fishing.playersOpeningTreasure.contains(e.player)) plugin.logger.log(Level.WARNING, "${e.player.name}${Man10Fishing.playerAlert}")
+            if (Man10Fishing.playersOpeningTreasure.contains(e.player)) {
+                plugin.logger.log(Level.WARNING, "${e.player.name}${Man10Fishing.playerAlert}")
+                Man10Fishing.instance.server.onlinePlayers.forEach {
+                    if(it.hasPermission("mfish.op")){
+                        it.sendMessage("§c${e.player.name}${Man10Fishing.playerAlert}")
+                    }
+                }
+            }
 
 //            if (Man10Fishing.fishers[e.player.address.address.hostAddress] != e.player.uniqueId) {
 //                return
 //            }
 
-        //デバッグ用
-        e.player.sendMessage((Date().time-(Man10Fishing.fisherWithBiteRod[e.player.uniqueId]?:0L)).toString())
 
         //魚釣り成功
         //ブレが小さいほど釣り成功の受付時間UP
@@ -66,6 +71,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
 
                 (e.caught as Item).itemStack=ItemStack(Material.AIR)
+                Man10Fishing.playersOpeningTreasure.remove(e.player)
                 TreasureBoxMenu(e.player,pickedTreasure).open(e.player)
             }
             //

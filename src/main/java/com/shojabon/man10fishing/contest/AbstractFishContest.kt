@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.scoreboard.DisplaySlot
 import java.io.File
 import java.util.UUID
+import java.util.logging.Level
 import kotlin.math.min
 
 /**
@@ -120,9 +121,17 @@ abstract class AbstractFishContest() {
                 }
             }
             if(t=="all"){
+                val ipList= arrayListOf<String>()
                 rewardCommands[t]?.forEach { str ->
-                    players.values.forEach { player ->
-                        dispatchCommand(applyAdditionalPlaceHolder(applyPlaceHolder(str, player), player))
+                    players.values.forEach { cPlayer ->
+                        val player=Bukkit.getPlayer(cPlayer.uuid)?:return@forEach
+                        val ip=player.address?.address?.hostAddress?:return@forEach
+                        if(ipList.contains(ip)){
+                            player.sendMessage("${Man10Fishing.prefix}§c複数のアカウントで参加賞を受け取ることはできません。")
+                            return@forEach
+                        }
+                        ipList.add(ip)
+                        dispatchCommand(applyAdditionalPlaceHolder(applyPlaceHolder(str, cPlayer), cPlayer))
                     }
                 }
             }
