@@ -4,7 +4,9 @@ import ToolMenu.SingleItemStackSelectorMenu
 import com.shojabon.man10fishing.dataClass.FishFood
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.man10fishing.dataClass.FishingRod
+import com.shojabon.man10fishing.dataClass.enums.TreasureRank
 import com.shojabon.man10fishing.menu.TreasureBoxMenu
+import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Material
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
@@ -16,6 +18,8 @@ import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.metadata.FixedMetadataValue
+import org.bukkit.metadata.MetadataValue
 import java.util.Date
 import java.util.UUID
 import java.util.logging.Level
@@ -68,12 +72,20 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             //////////////
             //宝箱を釣った場合
             if(java.util.Random().nextDouble()<Man10Fishing.probOfTreasure) {
+                //ここ名前だけでいい
                 val pickedTreasure=Man10Fishing.api.pickTreasure(e.player,e.hook.location)?:return
-                
 
-                (e.caught as Item).itemStack=ItemStack(Material.AIR)
-                Man10Fishing.playersOpeningTreasure.remove(e.player)
-                TreasureBoxMenu(e.player,pickedTreasure).open(e.player)
+
+                (e.caught as Item).itemStack=
+                        TreasureRank.getRankIcon(pickedTreasure.rank)
+                                .setDisplayName("§cエラーアイテム,拾えたらレポートしてください")
+                                .setCustomData(plugin,"Treasure",pickedTreasure.name)
+                                .build()
+
+                (e.caught as Item).owner=e.player.uniqueId
+
+//                Man10Fishing.playersOpeningTreasure.add(e.player)
+//                TreasureBoxMenu(e.player,pickedTreasure).open(e.player)
             }
             //
             //////////////
@@ -148,7 +160,16 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
     @EventHandler
     fun onPickUp(e:PlayerAttemptPickupItemEvent){
-        e.player.sendMessage("拾おうとした")
+        if(e.item.owner!=e.player.uniqueId)return
+        try {
+            val treasureName=SItemStack(e.item.itemStack).getCustomData(plugin,"Treasure")
+            Man10Fishing.playersOpeningTreasure.add(e.player)
+            TreasureBoxMenu(e.player,Man10FishingAPI.treasure[treasureName]!!).open(e.player)
+            e.isCancelled=true
+            e.item.remove()
+        }catch (e:Exception){
+            return
+        }
     }
 
 }

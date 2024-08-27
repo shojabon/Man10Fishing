@@ -39,7 +39,8 @@ enum class TreasureRank {
         }
 
         fun getRankIcon(rank: TreasureRank):SItemStack{
-            return rankIcon[rank]!!
+            //cloneの代わり
+            return SItemStack(rankIcon[rank]!!.build().clone())
         }
     }
 
