@@ -83,9 +83,6 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
                                 .build()
 
                 (e.caught as Item).owner=e.player.uniqueId
-
-//                Man10Fishing.playersOpeningTreasure.add(e.player)
-//                TreasureBoxMenu(e.player,pickedTreasure).open(e.player)
             }
             //
             //////////////

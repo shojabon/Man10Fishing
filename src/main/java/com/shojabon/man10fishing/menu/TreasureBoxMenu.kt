@@ -125,6 +125,7 @@ class TreasureBoxMenu(private val player:Player, private val treasure:Treasure):
                 .setEvent {
                     player.playSound(player.location,Sound.ENTITY_PLAYER_LEVELUP,1F,2F)
                     player.inventory.addItem(treasure.getItem())
+                    Man10Fishing.instance.logger.info("${player.name}が${treasure.name}を手に入れた.")
                     closeNoEvent(player,Man10Fishing.instance)
                     Man10Fishing.playersOpeningTreasure.remove(player)
                 }
