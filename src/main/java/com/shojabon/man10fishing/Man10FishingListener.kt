@@ -13,11 +13,16 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
+import org.bukkit.inventory.CraftingInventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.metadata.MetadataValue
 import java.util.Date
@@ -147,6 +152,23 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
         }
         menu.open(e.player)
+    }
+
+    @EventHandler
+    fun onSwap(e:PlayerSwapHandItemsEvent){
+        if(e.mainHandItem?.type==Material.FISHING_ROD&&e.offHandItem?.type==Material.FISHING_ROD){
+            e.player.sendMessage("${Man10Fishing.prefix}§cおおっと!あなたは釣り竿を強く握りしめているので、他の釣り竿と入れ替えることができない!")
+            e.isCancelled=true
+        }
+    }
+
+    @EventHandler
+    fun onInventorySwap(e:InventoryClickEvent){
+        val player=e.whoClicked as Player
+        if(player.inventory.heldItemSlot!=e.slot&&player.inventory.heldItemSlot!=e.hotbarButton)return
+        if(player.inventory.itemInMainHand.type!=Material.FISHING_ROD)return
+        e.whoClicked.sendMessage("${Man10Fishing.prefix}§cおおっと!あなたは釣り竿を強く握りしめているので、他のスロットに移動させることができない!")
+        e.isCancelled=true
     }
 
     @EventHandler
