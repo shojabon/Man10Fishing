@@ -44,7 +44,6 @@ class FishingScheduler {
                 return@forEach
             }
 
-
             it.actions.forEach { action ->
                 action.invoke()
             }
@@ -72,11 +71,7 @@ class FishingScheduler {
             day = config["day"] as? Int
 
             (config["season"] as? String)?.split(",")?.forEach { strSeason ->
-                try {
-                    seasons.add(Season.valueOf(strSeason.toUpperCase()))
-                }catch (e:Exception){
-                    Man10Fishing.instance.logger.log(Level.WARNING, "${name}でエラー:${strSeason}は存在しません")
-                }
+                seasons.add(Season.stringToSeason(strSeason))
             }?: kotlin.run { seasons.add(Season.ALL) }
 
             val configTime = config["time"] as? String
@@ -85,7 +80,6 @@ class FishingScheduler {
                 hour = split.getOrNull(0)?.toIntOrNull() ?: 0
                 minute = split.getOrNull(1)?.toIntOrNull() ?: 0
             }
-
             name = config["name"] as? String ?: config["fileName"] as String
 
             (config["actions"] as? List<*>)?.forEach {
@@ -118,8 +112,9 @@ class FishingScheduler {
                 Bukkit.getOnlinePlayers().forEach {
                     contest.players[it.uniqueId] = FishContestPlayer(it.uniqueId, it.name)
                 }
-
-                contest.start()
+                Bukkit.getScheduler().runTask(Man10Fishing.instance,Runnable {
+                    contest.start()
+                })
             }
 
             fun invoke(){
@@ -157,8 +152,11 @@ class FishingScheduler {
                     ActionEnum.RANDOM_START_CONTEST_IN_CATEGORY->{
                         val categories=(actionValue as String).split(",")
                         var contests= Man10FishingAPI.seasonContests[Man10Fishing.api.getCurrentSeason()]!!.toSet()
-                        categories.forEach {
-                            contests=contests.intersect((Man10FishingAPI.categorizedContests[it]?: emptySet()).toSet())
+                        if(!categories.contains("all")){
+                            categories.forEach {
+                                contests = contests.intersect((Man10FishingAPI.categorizedContests[it]
+                                        ?: emptySet()).toSet())
+                            }
                         }
                         startContest(contests.random())
                     }
@@ -214,10 +212,12 @@ class FishingScheduler {
 
                 config.getMapList("timings").map { HashMap(it) }.forEach {
                     it["fileName"] = name
+                    Man10Fishing.instance.logger.info(it.toString())
                     scheduler.timings.add(Timing().setConfig(it))
                 }
                 scheduler
             } catch (e: Exception) {
+                Man10Fishing.instance.logger.info("timings読み込みでエラー発生")
                 null
             }
         }

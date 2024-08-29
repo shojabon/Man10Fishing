@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.commands
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.commands.subCommands.GetSeasonCommand
 import com.shojabon.man10fishing.commands.subCommands.RegisterSpawnLocationCommand
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
 import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
@@ -230,6 +231,13 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addExplanation("全ての魚の図鑑を埋める")
                         .addRequiredPermission("man10fishing.debug")
                         .setExecutor(FillAllItemIndexCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("season"))
+                        .addExplanation("現在の季節を表示する")
+                        .setExecutor(GetSeasonCommand(plugin))
         )
     }
 
