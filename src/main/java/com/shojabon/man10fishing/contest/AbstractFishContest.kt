@@ -31,6 +31,7 @@ abstract class AbstractFishContest() {
 
     private val rewardCommands=HashMap<String,List<String>>()
     private var updating=false
+    lateinit var name:String
 
     //対応する季節
 //    val seasons=ArrayList<Season>()
@@ -44,8 +45,9 @@ abstract class AbstractFishContest() {
     var rankingSize=10
     val hideRanking= mutableListOf<UUID>()
 
-    fun setConfig(config: YamlConfiguration): AbstractFishContest {
+    fun setConfig(config: YamlConfiguration,name:String): AbstractFishContest {
         this.config = config
+        this.name=name
         return this
     }
 
@@ -124,6 +126,7 @@ abstract class AbstractFishContest() {
                 val ipList= arrayListOf<String>()
                 rewardCommands[t]?.forEach { str ->
                     players.values.forEach { cPlayer ->
+                        Man10Fishing.instance.logger.info("コンテスト${t}位:${cPlayer.name}")
                         val player=Bukkit.getPlayer(cPlayer.uuid)?:return@forEach
                         val ip=player.address?.address?.hostAddress?:return@forEach
                         if(ipList.contains(ip)){
@@ -186,6 +189,8 @@ abstract class AbstractFishContest() {
     //コンテストを開始する
     fun start(){
         Man10Fishing.nowContest = this
+        Man10Fishing.api.broadcastPlMessage("§a§lコンテストが開始されました!")
+        Man10Fishing.instance.logger.info("コンテスト開始:${name}")
         onStart()
         if (time.originalTime != 0){
             time.start()
@@ -277,7 +282,7 @@ abstract class AbstractFishContest() {
                 val config = YamlConfiguration.loadConfiguration(File("${Man10Fishing.instance.dataFolder.path}/contests/${name}.yml"))
                 val clazz = Class.forName("com.shojabon.man10fishing.contest.${config.getString("game")}")
                 val instance = clazz.getConstructor().newInstance() as AbstractFishContest
-                instance.setConfig(config)
+                instance.setConfig(config,name)
             } catch (e: Exception) {
                 null
             }
