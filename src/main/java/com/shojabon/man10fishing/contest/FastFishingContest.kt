@@ -9,8 +9,6 @@ class FastFishingContest:AbstractFishContest() {
 
 
     //configからとるもの
-    private lateinit var targetFishList:List<String>
-    private var targetFishName=""
     private var targetFishAmount=1
 
 

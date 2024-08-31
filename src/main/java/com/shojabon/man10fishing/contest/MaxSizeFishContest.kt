@@ -6,9 +6,6 @@ import org.bukkit.Bukkit
 
 class MaxSizeFishContest: AbstractFishContest() {
 
-    private var targetFishName="魚"
-    private lateinit var targetFishList:List<String>
-
 
     override fun onStart() {
         time.setRemainingTime(config.getInt("time", 60))

@@ -9,8 +9,6 @@ class MaxSumSizeFishContest:AbstractFishContest() {
 
 
     //configからとるもの
-    private lateinit var targetFishList:List<String>
-    private var targetFishName="魚"
 
 
     private var winner: Player?=null
