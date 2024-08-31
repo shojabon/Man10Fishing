@@ -313,16 +313,16 @@ abstract class AbstractFishContest() {
     }
 
     fun getContestInfoMessage():ArrayList<String>{
-        val message= arrayListOf("${Man10Fishing.prefix}§a========================","§a§lコンテスト情報:対象となる魚")
+        val message= arrayListOf("${Man10Fishing.prefix}§e========================","${Man10Fishing.prefix}§c対象となる魚")
         targetFishList.forEach { str->
             Man10FishingAPI.fish[str]?.let { fish->
-                message.add(fish.name)
+                message.add("${Man10Fishing.prefix}§r${fish.alias}")
             }
         }
-        if(targetFishList.isNotEmpty()){
-            message.add(targetFishName)
+        if(targetFishList.isEmpty()){
+            message.add("${Man10Fishing.prefix}§r${targetFishName}")
         }
-        message.add("${Man10Fishing.prefix}§a========================")
+        message.add("${Man10Fishing.prefix}§e========================")
         return message
     }
 
