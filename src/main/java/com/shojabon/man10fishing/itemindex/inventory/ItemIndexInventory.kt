@@ -171,7 +171,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         renderInventory()
     }
 
-    fun getFishTypeLore(data: List<Double>):List<String>{
+    private fun getFishTypeLore(data: List<Double>):List<String>{
 
         if(data.size<5)return listOf("§4不正なデータ")
         val lore= mutableListOf("§e甘味§3：§f§l","§e酸味§3：§f§l","§e旨味§3：§f§l","§e苦味§3：§f§l","§e匂い§3：§f§l")
@@ -179,9 +179,9 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         for(i in 0 until 5){
             val value = data[i]
             when {
-                value<=-175 -> lore[i] += "§4§l嫌い"
-                value>=175 -> lore[i] += "§a§l好き"
-                else -> lore[i] += "§7普通"
+                value<=-175 -> lore[i] += "§4§lキライ"
+                value>=175 -> lore[i] += "§a§lスキ！"
+                else -> lore[i] += "§7ふつう"
             }
         }
 

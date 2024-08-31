@@ -126,13 +126,13 @@ class Fish (val name: String, val config: ConfigurationSection){
         return current
     }
 
-    fun executeOnFish(parameter: FishParameter, fisher: Player, rod: FishingRod){
+    fun executeOnFish(parameter: FishParameter, fisher: Player, rod: FishingRod,location: Location){
         for(factor in fishFactors){
             factor.onFish(this, parameter, fisher, rod)
         }
 
         val contest = Man10Fishing.nowContest
-        contest?.caughtFish(fisher,parameter)
+        contest?.caughtFish(fisher,parameter,location)
     }
 
     fun getDetailedItem(parameter:FishParameter):ItemStack{

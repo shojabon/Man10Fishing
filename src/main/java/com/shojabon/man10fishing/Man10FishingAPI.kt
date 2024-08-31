@@ -135,7 +135,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
                     categorizedContests[it]= arrayListOf(file.nameWithoutExtension)
                 }
             }
-            val seasons=config.getString("season")?.split(",")?.forEach{
+            config.getString("season")?.split(",")?.forEach{
                 val season=Season.stringToSeason(it)
                 if(season!=Season.ALL&&season!=Season.ERROR) seasonContests[season]!!.add(file.nameWithoutExtension)
                 if(season==Season.ALL){

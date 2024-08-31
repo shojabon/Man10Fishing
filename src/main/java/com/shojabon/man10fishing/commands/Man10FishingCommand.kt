@@ -124,7 +124,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(contestArgs)
                         .addRequiredPermission("man10fishing.contest.start")
                         .addExplanation("コンテストを開始する")
-                        .setExecutor(StartContest(plugin))
+                        .setExecutor(StartContestCommand(plugin))
         )
 
         addCommand(
@@ -132,16 +132,24 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("stop"))
                         .addRequiredPermission("man10fishing.contest.stop")
                         .addExplanation("コンテストを強制的に終了する")
-                        .setExecutor(StopContest(plugin))
+                        .setExecutor(StopContestCommand(plugin))
         )
 
         addCommand(
                 SCommandObject()
                         .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("info"))
-                        .addArgument(contestArgs)
                         .addRequiredPermission("man10fishing.contest.info")
-                        .addExplanation("コンテストの情報を見る")
-                        .setExecutor(InfoContest(plugin))
+                        .addExplanation("現在行われているコンテストの情報を見る")
+                        .setExecutor(AdminInfoContestCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("adminInfo"))
+                        .addArgument(contestArgs)
+                        .addRequiredPermission("man10fishing.contest.adminInfo")
+                        .addExplanation("コンテストの内部情報を見る")
+                        .setExecutor(AdminInfoContestCommand(plugin))
         )
 
         addCommand(
@@ -176,7 +184,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(SCommandArgument().addAllowedString("hideRanking"))
                         .addExplanation("ランキングを非表示にする")
                         .addRequiredPermission("man10fishing.hideranking")
-                        .setExecutor(HideRanking(plugin))
+                        .setExecutor(HideRankingCommand(plugin))
         )
 
         addCommand(
@@ -184,7 +192,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(SCommandArgument().addAllowedString("showRanking"))
                         .addExplanation("ランキングを表示する")
                         .addRequiredPermission("man10fishing.showranking")
-                        .setExecutor(ShowRanking(plugin))
+                        .setExecutor(ShowRankingCommand(plugin))
         )
 
         addCommand(

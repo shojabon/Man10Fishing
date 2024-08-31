@@ -101,7 +101,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
                 val fishParameter: FishParameter = FishParameter().generateFishParameter(e.player, pickedFish)
                 val fishedItem = e.caught as Item
                 fishedItem.itemStack = pickedFish.getDetailedItem(fishParameter)
-                pickedFish.executeOnFish(fishParameter, e.player, rodItem)
+                pickedFish.executeOnFish(fishParameter, e.player, rodItem,e.hook.location)
             }
             //
             //////////////

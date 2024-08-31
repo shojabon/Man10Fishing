@@ -12,7 +12,6 @@ class FastFishingContest:AbstractFishContest() {
     private lateinit var targetFishList:List<String>
     private var targetFishName=""
     private var targetFishAmount=1
-    private var winningPlayerLimit=3
 
 
     private var winner:Player?=null
@@ -34,7 +33,6 @@ class FastFishingContest:AbstractFishContest() {
         targetFishList=config.getStringList("targetFishes")
         targetFishName= config.getString("targetFishName","魚")!!
         targetFishAmount=config.getInt("amount",1)
-        winningPlayerLimit=config.getInt("winnerPlayerLimit", 3)
 
         bossBar.setTitle("§e§l一番はじめに§c§l${targetFishName}§e§lを§c§l${targetFishAmount}匹§e§l釣れ！")
 

@@ -1,11 +1,14 @@
 package com.shojabon.man10fishing.contest
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.contest.data.FishContestPlayer
 import com.shojabon.man10fishing.dataClass.FishParameter
 import com.shojabon.mcutils.Utils.STimer
+import com.sk89q.worldedit.bukkit.BukkitAdapter
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.configuration.file.YamlConfiguration
@@ -32,6 +35,11 @@ abstract class AbstractFishContest() {
     private val rewardCommands=HashMap<String,List<String>>()
     private var updating=false
     lateinit var name:String
+    private val areas=ArrayList<String>()
+
+
+    lateinit var targetFishList:List<String>
+    var targetFishName="魚"
 
     //対応する季節
 //    val seasons=ArrayList<Season>()
@@ -42,12 +50,17 @@ abstract class AbstractFishContest() {
     //ランキング用
     val ranking= HashMap<Int, FishContestPlayer>()
     private var useRanking=false
-    var rankingSize=10
+    private var rankingSize=7
     val hideRanking= mutableListOf<UUID>()
 
     fun setConfig(config: YamlConfiguration,name:String): AbstractFishContest {
         this.config = config
         this.name=name
+        rankingSize=config.getInt("rankingSize",7)
+        targetFishList=config.getStringList("targetFishes")
+        targetFishName=config.getString("targetFishName","魚")!!
+
+        areas.addAll(config.getString("area")?.split(",")?:listOf("none"))
         return this
     }
 
@@ -147,6 +160,8 @@ abstract class AbstractFishContest() {
                 .replace("<player>",contestPlayer.name)
                 .replace("<uuid>", contestPlayer.uuid.toString())
                 .replace("<count>", contestPlayer.allowedCaughtFish.size.toString())
+                .replace("&&","<and>")
+                .replace("&","§")
                 .replace("<and>", "&")
     }
 
@@ -171,7 +186,7 @@ abstract class AbstractFishContest() {
         val rankingScoreBoard=Bukkit.getScoreboardManager().newScoreboard
         val rankingObjective=rankingScoreBoard.registerNewObjective("fish_con","Dummy", Component.text("§e§l釣り大会ランキング"))
         rankingObjective.displaySlot=DisplaySlot.SIDEBAR
-        for(i in 1..min(10,rankingSize)){
+        for(i in 1..rankingSize){
             if(ranking.containsKey(i)){
                 rankingObjective.getScore("§6${i}§f:§e${ranking[i]!!.name}§f,§b${rankingLowerPrefix(ranking[i]!!)}§r").score=rankingSize-i
             }
@@ -190,6 +205,11 @@ abstract class AbstractFishContest() {
     fun start(){
         Man10Fishing.nowContest = this
         Man10Fishing.api.broadcastPlMessage("§a§lコンテストが開始されました!")
+
+        getContestInfoMessage().forEach{
+            Man10Fishing.instance.server.broadcast(Component.text(it))
+        }
+
         Man10Fishing.instance.logger.info("コンテスト開始:${name}")
         onStart()
         if (time.originalTime != 0){
@@ -237,15 +257,31 @@ abstract class AbstractFishContest() {
         }
     }
 
-    fun caughtFish(player:Player,fish: FishParameter){
+    fun caughtFish(player:Player,fish: FishParameter,location: Location){
         if (!players.containsKey(player.uniqueId))return
         val contestPlayer =players[player.uniqueId]!!
         contestPlayer.caughtFish.add(fish)
+
+        //ここにエリア判定処理入れるのあんま良くないかも
+        if(!areas.contains("none")) {
+            for (region in Man10Fishing.regionContainer!![BukkitAdapter.adapt(location.world)]!!.regions) {
+                for (area in areas) {
+                    if (region.key.startsWith(area)) {
+                        if (region.value.contains(BukkitAdapter.asBlockVector(location))) return
+                    }
+                }
+            }
+        }
+
         updating=true
         onCaughtFish(contestPlayer,fish)
-        updateRanking(contestPlayer)
-        if(useRanking){
-            displayScoreboardRanking()
+
+        //コンテスト対象の魚を釣っていた場合のみランキング更新処理を行う
+        if(contestPlayer.allowedCaughtFish.isNotEmpty()) {
+            updateRanking(contestPlayer)
+            if (useRanking) {
+                displayScoreboardRanking()
+            }
         }
         updating=false
     }
@@ -274,6 +310,20 @@ abstract class AbstractFishContest() {
         if(useRanking){
             displayScoreboardRanking()
         }
+    }
+
+    fun getContestInfoMessage():ArrayList<String>{
+        val message= arrayListOf("${Man10Fishing.prefix}§a========================","§a§lコンテスト情報:対象となる魚")
+        targetFishList.forEach { str->
+            Man10FishingAPI.fish[str]?.let { fish->
+                message.add(fish.name)
+            }
+        }
+        if(targetFishList.isNotEmpty()){
+            message.add(targetFishName)
+        }
+        message.add("${Man10Fishing.prefix}§a========================")
+        return message
     }
 
     companion object{

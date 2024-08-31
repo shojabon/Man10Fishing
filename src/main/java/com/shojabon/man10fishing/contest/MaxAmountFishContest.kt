@@ -13,12 +13,6 @@ import org.bukkit.Bukkit
 class MaxAmountFishContest:AbstractFishContest() {
 
 
-    //configからとるもの
-    private lateinit var targetFishList:List<String>
-    private var targetFishName="魚"
-    private var winningPlayerLimit=10
-
-
 
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
@@ -31,10 +25,6 @@ class MaxAmountFishContest:AbstractFishContest() {
 
     override fun onStart() {
 
-        targetFishList=config.getStringList("targetFishes")
-        targetFishName=config.getString("targetFishName","魚")!!
-        winningPlayerLimit=config.getInt("winnerPlayerLimit", 10)
-        rankingSize=config.getInt("rankingSize",winningPlayerLimit)
 
         bossBar.setTitle("§e§l最も多く§c§l${targetFishName}§e§lを釣れ！")
 

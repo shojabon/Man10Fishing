@@ -30,7 +30,6 @@ class MaxSumSizeFishContest:AbstractFishContest() {
 
         targetFishList=config.getStringList("targetFishes")
         targetFishName=config.getString("targetFishName","魚")!!
-        rankingSize=config.getInt("rankingSize",10)
 
 
         bossBar.setTitle("§e§l大きな§c§l${targetFishName}§e§lをたくさん釣れ！")

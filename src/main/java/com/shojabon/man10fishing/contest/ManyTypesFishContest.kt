@@ -23,7 +23,7 @@ class ManyTypesFishContest:AbstractFishContest() {
 
     override fun onStart() {
 
-        bossBar.setTitle("§e§lたくさんの種類の魚を釣れ！")
+        bossBar.setTitle("§e§lたくさんの種類の${targetFishName}§e§lを釣れ！")
 
         time.setRemainingTime(config.getInt("time", 60))
     }
@@ -36,7 +36,7 @@ class ManyTypesFishContest:AbstractFishContest() {
         Thread.sleep(4000)
 
         if(winner==null){
-            broadCastPlayers("§c§l魚を釣ったプレイヤーはいませんでした")
+            broadCastPlayers("§c§l${targetFishName}を釣ったプレイヤーはいませんでした")
             return
         }
 

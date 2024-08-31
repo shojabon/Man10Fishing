@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ShowRanking(val plugin: Man10Fishing): CommandExecutor {
+class HideRankingCommand(val plugin: Man10Fishing): CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) return true
@@ -15,12 +15,12 @@ class ShowRanking(val plugin: Man10Fishing): CommandExecutor {
         val uuid=sender.uniqueId
         if(Man10Fishing.nowContest!!.hideRanking.contains(uuid))
         {
-            Man10Fishing.nowContest!!.hideRanking.remove(uuid)
-            Man10Fishing.nowContest!!.displayScoreboardRanking()
-            sender.sendMessage("${Man10Fishing.prefix}§aランキングを表示します")
+            sender.sendMessage("${Man10Fishing.prefix}§a既に非表示です")
         }
         else {
-            sender.sendMessage("${Man10Fishing.prefix}§a既に表示されています")
+            Man10Fishing.nowContest!!.hideRanking.add(uuid)
+            sender.scoreboard = Bukkit.getScoreboardManager().newScoreboard
+            sender.sendMessage("${Man10Fishing.prefix}§aランキングを非表示にします")
         }
         return true
     }

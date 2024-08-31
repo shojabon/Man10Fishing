@@ -12,7 +12,6 @@ class MaxSizeFishContest: AbstractFishContest() {
 
     override fun onStart() {
         time.setRemainingTime(config.getInt("time", 60))
-        rankingSize = config.getInt("winnerPlayerLimit", 3)
         targetFishList=config.getStringList("targetFishes")
         targetFishName=config.getString("targetFishName","魚")!!
 
@@ -77,7 +76,7 @@ class MaxSizeFishContest: AbstractFishContest() {
     }
 
     override fun applyAdditionalPlaceHolder(str: String, contestPayer: FishContestPlayer): String {
-        val fish=contestPayer.getMaxSizeFish()
+        val fish=contestPayer.getMaxSizeAllowedFish()
         return str.replace("<fish>",fish?.name?:"")
                 .replace("<size>",fish?.size?.toString()?:"")
     }

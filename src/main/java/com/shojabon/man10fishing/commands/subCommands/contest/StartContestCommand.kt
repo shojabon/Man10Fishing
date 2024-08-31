@@ -8,7 +8,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 
-class StartContest(val plugin: Man10Fishing): CommandExecutor {
+class StartContestCommand(val plugin: Man10Fishing): CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val contest = AbstractFishContest.newInstance(args[2])

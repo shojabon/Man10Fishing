@@ -8,7 +8,7 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
-class InfoContest(val plugin: Man10Fishing): CommandExecutor {
+class AdminInfoContestCommand(val plugin: Man10Fishing): CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val config = try {
