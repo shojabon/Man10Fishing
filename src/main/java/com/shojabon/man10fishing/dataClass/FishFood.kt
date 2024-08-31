@@ -5,6 +5,7 @@ import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.mcutils.Utils.BaseUtils
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.SItemStack
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.NamespacedKey
@@ -55,8 +56,10 @@ class FishFood(var food: ItemStack) {
             val food2Amount=food2.food.amount.toDouble()
             val amountDif= max(food1Amount/food2Amount,food2Amount/food1Amount)-1
             val multiply=((log(10.0+(distance/50000.0)*amountDif,10.0)*7.0*distance/1400000.0)/3.0)+(3.0/4.0)
-            val rawFoodRange=floor(multiply*(food1Type[5]+food2Type[5])/2)
+            val distanceMultiply=min(max(((food1Type[5]+food2Type[5])/900)*log(10+distance/50000,10.0),0.4),1.0)
+            val rawFoodRange=floor(distanceMultiply*multiply*(food1Type[5]+food2Type[5])/2)
             val foodRange=(if(rawFoodRange>800)800.0 else if(rawFoodRange<0) 0.0 else rawFoodRange)
+            Man10Fishing.instance.server.broadcast(Component.text(((food1Type[5]+food2Type[5])/900)*log(10+distance/50000,10.0)))
 
             result.add(foodRange)
 

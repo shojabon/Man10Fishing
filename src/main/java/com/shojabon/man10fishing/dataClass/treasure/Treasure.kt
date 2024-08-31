@@ -19,11 +19,7 @@ class Treasure(val name:String,val config:ConfigurationSection){
         loadConfig()
     }
 
-    val rank=try {
-        TreasureRank.valueOf(config.getString("rank","")!!)
-    }catch (e:Exception){
-        TreasureRank.ERROR
-    }
+    val rank=TreasureRank.stringToTreasureRank(config.getString("rank","")!!)
 
     fun getItem():ItemStack{
         return item.clone()

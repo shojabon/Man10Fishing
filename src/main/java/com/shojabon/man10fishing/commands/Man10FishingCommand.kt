@@ -9,6 +9,7 @@ import com.shojabon.man10fishing.commands.subCommands.contest.*
 import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodDataCommand
 import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodTableCommand
 import com.shojabon.man10fishing.commands.subCommands.debug.FillAllItemIndexCommand
+import com.shojabon.man10fishing.commands.subCommands.debug.SellAverageCommand
 import com.shojabon.man10fishing.commands.subCommands.fish.GetFishCommand
 import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SetMixablityCommand
@@ -221,6 +222,14 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addExplanation("餌の内部値をチェックする")
                         .addRequiredPermission("man10fishing.debug")
                         .setExecutor(CheckFoodDataCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("debug")).addArgument(SCommandArgument().addAllowedString("sellAverage"))
+                        .addExplanation("売却額の平均をチェックする")
+                        .addRequiredPermission("man10fishing.debug")
+                        .setExecutor(SellAverageCommand(plugin))
         )
 
         addCommand(
