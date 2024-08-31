@@ -140,7 +140,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(SCommandArgument().addAllowedString("contest")).addArgument(SCommandArgument().addAllowedString("info"))
                         .addRequiredPermission("man10fishing.contest.info")
                         .addExplanation("現在行われているコンテストの情報を見る")
-                        .setExecutor(AdminInfoContestCommand(plugin))
+                        .setExecutor(InfoContestCommand(plugin))
         )
 
         addCommand(
