@@ -41,8 +41,6 @@ abstract class AbstractFishContest() {
     lateinit var targetFishList:List<String>
     var targetFishName="魚"
 
-    //対応する季節
-//    val seasons=ArrayList<Season>()
 
     //コンテスト表示用のボスバー
     val bossBar=Bukkit.createBossBar("§e§l魚を釣れ！", BarColor.BLUE, BarStyle.SOLID)

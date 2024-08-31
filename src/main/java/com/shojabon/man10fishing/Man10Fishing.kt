@@ -94,13 +94,14 @@ class Man10Fishing : JavaPlugin() {
     override fun onEnable() {
         // Plugin startup logic
         saveDefaultConfig()
+        loadConfig()
+
         instance = this
         api = Man10FishingAPI(this)
         mysql = ThreadedMySQLAPI(this)
         vault = VaultAPI()
         api.createTables()
 
-        loadConfig()
         registerEvents()
 
 

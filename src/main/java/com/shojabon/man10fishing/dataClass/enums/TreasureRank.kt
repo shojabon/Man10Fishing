@@ -8,7 +8,7 @@ enum class TreasureRank {
 
     GOLD,
     SILVER,
-    WOOD,
+    WOODEN,
     ERROR;
 
 
