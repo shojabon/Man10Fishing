@@ -39,6 +39,12 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onFish(e: PlayerFishEvent) {
 
+        if(getNumOfRod(e.player)>1){
+            e.player.sendMessage("§cおおっと!ホットバーにあるもう一つの釣り竿に糸が絡まって、うまく扱うことができない!")
+            e.isCancelled=true
+            return
+        }
+
         if(e.state==PlayerFishEvent.State.BITE){
             Man10Fishing.fisherWithBiteRod[e.player.uniqueId]=Date().time
             return
@@ -158,8 +164,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
     @EventHandler
     fun onSwap(e:PlayerSwapHandItemsEvent){
-        if(e.mainHandItem?.type==Material.FISHING_ROD&&e.offHandItem?.type==Material.FISHING_ROD){
-            e.player.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、他の釣り竿と入れ替えることができない!")
+        if(e.mainHandItem?.type==Material.FISHING_ROD||e.offHandItem?.type==Material.FISHING_ROD){
+            e.player.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、持つ手を入れ替えることができない!")
             e.isCancelled=true
         }
     }
@@ -167,9 +173,10 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onInventorySwap(e:InventoryClickEvent){
         val player=e.whoClicked as Player
-        if(player.inventory.heldItemSlot!=e.slot&&player.inventory.heldItemSlot!=e.hotbarButton)return
+        if(e.currentItem?.type!=Material.FISHING_ROD)return
         if(player.inventory.itemInMainHand.type!=Material.FISHING_ROD)return
-        e.whoClicked.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、他のスロットに移動させることができない!")
+        if(e.slot==player.inventory.heldItemSlot)e.whoClicked.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、他のスロットに移動させることができない!")
+        else e.whoClicked.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、他の釣り竿を移動させることができない!")
         e.isCancelled=true
     }
 
@@ -191,6 +198,16 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         }catch (e:Exception){
             return
         }
+    }
+
+
+    private fun getNumOfRod(player:Player):Int{
+        var count=0
+        val inv=player.inventory
+        for(i in 0 until 9){
+            if(inv.getItem(i)?.type==Material.FISHING_ROD)count++
+        }
+        return count
     }
 
 }
