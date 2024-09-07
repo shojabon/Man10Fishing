@@ -262,13 +262,19 @@ abstract class AbstractFishContest() {
 
         //ここにエリア判定処理入れるのあんま良くないかも
         if(!areas.contains("none")) {
+            var outOfArea=true
             for (region in Man10Fishing.regionContainer!![BukkitAdapter.adapt(location.world)]!!.regions) {
                 for (area in areas) {
                     if (region.key.startsWith(area)) {
-                        if (region.value.contains(BukkitAdapter.asBlockVector(location))) return
+                        if (region.value.contains(BukkitAdapter.asBlockVector(location))) {
+
+                            broadCastPlayers(region.key)
+                            outOfArea = false
+                        }
                     }
                 }
             }
+            if(outOfArea)return
         }
 
         updating=true
