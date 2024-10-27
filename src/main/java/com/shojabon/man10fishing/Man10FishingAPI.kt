@@ -203,6 +203,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         return null
     }
 
+
     //抽選のための魚テーブル作成 (内部名, 出現確立)
     fun createFishTable(fishAvailableToFish: ArrayList<Fish>, fisher: Player,rod: FishingRod,hookLocation: Location): HashMap<String, Float>{
         val result = HashMap<String, Float>()
