@@ -39,8 +39,14 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onFish(e: PlayerFishEvent) {
 
-        if(getNumOfRod(e.player)>1){
+        if(getNumOfRod(e.player) in 2..8){
+
             e.player.sendMessage("§cおおっと!ホットバーにあるもう一つの釣り竿に糸が絡まって、うまく扱うことができない!")
+            e.isCancelled=true
+            return
+        }
+        else if(getNumOfRod(e.player)==9){
+            e.player.sendMessage("§cなんてこった！釣り竿を持ちすぎてうまく扱うことができない！他の場所で落ち着いて整理するしかないかも？！")
             e.isCancelled=true
             return
         }

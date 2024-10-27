@@ -37,7 +37,6 @@ abstract class AbstractFishContest() {
     lateinit var name:String
     private val areas=ArrayList<String>()
 
-
     lateinit var targetFishList:List<String>
     var targetFishName="魚"
 
@@ -79,7 +78,7 @@ abstract class AbstractFishContest() {
         //ランキングに上限人数未満のプレイヤーしか登録されていない場合
         if(ranking.size<rankingSize&&!ranking.containsValue(player)){
             ranking[ranking.size + 1] = player
-            if(useRanking)broadCastPlayers("§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
+            if(useRanking)broadCastPlayers(rankingUpdateMessage(player))
             return
 
         }
@@ -108,7 +107,7 @@ abstract class AbstractFishContest() {
                 }
                 ranking[i+1]=player
 
-                if(useRanking)broadCastPlayers("§fランキング更新§e§l：§f${player.name}§aが§e${ranking.size}位§aにランクイン!")
+                if(useRanking)broadCastPlayers(rankingUpdateMessage(player))
                 return
             }
         }
@@ -120,7 +119,11 @@ abstract class AbstractFishContest() {
             ranking[i] = ranking[i - 1]!!
         }
         ranking[1]=player
-        if(useRanking)broadCastPlayers("§fランキング更新§e§l：§c${player.name}§aが§e1位§aにランクイン!")
+        if(useRanking)broadCastPlayers(rankingUpdateMessage(player))
+    }
+
+    protected open fun rankingUpdateMessage(player: FishContestPlayer):String{
+        return "§fランキング更新§e§l：§c${player.name}§aが§e1位§aにランクイン!"
     }
 
     private fun executeRewardCommands(){

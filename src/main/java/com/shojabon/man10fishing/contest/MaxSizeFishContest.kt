@@ -34,6 +34,11 @@ class MaxSizeFishContest: AbstractFishContest() {
 
     }
 
+    override fun rankingUpdateMessage(player: FishContestPlayer): String {
+        val fish=player.getMaxSizeFish()
+        return "§fランキング更新§e§l：§c${player.name}§aが§b${fish?.fish?.alias}§d(${fish?.size}cm)§aを釣って§e1位§aにランクイン!"
+    }
+
     override fun rankingDefinition(lowerPlayer: FishContestPlayer, higherPlayer: FishContestPlayer): Boolean {
         if (lowerPlayer.allowedCaughtFish.isEmpty()){
             return higherPlayer.allowedCaughtFish.isNotEmpty()

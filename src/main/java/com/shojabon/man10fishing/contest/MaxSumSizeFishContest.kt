@@ -42,7 +42,7 @@ class MaxSumSizeFishContest:AbstractFishContest() {
         //サブスレッドで実行されてると思ってる
         Thread.sleep(4000)
 
-        if(winner==null){
+        if(ranking.isEmpty()){
             broadCastPlayers("§c§l魚を釣ったプレイヤーはいませんでした")
             return
         }

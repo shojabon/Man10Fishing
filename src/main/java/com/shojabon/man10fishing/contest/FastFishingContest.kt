@@ -48,7 +48,7 @@ class FastFishingContest:AbstractFishContest() {
             broadCastPlayers("§c§l${targetFishName}を${targetFishAmount}匹釣ったプレイヤーはいませんでした")
             return
         }
-        broadCastPlayers("§c§l達成者：§e${winner!!.name}")
+        broadCastPlayers("§c§l達成者：§e${winner?.name}")
         Thread.sleep(1000)
         broadCastPlayers("§c§lおめでとうございます!!")
     }

@@ -10,9 +10,6 @@ class ManyTypesFishContest:AbstractFishContest() {
 
     //configからとるもの
 
-
-    private var winner: Player?=null
-
     override fun onCaughtFish(player: FishContestPlayer, fish: FishParameter) {
 
         if(player.allowedCaughtFish.find { it.fish.alias==fish.fish.alias }!=null)return
@@ -35,7 +32,7 @@ class ManyTypesFishContest:AbstractFishContest() {
         //サブスレッドで実行されてると思ってる
         Thread.sleep(4000)
 
-        if(winner==null){
+        if(ranking.isEmpty()){
             broadCastPlayers("§c§l${targetFishName}を釣ったプレイヤーはいませんでした")
             return
         }
