@@ -131,7 +131,7 @@ class FishingScheduler {
                     }
                     ActionEnum.PLAY_SOUND->{
                         val split = (actionValue as String).split(",")
-                        val sound = Sound.valueOf(split[0])
+                        val sound = Sound.valueOf(split[0].uppercase(Locale.getDefault()))
                         val volume = split.getOrNull(1)?.toFloat()?:1f
                         val pitch = split.getOrNull(2)?.toFloat()?:1f
                         Bukkit.getOnlinePlayers().forEach {

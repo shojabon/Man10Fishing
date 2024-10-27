@@ -45,6 +45,13 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             return
         }
 
+        if(e.player.inventory.itemInOffHand.type==Material.FISHING_ROD
+                &&e.player.inventory.itemInMainHand.type==Material.FISHING_ROD){
+            e.player.sendMessage("§cなんてこった!両手に持っている釣り竿の糸が絡まってしまっている!")
+            e.isCancelled=true
+            return
+        }
+
         if(e.state==PlayerFishEvent.State.BITE){
             Man10Fishing.fisherWithBiteRod[e.player.uniqueId]=Date().time
             return
