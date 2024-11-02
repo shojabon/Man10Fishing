@@ -47,7 +47,7 @@ class FishFood(var food: ItemStack) {
             val food2Type = food2.getFoodTypeList() ?: return null
 
             for(i in 0..food1Type.size-2){
-                result.add((food1Type[i] + food2Type[i])/2)
+                result.add(min(max(1.1*(food1Type[i] + food2Type[i])/2,-500.0),500.0))
             }
 
 
@@ -136,13 +136,18 @@ class FishFood(var food: ItemStack) {
         fun getFoodTypeLore(data: List<Double>):List<String>{
 
             if(data.size<6)return listOf("§4不正なデータ")
-            val lore= mutableListOf("§e甘味§3：§f§l■","§e酸味§3：§f§l■","§e旨味§3：§f§l■","§e苦味§3：§f§l■","§e匂い§3：§f§l■","","§7味のぶれ：§c")
+            val lore= mutableListOf("§e甘味§3：§f§l","§e酸味§3：§f§l","§e旨味§3：§f§l","§e苦味§3：§f§l","§e匂い§3：§f§l","","§7味のぶれ：§c")
 
             for(i in 0 until 5){
                 var count=-400
-                for(j in 0 until 9){
-                    if(data[i]<count)break
-                    lore[i]+="■"
+                for(j in 0 until 5){
+                    lore[i]+=if(data[i]<count) "§c■" else "§0□"
+                    count+=100
+                }
+                lore[i]+="§f|"
+                count=0
+                for(j in 0 until 5){
+                    lore[i]+=if(data[i]>count) "§b■" else "§0□"
                     count+=100
                 }
             }
