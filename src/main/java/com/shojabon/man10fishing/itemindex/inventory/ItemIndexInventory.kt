@@ -181,7 +181,9 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
             when {
                 value<=-175 -> lore[i] += "§4§lキライ"
                 value>=175 -> lore[i] += "§a§lスキ！"
-                else -> lore[i] += "§7ふつう"
+                value<=800 && value>=-800 -> lore[i] += "§7ふつう"
+                else->lore[i] += "§fキョーミなし"
+
             }
         }
 

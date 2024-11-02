@@ -160,12 +160,15 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             if(itemStack.type.isAir) return@setOnConfirm
             if(!FishFood.isFood(itemStack)) return@setOnConfirm
 
+            //後でamountを取ると値がズレることがある
+            val amount=itemStack.amount
+
             e.player.inventory.removeItemAnySlot(itemStack)
 
             val rod = FishingRod(e.player.inventory.itemInMainHand)
             val foodType = FishFood(itemStack).getFoodTypeString() ?: return@setOnConfirm
 
-            rod.setFoodCount(itemStack.amount)
+            rod.setFoodCount(amount)
             rod.setFoodType(foodType)
             rod.updateLore()
             e.player.sendMessage(Man10Fishing.prefix + "§a餌をセットしました")
