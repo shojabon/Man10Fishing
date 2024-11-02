@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.commands
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.Man10FishingAPI
 import com.shojabon.man10fishing.commands.subCommands.GetSeasonCommand
 import com.shojabon.man10fishing.commands.subCommands.RegisterSpawnLocationCommand
 import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
@@ -153,11 +154,17 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .setExecutor(AdminInfoContestCommand(plugin))
         )
 
+        val fishArgs = SCommandArgument()
+        fishArgs.addAlias("魚名")
+        Man10FishingAPI.fish.keys.forEach {
+            fishArgs.addAlias(it)
+        }
+
         addCommand(
                 SCommandObject()
                         .addArgument(SCommandArgument().addAllowedString("fish"))
                         .addArgument(SCommandArgument().addAllowedString("get"))
-                        .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING))
+                        .addArgument(fishArgs)
                         .addRequiredPermission("man10fishing.fish.get")
                         .addExplanation("魚を取得する")
                         .setExecutor(GetFishCommand(plugin))
