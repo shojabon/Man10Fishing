@@ -160,7 +160,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         item.addLore(" ")
         item.addLore(Man10FishingAPI.rarity[parameter.fish.rarity]!!.loreDisplayName)
 
-        setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
+        setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeGlobalInfoItem(it.slot,parameter) })
         renderInventory()
     }
 
@@ -169,6 +169,14 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         val item = parameter.generateIndexItem()?:return
         setItem(slot, item.clickable(false).setEvent { changeMoreInfoItem(it.slot,parameter) })
         renderInventory()
+    }
+
+    private fun changeGlobalInfoItem(slot:Int,parameter:FishParameter){
+        Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
+        val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
+        val record=Man10FishingAPI.fishRecords[parameter.name]
+        item.lore=mutableListOf("§dサーバー内での最大の大きさ：${record?.size}cm","釣った人:${record?.uuid?.let { Bukkit.getOfflinePlayer(it).name }}")
+        setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
     }
 
     private fun getFishTypeLore(data: List<Double>):List<String>{

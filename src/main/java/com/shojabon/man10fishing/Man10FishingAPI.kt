@@ -2,6 +2,7 @@ package com.shojabon.man10fishing
 
 import com.shojabon.man10fishing.dataClass.Fish
 import com.shojabon.man10fishing.dataClass.FishRarity
+import com.shojabon.man10fishing.dataClass.FishRecordData
 import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.dataClass.enums.Season
 import com.shojabon.man10fishing.dataClass.treasure.Treasure
@@ -39,6 +40,8 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         //category名-contest名のリスト
         val seasonContests=HashMap<Season,ArrayList<String>>()
         val categorizedContests=HashMap<String,ArrayList<String>>()
+
+        val fishRecords=HashMap<String,FishRecordData>()
     }
 
     init {
@@ -47,6 +50,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         loadTreasures()
         loadTreasureTables()
         loadContestName()
+        loadFishRecords()
     }
 
     //　=========  コンフィグロード系統　=========
@@ -262,6 +266,16 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         for (rarity in rarity.values){
             if(!rarity.enabledItemIndex) continue
             ItemIndex.itemIndexes[rarity.name] = ItemIndex.fromRarity(rarity)
+        }
+    }
+
+    fun loadFishRecords(){
+        fishRecords.clear()
+        Man10Fishing.mysql.asyncQuery("select fish,uuid,size from fish_log group by fish order by size desc;"){
+            it.forEach { result->
+                fishRecords[result.getString("fish")]=
+                        FishRecordData(UUID.fromString(result.getString("uuid")),result.getDouble("size"))
+            }
         }
     }
 
