@@ -175,7 +175,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
         val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
         val record=Man10FishingAPI.fishRecords[parameter.name]
-        item.lore=mutableListOf("§dサーバー内での最大の大きさ：${record?.size}cm","釣った人:${record?.uuid?.let { Bukkit.getOfflinePlayer(it).name }}")
+        item.lore=mutableListOf("§dサーバー内での最大の大きさ：${record?.size}cm","§d釣った人:§e${record?.uuid?.let { Bukkit.getOfflinePlayer(it).name }}")
         setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
     }
 
