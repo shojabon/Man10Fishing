@@ -50,7 +50,6 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         loadTreasures()
         loadTreasureTables()
         loadContestName()
-        loadFishRecords()
     }
 
     //　=========  コンフィグロード系統　=========

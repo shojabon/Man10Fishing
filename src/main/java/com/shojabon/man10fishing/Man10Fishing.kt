@@ -101,6 +101,7 @@ class Man10Fishing : JavaPlugin() {
         mysql = ThreadedMySQLAPI(this)
         vault = VaultAPI()
         api.createTables()
+        api.loadFishRecords()
 
         registerEvents()
 
