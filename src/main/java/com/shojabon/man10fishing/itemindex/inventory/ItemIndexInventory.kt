@@ -150,7 +150,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
         val sdFormat = SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(parameter.dateTime)
         val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
-        item.lore = mutableListOf("§d最大の大きさ：${parameter.size}cm","§6初めて釣れた日：${sdFormat}")
+        item.lore = mutableListOf("§d最大の大きさ：§b${parameter.size}§ecm","§6初めて釣れた日：${sdFormat}")
         val foodList = parameter.fish.config.getString("fishFactors.food.matrix")!!.split(",").map { it.toDouble() }
         if (!parameter.fish.config.getBoolean("fishFactors.food.hide")){
             getFishTypeLore(foodList).forEach {
@@ -174,9 +174,10 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
     private fun changeGlobalInfoItem(slot:Int,parameter:FishParameter){
         Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
         val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
-        val record=Man10FishingAPI.fishRecords[parameter.name]
-        item.lore=mutableListOf("§dサーバー内での最大の大きさ：${record?.size}cm","§d釣った人:§e${record?.uuid?.let { Bukkit.getOfflinePlayer(it).name }}")
+        val record=Man10FishingAPI.fishRecords[parameter.fish.name]
+        item.lore=mutableListOf("§dサーバー内での最大の大きさ：§b${record?.size}§ecm","§d釣った人：§e${record?.uuid?.let { Bukkit.getOfflinePlayer(it).name }}")
         setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
+        renderInventory()
     }
 
     private fun getFishTypeLore(data: List<Double>):List<String>{

@@ -270,10 +270,10 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
 
     fun loadFishRecords(){
         fishRecords.clear()
-        Man10Fishing.mysql.asyncQuery("select fish,uuid,size from fish_log group by fish order by size desc;"){
+        Man10Fishing.mysql.asyncQuery("select fish,uuid,MAX(size) as maxsize from fish_log group by fish;"){
             it.forEach { result->
                 fishRecords[result.getString("fish")]=
-                        FishRecordData(UUID.fromString(result.getString("uuid")),result.getDouble("size"))
+                        FishRecordData(UUID.fromString(result.getString("uuid")),result.getDouble("maxsize"))
             }
         }
     }
