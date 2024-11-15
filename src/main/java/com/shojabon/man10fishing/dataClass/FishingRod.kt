@@ -1,6 +1,7 @@
 package com.shojabon.man10fishing.dataClass
 
 import com.shojabon.man10fishing.Man10Fishing
+import com.shojabon.man10fishing.dataClass.enums.Season
 import com.shojabon.mcutils.Utils.BaseUtils
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
@@ -20,6 +21,7 @@ class FishingRod(var rodItem: ItemStack) {
 
     var remainingFoodCount = 0
     var currentFood = listOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    var season= Season.NONE
 
     init {
         if (isRod(rodItem)){
@@ -27,6 +29,7 @@ class FishingRod(var rodItem: ItemStack) {
             remainingFoodCount = sItem.getCustomData(Man10Fishing.instance, "foodCount").toInt()
 
             currentFood = sItem.getCustomData(Man10Fishing.instance, "foodType").split("|").map { it.toDouble() }
+            season=Season.stringToSeason(sItem.getCustomData(Man10Fishing.instance,"season")?:"NONE")
         }
     }
 

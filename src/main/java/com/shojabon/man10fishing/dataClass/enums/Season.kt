@@ -10,6 +10,7 @@ enum class Season {
     AUTUMN,
     WINTER,
     ERROR,
+    NONE,
     ALL;
 
     companion object{

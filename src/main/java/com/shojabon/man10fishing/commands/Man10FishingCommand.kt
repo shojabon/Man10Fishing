@@ -16,6 +16,7 @@ import com.shojabon.man10fishing.commands.subCommands.food.CreateFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SetMixablityCommand
 import com.shojabon.man10fishing.commands.subCommands.food.SynthesizeFishFoodCommand
 import com.shojabon.man10fishing.commands.subCommands.rod.MakeIntoRodCommand
+import com.shojabon.man10fishing.commands.subCommands.rod.SetValueCommand
 import com.shojabon.man10fishing.commands.subCommands.treasure.GetTreasureCommand
 import com.shojabon.man10fishing.itemindex.ItemIndex
 import com.shojabon.man10fishing.itemindex.inventory.CreateItemIndex
@@ -87,6 +88,18 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addRequiredPermission("man10fishing.rod.create")
                         .addExplanation("持っている釣り竿をMan10Fishingで使用可能にする")
                         .setExecutor(MakeIntoRodCommand(plugin))
+        )
+
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("rod"))
+                        .addArgument(SCommandArgument().addAllowedString("set"))
+                        .addArgument(SCommandArgument().addAllowedString("season"))
+                        .addArgument(SCommandArgument().addAllowedType(SCommandArgumentType.STRING))
+                        .addRequiredPermission("man10fishing.rod.set")
+                        .addExplanation("持っている釣り竿の季節変数を設定する")
+                        .setExecutor(SetValueCommand(plugin))
         )
 
         addCommand(
@@ -263,6 +276,7 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addExplanation("現在の季節を表示する")
                         .setExecutor(GetSeasonCommand(plugin))
         )
+
     }
 
     init {

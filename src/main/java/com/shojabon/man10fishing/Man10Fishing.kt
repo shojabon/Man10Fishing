@@ -45,9 +45,7 @@ class Man10Fishing : JavaPlugin() {
 
         val playersOpeningTreasure=ArrayList<Player>()
         lateinit var treasureArea: List<String>
-
-
-        val fishers=HashMap<String,UUID>()
+        
         val fisherWithBiteRod=HashMap<UUID,Long>()
         var biteTime by Delegates.notNull<Long>()
     }
