@@ -68,7 +68,11 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
 
             val mainHand = e.player.inventory.itemInMainHand
-            if (!FishingRod.isRod(mainHand)) return
+            if (!FishingRod.isRod(mainHand)){
+                (e.caught as Item).itemStack=ItemStack(Material.AIR)
+                e.player.sendMessage("§cつれないなあ...")
+                return
+            }
             val rodItem = FishingRod(mainHand)
             if (rodItem.getFoodCount() <= 0) return
 
