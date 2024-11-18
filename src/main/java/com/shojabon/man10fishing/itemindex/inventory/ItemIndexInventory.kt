@@ -182,7 +182,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
                 ,"§d釣った人：§e${record?.maxUuid?.let { Bukkit.getOfflinePlayer(it).name }}"
                 ,"§dこれまでに釣られた数：§b${record?.amount}§e匹"
                 ,""
-                ,"§d初めて釣った人：${record?.firstFisher?.let { Bukkit.getOfflinePlayer(it).name }}")
+                ,"§d初めて釣った人：§e${record?.firstFisher?.let { Bukkit.getOfflinePlayer(it).name }}")
         setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
         renderInventory()
     }
