@@ -1,7 +1,7 @@
 name: Man10Fishing
 version: '${version}'
 main: com.shojabon.man10fishing.Man10Fishing
-api-version: 1.17
+api-version: 1.20
 
 softdepend:
   - WorldGuard

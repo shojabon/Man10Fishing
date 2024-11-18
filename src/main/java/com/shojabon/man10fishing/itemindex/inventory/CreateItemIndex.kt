@@ -60,7 +60,7 @@ class CreateItemIndex(private val internalName: String, private val data: ItemIn
                         override fun renderMenu() {
                             setItems(ArrayList(
                                     Man10FishingAPI.fish.map { map ->
-                                        val item = SItemStack(map.value.item)
+                                        val item = SItemStack(map.value.item.clone())
                                         if (data.fish.contains(map.key)){
                                             item.addEnchantment(Enchantment.LURE, 1)
                                         }
@@ -191,9 +191,13 @@ class CreateItemIndex(private val internalName: String, private val data: ItemIn
                 .clickable(false)
                 .setEvent { e ->
                     val inv = object : LargeSInventoryMenu("コンプリートしたときに実行するコマンドを設定する", Man10Fishing.instance) {
+
+                        var ignoreCloseEvent = false
+
                         init {
                             setOnCloseEvent {
                                 Bukkit.getScheduler().runTask(Man10Fishing.instance, Runnable {
+                                    if (ignoreCloseEvent) return@Runnable
                                     val player = it.player as Player
                                     movingPlayer.add(player.uniqueId)
                                     this@CreateItemIndex.open(player)
@@ -215,12 +219,17 @@ class CreateItemIndex(private val internalName: String, private val data: ItemIn
                             })
                             items.add(SInventoryItem(SItemStack(Material.EMERALD_BLOCK)
                                     .setDisplayName("§a§lコマンドを追加する").build()).clickable(false).setEvent { _ ->
+                                ignoreCloseEvent = true
                                 e.whoClicked.closeInventory()
                                 val input = SLongTextInput("コマンドを入力してください", Man10Fishing.instance)
-                                input.setOnCancel { open(it) }
+                                input.setOnCancel {
+                                    open(it)
+                                    ignoreCloseEvent = false
+                                }
                                 input.setOnConfirm { cmd ->
                                     data.onCompleteCommands.add(cmd)
                                     open(e.whoClicked as Player)
+                                    ignoreCloseEvent = false
                                 }
                                 input.open(e.whoClicked as Player)
 

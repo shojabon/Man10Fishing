@@ -37,14 +37,17 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
 
         val fish = itemIndex.fish
 
+        // この図鑑に登録されている魚の図鑑情報を取得
         val fishdexList = ItemIndex.fishdexList[uuid]?.filter {
             fish.contains(it.key)
         }
+
         if (fishdexList == null){
             Bukkit.getPlayer(uuid)?.sendMessage(Man10Fishing.prefix + "§4図鑑情報がありません")
             return
         }
 
+        // 図鑑番号順に並び変えてitemsに追加
         for ((index, fishData) in Man10FishingAPI.fish
                 .filter { fish.contains(it.key) && getFishIndex(it.value) != -1 }
                 .entries.sortedBy { getFishIndex(it.value) }.withIndex()
@@ -55,15 +58,18 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         }
 
         for ((index, fishName) in fish.withIndex()) {
+            // この図鑑に登録されている魚の図鑑情報を取得
             if (!fishdexList.containsKey(fishName)) continue
             val fishdex = fishdexList[fishName]!!
             if (fishdex.isEmpty()) continue
             val oneData = fishdex.maxByOrNull { it.size }!!
+            // 一番最初に釣れた日時に置き換える
             oneData.dateTime = fishdex.minByOrNull { it.dateTime }!!.dateTime
             val item = (oneData.generateIndexItem()?.clickable(false)?:continue).setEvent { changeMoreInfoItem(it.slot,oneData) }
             items[index] = item
         }
 
+        // 図鑑が完成しているか確認
         if (fish.size == fishdexList.size){
             completed = true
         }
@@ -87,6 +93,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
     override fun afterRenderMenu() {
 
         fun giveReward(): Boolean {
+            if (!completed || itemIndex.fromRarity || itemIndex.completedPlayers.contains(uuid)) return false
             val p = Bukkit.getPlayer(uuid)?:return false
             val itemStack = itemIndex.onCompleteItemStack
             if (itemStack != null){
@@ -96,6 +103,8 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
                 }
                 p.inventory.addItem(itemStack)
             }
+            itemIndex.completedPlayers.add(uuid)
+            itemIndex.save()
             p.playSound(p.location, Sound.UI_TOAST_CHALLENGE_COMPLETE,1f,1f)
             p.world.players.forEach {
                 it.playSound(it.location, Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST,1f,1f)
@@ -116,6 +125,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         }
 
         super.afterRenderMenu()
+        // 図鑑が完成しているか確認 レアリティ図鑑の場合は報酬を受け取れない
         if (completed && !itemIndex.fromRarity && !itemIndex.completedPlayers.contains(uuid)){
             Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
             val displayItem = SItemStack(ItemStack(Material.LIME_STAINED_GLASS_PANE))
@@ -125,8 +135,6 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
             }
             setItem(intArrayOf(50,51,52), SInventoryItem(displayItem.build()).clickable(false).setEvent {
                      if (giveReward()){
-                         itemIndex.completedPlayers.add(uuid)
-                         itemIndex.save()
                          setItem(intArrayOf(50,51,52), SInventoryItem(SItemStack(Material.BLUE_STAINED_GLASS_PANE).setDisplayName(" ").build())
                                  .clickable(false))
                          renderInventory()
@@ -135,11 +143,6 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
 
 
         }
-    }
-
-
-    private fun getFishIndex(fishdex: FishParameter): Int {
-        return fishdex.fish.config.getInt("fishFactors.index", -1)
     }
 
     private fun getFishIndex(fishdex: Fish): Int {

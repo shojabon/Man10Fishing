@@ -4,8 +4,8 @@ apply plugin: 'kotlin'
 group = "com.shojabon"
 version = '1.0-SNAPSHOT'
 
-sourceCompatibility = '16'
-targetCompatibility = '16'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 configurations {
     embed
@@ -48,7 +48,7 @@ repositories {
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
-    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.6'
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api fileTree(dir: 'src/main/java/com/shojabon/man10fishing/utils', include: '*.jar')

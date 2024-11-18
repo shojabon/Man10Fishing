@@ -1,7 +1,5 @@
 package com.shojabon.man10fishing
 
-import com.sk89q.worldguard.WorldGuard
-import com.sk89q.worldguard.protection.regions.RegionContainer
 import com.shojabon.man10fishing.commands.Man10FishingCommand
 import com.shojabon.man10fishing.contest.AbstractFishContest
 import com.shojabon.man10fishing.dataClass.enums.Season
@@ -11,6 +9,8 @@ import com.shojabon.mcutils.Utils.MySQL.ThreadedMySQLAPI
 import com.shojabon.mcutils.Utils.SConfigFile
 import com.shojabon.mcutils.Utils.SInventory.SInventory
 import com.shojabon.mcutils.Utils.VaultAPI
+import com.sk89q.worldguard.WorldGuard
+import com.sk89q.worldguard.protection.regions.RegionContainer
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
@@ -63,7 +63,7 @@ class Man10Fishing : JavaPlugin() {
         probOfTreasure=config.getDouble("probabilityOfTreasure",0.0)
         treasureArea=config.getStringList("treasureArea")
         playerAlert=config.getString("playerAlert","")!!
-        prefix = config.getString("prefix")!!
+        prefix = config.getString("prefix", "")!!
         biteTime=config.getLong("biteTime",500)
         enabled=config.getBoolean("enabled")
 
