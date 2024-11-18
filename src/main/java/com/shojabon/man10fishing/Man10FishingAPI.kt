@@ -67,12 +67,14 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             val enabledItemIndex = configSection.getBoolean("$rarityName.enabledItemIndex", true)
             val minSellPrice = configSection.getDouble("$rarityName.minSellPrice", 0.0)
             val priceMultiplier = configSection.getDouble("$rarityName.priceMultiplier", 0.0)
+            val broadcast=configSection.getBoolean("broadcast")
+            val firework=configSection.getBoolean("firework")
             if(alias == null || weight == 0){
                 Bukkit.getLogger().info("レアリティ$rarityName でエラーが発生しました")
                 continue
             }
             val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix,
-                loreDisplayName, enabledItemIndex, minSellPrice, priceMultiplier)
+                loreDisplayName, enabledItemIndex, minSellPrice, priceMultiplier,broadcast,firework)
             if(configSection.getBoolean("broadcast")) broadcastRarity.add(rarityObject)
             rarity[rarityName] = rarityObject
         }
@@ -270,12 +272,21 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
 
     fun loadFishRecords(){
         fishRecords.clear()
-        Man10Fishing.mysql.asyncQuery("select max_record.fish,uuid,size from fish_log as max_record join(select fish,MAX(size) as maxsize from fish_log group by fish) as sub_table on max_record.fish=sub_table.fish and max_record.size=sub_table.maxsize;"){
-            it.forEach { result->
-                fishRecords[result.getString("fish")]=
-                        FishRecordData(UUID.fromString(result.getString("uuid")),result.getDouble("size"))
+
+        Thread{
+            fish.keys.forEach {fishName->
+                val rawMaxSizeResult=Man10Fishing.mysql.query("select uuid,size from fish_log as max_record join(select MAX(size) as maxsize from fish_log where fish='${fishName}') as sub_table on max_record.size=sub_table.maxsize limit 1;")
+                if(rawMaxSizeResult.isEmpty())return@forEach
+                val maxSizeResult=rawMaxSizeResult[0]
+                val minSizeResult=Man10Fishing.mysql.query("select uuid,size from fish_log as min_record join(select MIN(size) as minsize from fish_log where fish='${fishName}') as sub_table on min_record.size=sub_table.minsize limit 1;")[0]
+                val amountResult=Man10Fishing.mysql.query("select SUM(1) as amount from fish_log where fish='${fishName};'")[0]
+                val firstFisherResult=Man10Fishing.mysql.query("select uuid from fish_log where fish='${fishName}' limit 1;")[0]
+                fishRecords[fishName]=
+                        FishRecordData(UUID.fromString(maxSizeResult.getString("uuid")),maxSizeResult.getDouble("size")
+                                ,UUID.fromString(minSizeResult.getString("uuid")),minSizeResult.getDouble("size"),amountResult.getInt("amount")
+                                ,UUID.fromString(firstFisherResult.getString("uuid")))
             }
-        }
+        }.start()
     }
 
     fun getFishingAmount(uuid: UUID, fish: String? = null, rarity: String? = null): Long {

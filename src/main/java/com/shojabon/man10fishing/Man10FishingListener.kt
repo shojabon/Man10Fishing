@@ -7,6 +7,7 @@ import com.shojabon.man10fishing.dataClass.FishingRod
 import com.shojabon.man10fishing.dataClass.enums.TreasureRank
 import com.shojabon.man10fishing.menu.TreasureBoxMenu
 import com.shojabon.mcutils.Utils.SItemStack
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
@@ -125,6 +126,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
                 val fishedItem = e.caught as Item
                 fishedItem.itemStack = pickedFish.getDetailedItem(fishParameter)
                 pickedFish.executeOnFish(fishParameter, e.player, rodItem,e.hook.location)
+
+
             }
             //
             //////////////
@@ -202,6 +205,10 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
     @EventHandler
     fun onJoin(e: PlayerJoinEvent){
+
+        Bukkit.dispatchCommand(e.player,"mfish spawn")
+        Bukkit.getScheduler().runTaskLater(Man10Fishing.instance, Runnable { Bukkit.dispatchCommand(e.player,"mfish season") },60)
+
         val contest = Man10Fishing.nowContest?:return
         contest.onJoin(e)
     }

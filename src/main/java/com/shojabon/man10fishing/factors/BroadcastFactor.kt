@@ -13,7 +13,7 @@ import org.bukkit.Server
 
 @FishFactorDefinition(name = "全体通知設定",
         iconMaterial = Material.BELL,
-        explanation = ["大物を釣りが手たときの通知設定"],
+        explanation = ["大物を釣りあげたときの通知設定"],
         adminSetting = false,
         settable = false)
 class BroadcastFactor(fish: Fish) : FishFactor(fish) {
@@ -34,7 +34,7 @@ class BroadcastFactor(fish: Fish) : FishFactor(fish) {
 
             else->{}
         }
-        if(enabled.get()){
+        if(enabled.get()||rarityData.broadcast){
             Bukkit.broadcast(Component.text(Man10Fishing.prefix + "§f§l${fisher.name}が${rarityData.namePrefix}${rarityData.loreDisplayName} §l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§f§lを釣り上げた!"), Server.BROADCAST_CHANNEL_USERS)
             return
         }

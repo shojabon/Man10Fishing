@@ -175,7 +175,15 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         Bukkit.getPlayer(uuid)?.location?.let { Bukkit.getPlayer(uuid)?.playSound(it, Sound.ENTITY_PLAYER_LEVELUP,1f,1.5f) }
         val item = SItemStack((parameter.generateIndexItem()?:return).itemStack.clone())
         val record=Man10FishingAPI.fishRecords[parameter.fish.name]
-        item.lore=mutableListOf("§dサーバー内最大記録：§b${record?.size}§ecm","§d釣った人：§e${record?.uuid?.let { Bukkit.getOfflinePlayer(it).name }}")
+        item.lore=mutableListOf("§cサーバーレコード"
+                ,"§dサーバー内最大記録：§b${record?.maxsize}§ecm"
+                ,"§d釣った人：§e${record?.maxUuid?.let { Bukkit.getOfflinePlayer(it).name }}"
+                ,""
+                ,"§dサーバー内最小記録：§b${record?.minsize}§ecm"
+                ,"§d釣った人：§e${record?.maxUuid?.let { Bukkit.getOfflinePlayer(it).name }}"
+                ,"§dこれまでに釣られた数：§b${record?.amount}§e匹"
+                ,""
+                ,"§d初めて釣った人：${record?.firstFisher?.let { Bukkit.getOfflinePlayer(it).name }}")
         setItem(slot, SInventoryItem(item.build()).clickable(false).setEvent { changeSoftInfoItem(it.slot,parameter) })
         renderInventory()
     }
@@ -188,11 +196,11 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
         for(i in 0 until 5){
             val value = data[i]
             when {
-                value<=-175&&value>=-800 -> lore[i] += "§4§lキライ"
+                value<-800->lore[i] += "§fキョーミなし"
+                value<=-175-> lore[i] += "§4§lキライ"
                 value<175-> lore[i] += "§7ふつう"
                 value<=800 -> lore[i] += "§a§lスキ！"
                 else->lore[i] += "§fキョーミなし"
-
             }
         }
 
