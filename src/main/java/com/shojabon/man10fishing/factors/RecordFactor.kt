@@ -39,7 +39,7 @@ class RecordFactor(fish : Fish) : FishFactor(fish) {
         }?: kotlin.run { Man10FishingAPI.fishRecords[fish.name]=
                 FishRecordData(fisher.uniqueId,parameter.size,fisher.uniqueId,parameter.size,1,fisher.uniqueId)
 
-            Man10Fishing.api.broadcastPlMessage("§aなんと!§e§l${fisher.name}§aが新種§e[${fish.alias}§e]§aを釣り上げた!")
+            Man10Fishing.api.broadcastPlMessage("§aなんと!§e${fisher.name}§aが新種§e[${fish.alias}§e]§aを釣り上げた!")
 
         }
     }

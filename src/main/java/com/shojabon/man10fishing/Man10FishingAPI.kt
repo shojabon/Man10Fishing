@@ -67,14 +67,15 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             val enabledItemIndex = configSection.getBoolean("$rarityName.enabledItemIndex", true)
             val minSellPrice = configSection.getDouble("$rarityName.minSellPrice", 0.0)
             val priceMultiplier = configSection.getDouble("$rarityName.priceMultiplier", 0.0)
-            val broadcast=configSection.getBoolean("broadcast")
-            val firework=configSection.getBoolean("firework")
+            val broadcast=configSection.getBoolean("$rarityName.broadcast")
+            val firework=configSection.getBoolean("$rarityName.firework")
+            val hidden=configSection.getBoolean("$rarityName.hidden",false)
             if(alias == null || weight == 0){
                 Bukkit.getLogger().info("レアリティ$rarityName でエラーが発生しました")
                 continue
             }
             val rarityObject = FishRarity(rarityName, alias, weight,material,namePrefix,
-                loreDisplayName, enabledItemIndex, minSellPrice, priceMultiplier,broadcast,firework)
+                loreDisplayName, enabledItemIndex, minSellPrice, priceMultiplier,broadcast,firework,hidden)
             if(configSection.getBoolean("broadcast")) broadcastRarity.add(rarityObject)
             rarity[rarityName] = rarityObject
         }
@@ -264,7 +265,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
             ItemIndex.itemIndexes[file.nameWithoutExtension] = ItemIndex.fromConfig(file)
         }
 
-        for (rarity in rarity.values){
+        for (rarity in rarity.values.sortedByDescending { it.weight }){
             if(!rarity.enabledItemIndex) continue
             ItemIndex.itemIndexes[rarity.name] = ItemIndex.fromRarity(rarity)
         }

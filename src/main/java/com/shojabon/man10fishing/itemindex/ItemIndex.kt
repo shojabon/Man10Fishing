@@ -16,7 +16,7 @@ class ItemIndex {
 
     companion object {
         val fishdexList = HashMap<UUID,HashMap<String,ArrayList<FishParameter>>>()
-        val itemIndexes = HashMap<String, ItemIndex>()
+        val itemIndexes = LinkedHashMap<String, ItemIndex>()
 
         fun fromConfig(file: File): ItemIndex {
             val itemIndex = ItemIndex()
@@ -39,6 +39,7 @@ class ItemIndex {
             itemIndex.displayItem = rarity.material
             itemIndex.fish.addAll(ArrayList(Man10FishingAPI.fish.filter { it.value.rarity == rarity.name }.keys))
             itemIndex.fromRarity = true
+            itemIndex.hidden=rarity.hidden
             return itemIndex
         }
     }
@@ -51,6 +52,7 @@ class ItemIndex {
     val onCompleteCommands = ArrayList<String>()
     val completedPlayers = ArrayList<UUID>()
     val fish = ArrayList<String>()
+    var hidden=false
 
     var fromRarity = false
 

@@ -17,6 +17,16 @@ class ItemIndexCategory(val plugin: JavaPlugin, val uuid : UUID) : LargeSInvento
         val items = ArrayList<SInventoryItem>()
 
         for (itemIndex in ItemIndex.itemIndexes.values){
+            if(itemIndex.hidden){
+                var flag=true
+                itemIndex.fish.forEach {
+                    if(ItemIndex.fishdexList[uuid]?.containsKey(it)?:true){
+                        flag=false
+                        return@forEach
+                    }
+                }
+                if(flag)continue
+            }
             items.add(SInventoryItem(SItemStack(itemIndex.displayItem).setDisplayName(itemIndex.displayName).build()).clickable(false)
                 .setEvent { ItemIndexInventory(plugin,itemIndex.displayName,itemIndex,uuid,true).open(Bukkit.getPlayer(uuid)) })
         }
