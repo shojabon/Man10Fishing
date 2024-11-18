@@ -47,7 +47,18 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(SCommandArgument().addAllowedString("on"))
                         .addRequiredPermission("mfish.op")
                         .addExplanation("プラグインを有効化する")
-                        .setExecutor(OnCommand(plugin))
+                        .setExecutor { sender,_,_,_->
+                            if(!Man10Fishing.enabled) {
+                                Man10Fishing.enabled=true
+                                plugin.config.set("enabled", true)
+                                plugin.saveConfig()
+                                sender.sendMessage("${Man10Fishing.prefix}§aオンにしました")
+                            }else{
+                                sender.sendMessage("${Man10Fishing.prefix}§c既にオンです")
+                            }
+
+                            return@setExecutor true
+                        }
         )
 
         addCommand(
@@ -55,7 +66,18 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                         .addArgument(SCommandArgument().addAllowedString("off"))
                         .addRequiredPermission("mfish.op")
                         .addExplanation("プラグインを停止する")
-                        .setExecutor(OffCommand(plugin))
+                        .setExecutor { sender,_,_,_->
+                            if(Man10Fishing.enabled) {
+                                Man10Fishing.enabled=false
+                                plugin.config.set("enabled", false)
+                                plugin.saveConfig()
+                                sender.sendMessage("${Man10Fishing.prefix}§aオフにしました")
+                            }else{
+                                sender.sendMessage("${Man10Fishing.prefix}§c既にオフです")
+                            }
+
+                            return@setExecutor true
+                        }
         )
 
         //itemindex command
