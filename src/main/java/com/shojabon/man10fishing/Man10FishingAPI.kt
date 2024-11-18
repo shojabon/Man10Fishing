@@ -279,7 +279,7 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
                 if(rawMaxSizeResult.isEmpty())return@forEach
                 val maxSizeResult=rawMaxSizeResult[0]
                 val minSizeResult=Man10Fishing.mysql.query("select uuid,size from fish_log as min_record join(select MIN(size) as minsize from fish_log where fish='${fishName}') as sub_table on min_record.size=sub_table.minsize limit 1;")[0]
-                val amountResult=Man10Fishing.mysql.query("select SUM(1) as amount from fish_log where fish='${fishName};'")[0]
+                val amountResult=Man10Fishing.mysql.query("select SUM(1) as amount from fish_log where fish='${fishName}';")[0]
                 val firstFisherResult=Man10Fishing.mysql.query("select uuid from fish_log where fish='${fishName}' limit 1;")[0]
                 fishRecords[fishName]=
                         FishRecordData(UUID.fromString(maxSizeResult.getString("uuid")),maxSizeResult.getDouble("size")
