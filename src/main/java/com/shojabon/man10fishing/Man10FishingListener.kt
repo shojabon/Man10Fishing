@@ -40,6 +40,8 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     @EventHandler
     fun onFish(e: PlayerFishEvent) {
 
+        if(!Man10Fishing.enabled)return
+
         if(getNumOfRod(e.player) in 2..8){
 
             e.player.sendMessage("§cおおっと!ホットバーにあるもう一つの釣り竿に糸が絡まって、うまく扱うことができない!")

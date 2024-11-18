@@ -33,6 +33,7 @@ class Man10Fishing : JavaPlugin() {
         var probOfTreasure=0.0
         lateinit var prefix: String
         var playerAlert=""
+        var enabled=true
 
         var nowContest : AbstractFishContest? = null
 
@@ -64,6 +65,7 @@ class Man10Fishing : JavaPlugin() {
         playerAlert=config.getString("playerAlert","")!!
         prefix = config.getString("prefix")!!
         biteTime=config.getLong("biteTime",500)
+        enabled=config.getBoolean("enabled")
 
         if(!File(dataFolder.toString() + File.separator + "foodConfig.yml").exists()){
             SConfigFile(this).saveResource("foodConfig.yml", dataFolder.toString() + File.separator + "foodConfig.yml")

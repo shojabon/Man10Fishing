@@ -2,10 +2,7 @@ package com.shojabon.man10fishing.commands
 
 import com.shojabon.man10fishing.Man10Fishing
 import com.shojabon.man10fishing.Man10FishingAPI
-import com.shojabon.man10fishing.commands.subCommands.GetSeasonCommand
-import com.shojabon.man10fishing.commands.subCommands.RegisterSpawnLocationCommand
-import com.shojabon.man10fishing.commands.subCommands.ReloadConfigCommand
-import com.shojabon.man10fishing.commands.subCommands.SpawnCommand
+import com.shojabon.man10fishing.commands.subCommands.*
 import com.shojabon.man10fishing.commands.subCommands.contest.*
 import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodDataCommand
 import com.shojabon.man10fishing.commands.subCommands.debug.CheckFoodTableCommand
@@ -43,6 +40,22 @@ class Man10FishingCommand(var plugin: Man10Fishing) : SCommandRouter() {
                 .addExplanation("設定を変更したときに使用する")
                 .addExplanation("コマンドを使用するとサーバー起動時状態に戻る")
                 .setExecutor(ReloadConfigCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("on"))
+                        .addRequiredPermission("mfish.op")
+                        .addExplanation("プラグインを有効化する")
+                        .setExecutor(OnCommand(plugin))
+        )
+
+        addCommand(
+                SCommandObject()
+                        .addArgument(SCommandArgument().addAllowedString("off"))
+                        .addRequiredPermission("mfish.op")
+                        .addExplanation("プラグインを停止する")
+                        .setExecutor(OffCommand(plugin))
         )
 
         //itemindex command
