@@ -44,6 +44,8 @@ class Fish (val name: String, val config: ConfigurationSection){
     lateinit var sizeFactor: SizeFactor
     lateinit var loggingFactor: LoggingFactor
     lateinit var itemIndexFactor: ItemIndexFactor
+    lateinit var recordFactor: RecordFactor
+    lateinit var fireworkFactor: FireworkFactor
 
 
     init {
