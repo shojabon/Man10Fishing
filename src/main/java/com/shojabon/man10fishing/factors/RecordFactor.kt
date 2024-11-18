@@ -20,26 +20,26 @@ class RecordFactor(fish : Fish) : FishFactor(fish) {
             if(it.maxsize<parameter.size){
                 it.maxsize=parameter.size
                 it.maxUuid=fisher.uniqueId
-                Man10Fishing.api.broadcastPlMessage("§c§lサーバーレコード更新!")
-                Man10Fishing.api.broadcastPlMessage("§dレコード: サーバ内最大記録")
-                Man10Fishing.api.broadcastPlMessage("§d魚：§b${fish.alias}")
-                Man10Fishing.api.broadcastPlMessage("§d釣った人：§e${fisher.name}")
-                Man10Fishing.api.broadcastPlMessage("§dサイズ：§e${parameter.size}§bcm")
+                Man10Fishing.api.broadcastPlMessage("§d§lサーバーレコード更新!")
+                Man10Fishing.api.broadcastPlMessage("§cレコード: §eサーバ内最大記録")
+                Man10Fishing.api.broadcastPlMessage("§c魚：§e${fish.alias}")
+                Man10Fishing.api.broadcastPlMessage("§c釣った人：§e${fisher.name}")
+                Man10Fishing.api.broadcastPlMessage("§cサイズ：§e${parameter.size}cm")
             }
             if(it.minsize>parameter.size){
                 it.minsize=parameter.size
                 it.minUuid=fisher.uniqueId
-                Man10Fishing.api.broadcastPlMessage("§c§lサーバーレコード更新!")
-                Man10Fishing.api.broadcastPlMessage("§dレコード: サーバ内最小記録")
-                Man10Fishing.api.broadcastPlMessage("§d魚：§b${fish.alias}")
-                Man10Fishing.api.broadcastPlMessage("§d釣った人：§e${fisher.name}")
-                Man10Fishing.api.broadcastPlMessage("§dサイズ：§e${parameter.size}§bcm")
+                Man10Fishing.api.broadcastPlMessage("§d§lサーバーレコード更新!")
+                Man10Fishing.api.broadcastPlMessage("§cレコード: §eサーバ内最小記録")
+                Man10Fishing.api.broadcastPlMessage("§c魚：§e${fish.alias}")
+                Man10Fishing.api.broadcastPlMessage("§c釣った人：§e${fisher.name}")
+                Man10Fishing.api.broadcastPlMessage("§cサイズ：§e${parameter.size}cm")
             }
             it.amount++
         }?: kotlin.run { Man10FishingAPI.fishRecords[fish.name]=
                 FishRecordData(fisher.uniqueId,parameter.size,fisher.uniqueId,parameter.size,1,fisher.uniqueId)
 
-            Man10Fishing.api.broadcastPlMessage("§aなんと!§e${fisher.name}§aが新種§e[${fish.alias}§e]§aを釣り上げた!")
+            Man10Fishing.api.broadcastPlMessage("§aなんと！§e${fisher.name}§aが新種${Man10FishingAPI.rarity[fish.rarity]?.namePrefix}§l${parameter.fish.alias}§aを釣り上げた！")
 
         }
     }

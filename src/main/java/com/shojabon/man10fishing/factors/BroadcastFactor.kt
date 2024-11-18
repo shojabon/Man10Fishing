@@ -24,21 +24,21 @@ class BroadcastFactor(fish: Fish) : FishFactor(fish) {
         val rarityData= Man10FishingAPI.rarity[parameter.fish.rarity]!!
         when(parameter.sizeRank){
             SizeRank.BIG->{
-                Man10Fishing.api.broadcastPlMessage("§f§l${fisher.name}§aが§e§l巨大サイズ§aの${rarityData.namePrefix}§l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた!")
+                Man10Fishing.api.broadcastPlMessage("§f§l${fisher.name}§aが§e§l巨大サイズ§aの${rarityData.namePrefix}§l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた！")
                 return
             }
             SizeRank.SMALL->{
-                Man10Fishing.api.broadcastPlMessage("§f§l${fisher.name}§aが§e§lミニサイズ§aの${rarityData.namePrefix}§l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた!")
+                Man10Fishing.api.broadcastPlMessage("§f§l${fisher.name}§aが§e§lミニサイズ§aの${rarityData.namePrefix}§l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§aを釣り上げた！")
                 return
             }
 
             else->{}
         }
         if(enabled.get()||rarityData.broadcast){
-            Bukkit.broadcast(Component.text(Man10Fishing.prefix + "§f§l${fisher.name}が${rarityData.namePrefix}${rarityData.loreDisplayName} §l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§f§lを釣り上げた!"), Server.BROADCAST_CHANNEL_USERS)
+            Bukkit.broadcast(Component.text(Man10Fishing.prefix + "§f§l${fisher.name}が${rarityData.namePrefix}${rarityData.loreDisplayName} §l${parameter.fish.alias}§e§l(§f${parameter.size}cm§e§l)§f§lを釣り上げた！"), Server.BROADCAST_CHANNEL_USERS)
             return
         }
-        fisher.sendMessage(Man10Fishing.prefix+"${rarityData.namePrefix}§l${parameter.fish.alias}§e(§f${parameter.size}cm§e)§f§lを釣り上げた!")
+        fisher.sendMessage(Man10Fishing.prefix+"${rarityData.namePrefix}§l${parameter.fish.alias}§e(§f${parameter.size}cm§e)§f§lを釣り上げた！")
     }
 
 }
