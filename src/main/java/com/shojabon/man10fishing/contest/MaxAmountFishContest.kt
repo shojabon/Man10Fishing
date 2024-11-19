@@ -46,8 +46,9 @@ class MaxAmountFishContest:AbstractFishContest() {
         broadCastPlayers("§c§l順位")
         //サブスレッドで実行されてると思ってる
         Thread.sleep(500)
-        ranking.forEach { (t, u) ->
-            broadCastPlayers("§a${t}位: §e${u.name}§7:§b${u.allowedCaughtFish.size}匹")
+        for(i in 1 until visibleRankingSize+1){
+            val data=ranking[i]?:continue
+            broadCastPlayers("§a${i}位: §e${data.name}§7:§b${data.allowedCaughtFish.size}匹")
         }
     }
 

@@ -59,7 +59,6 @@ class FishFood(var food: ItemStack) {
             val distanceMultiply=min(max(((food1Type[5]+food2Type[5])/900)*log(10+distance/50000,10.0),0.4),1.0)
             val rawFoodRange=floor(distanceMultiply*multiply*(food1Type[5]+food2Type[5])/2)
             val foodRange=(if(rawFoodRange>800)800.0 else if(rawFoodRange<0) 0.0 else rawFoodRange)
-            Man10Fishing.instance.server.broadcast(Component.text(((food1Type[5]+food2Type[5])/900)*log(10+distance/50000,10.0)))
 
             result.add(foodRange)
 

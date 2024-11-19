@@ -34,9 +34,9 @@ class MaxSizeFishContest: AbstractFishContest() {
 
     }
 
-    override fun rankingUpdateMessage(player: FishContestPlayer): String {
+    override fun rankingUpdateMessage(player: FishContestPlayer,num:Int): String {
         val fish=player.getMaxSizeFish()
-        return "§fランキング更新§e§l：§c${player.name}§aが§b${fish?.fish?.alias}§d(${fish?.size}cm)§aを釣って§e1位§aにランクイン!"
+        return "§fランキング更新§e§l：§c${player.name}§aが§b${fish?.fish?.alias}§d(${fish?.size}cm)§aを釣って§e${num}位§aにランクイン!"
     }
 
     override fun rankingDefinition(lowerPlayer: FishContestPlayer, higherPlayer: FishContestPlayer): Boolean {
@@ -69,8 +69,9 @@ class MaxSizeFishContest: AbstractFishContest() {
 
         Thread.sleep(500)
 
-        ranking.forEach { (i, data) ->
-            val fish = data.allowedCaughtFish.firstOrNull()?:return@forEach
+        for(i in 1 until visibleRankingSize+1){
+            val data=ranking[i]?:continue
+            val fish = data.allowedCaughtFish.firstOrNull()?:continue
             broadCastPlayers("§a${i}位: §e${data.name}§7:" +
                     "§b${fish.fish.alias}" +
                     "§d(${fish.size}cm)")

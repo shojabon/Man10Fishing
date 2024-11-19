@@ -49,8 +49,8 @@ class FastFishingContest:AbstractFishContest() {
             return
         }
         broadCastPlayers("§c§l達成者：§e${winner?.name}")
-        Thread.sleep(1000)
-        broadCastPlayers("§c§lおめでとうございます!!")
+//        Thread.sleep(1000)
+//        broadCastPlayers("§c§lおめでとうございます!!")
     }
 
     override fun rankingLowerPrefix(player: FishContestPlayer): String {

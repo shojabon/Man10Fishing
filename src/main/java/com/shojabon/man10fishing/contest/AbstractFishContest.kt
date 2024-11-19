@@ -47,13 +47,13 @@ abstract class AbstractFishContest() {
     //ランキング用
     val ranking= HashMap<Int, FishContestPlayer>()
     private var useRanking=false
-    private var rankingSize=7
+    var visibleRankingSize=7
     val hideRanking= mutableListOf<UUID>()
 
     fun setConfig(config: YamlConfiguration,name:String): AbstractFishContest {
         this.config = config
         this.name=name
-        rankingSize=config.getInt("rankingSize",7)
+        visibleRankingSize=config.getInt("rankingSize",7)
         targetFishList=config.getStringList("targetFishes")
         targetFishName=config.getString("targetFishName","魚")!!
 
@@ -70,60 +70,47 @@ abstract class AbstractFishContest() {
     //終わったときの処理
     protected abstract fun onEnd()
 
-    //データの変動があったプレイヤーを指定し、ランキングを更新する
-    //ランキングシステムを使う場合はconfigのuseRankingをtrueにする
-    //可読性はお察し
-    fun updateRanking(player: FishContestPlayer){
 
-        //ランキングに上限人数未満のプレイヤーしか登録されていない場合
-        if(ranking.size<rankingSize&&!ranking.containsValue(player)){
-            ranking[ranking.size + 1] = player
-            if(useRanking)broadCastPlayers(rankingUpdateMessage(player))
-            return
+    //順位の入れ替え
+    //表示ランキング内の入れ替えが発生したら通知関数を通す
+    private fun updateRanking(player:FishContestPlayer){
 
+        var newParticipant=false
+        //現在の順位取得
+        val oldRank=ranking.filter{ it.value==player}.keys.firstOrNull()?: kotlin.run {
+            ranking[ranking.size+1]=player
+            newParticipant=true
+            ranking.size
         }
 
-        //ランキング更新用の変数
-        var beforeRank=rankingSize
+        var newRank=oldRank
 
-        for (i in ranking.size downTo 1){
-            //ランキング下位から順に比較を行い、自分以上の評価を持つ順位になった場合ifの中を通す
+        for(i in oldRank-1 downTo 1){
+            //下から順番に評価を行い, 初めて自分よりも上のランクが現れたときにランキング更新を適用する.
             if(rankingDefinition(player,ranking[i]!!)){
-
-                //更新前にランクインをしていた場合必ずここを通り、取得する
-                //更新前のランクが最下位位だった場合はbeforeRankの変数宣言で対応
-                if(ranking[i]==player){
-                    beforeRank=i
-                    continue
+                for(j in oldRank downTo  newRank+1){
+                    ranking[j]=ranking[j-1]!!
                 }
-
-                //ここを通る際、i+1==beforeRankだった場合はランキングの変動がないことを意味するのでreturn
-                if(i+1==beforeRank)return
-
-                //ここを通るのはiがplayerの一つ上の順位になったときなので、それの１つ下にplayerを配置する
-                //構造上beforeRank>=i+1は保証されている
-                for(j in beforeRank downTo i+2) {
-                    ranking[j] = ranking[j - 1]!!
-                }
-                ranking[i+1]=player
-
-                if(useRanking)broadCastPlayers(rankingUpdateMessage(player))
-                return
+                ranking[newRank]=player
+                break
             }
+            newRank=i
+        }
+        if(newRank==1){
+            for(i in oldRank downTo  2){
+                ranking[i]=ranking[i-1]!!
+            }
+            ranking[1]=player
         }
 
-        if(beforeRank==1)return
-
-        //ここを通るのは、１位になるとき
-        for(i in beforeRank downTo 2){
-            ranking[i] = ranking[i - 1]!!
+        if(useRanking&&(newRank<oldRank||newParticipant)&&newRank<=visibleRankingSize){
+            broadCastPlayers(rankingUpdateMessage(player,newRank))
         }
-        ranking[1]=player
-        if(useRanking)broadCastPlayers(rankingUpdateMessage(player))
+
     }
 
-    protected open fun rankingUpdateMessage(player: FishContestPlayer):String{
-        return "§fランキング更新§e§l：§c${player.name}§aが§e1位§aにランクイン!"
+    protected open fun rankingUpdateMessage(player: FishContestPlayer,num:Int):String{
+        return "§fランキング更新§e§l：§c${player.name}§aが§e${num}位§aにランクイン!"
     }
 
     private fun executeRewardCommands(){
@@ -188,12 +175,12 @@ abstract class AbstractFishContest() {
         val rankingScoreBoard=Bukkit.getScoreboardManager().newScoreboard
         val rankingObjective=rankingScoreBoard.registerNewObjective("fish_con","Dummy", Component.text("§e§l釣り大会ランキング"))
         rankingObjective.displaySlot=DisplaySlot.SIDEBAR
-        for(i in 1..rankingSize){
+        for(i in 1..visibleRankingSize){
             if(ranking.containsKey(i)){
-                rankingObjective.getScore("§6${i}§f:§e${ranking[i]!!.name}§f,§b${rankingLowerPrefix(ranking[i]!!)}§r").score=rankingSize-i
+                rankingObjective.getScore("§6${i}§f:§e${ranking[i]!!.name}§f,§b${rankingLowerPrefix(ranking[i]!!)}§r").score=visibleRankingSize-i
             }
             else{
-                rankingObjective.getScore("§6${i}§f:§c無し").score=rankingSize-i
+                rankingObjective.getScore("§6${i}§f:§c無し").score=visibleRankingSize-i
             }
         }
         for(player in Bukkit.getServer().onlinePlayers){
