@@ -26,8 +26,9 @@ class RecordFactor(fish : Fish) : FishFactor(fish) {
                         .appendNewline().append(Component.text("§c釣った人：§e${fisher.player?.name}"))
                         .appendNewline().append(Component.text("§cサイズ：§e${parameter.size}cm"))
                 Man10Fishing.instance.server.broadcast(
-                        Component.text("${Man10Fishing.prefix}§d${fish.alias}の§c§nサーバーレコード§dが更新されました")
+                        Component.text("${Man10Fishing.prefix}§d${fish.alias}の").append(Component.text("§c[サーバーレコード]")
                                 .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT,text))
+                                ).append(Component.text("§dが更新されました"))
                 )
 
             }
@@ -38,8 +39,9 @@ class RecordFactor(fish : Fish) : FishFactor(fish) {
                         .appendNewline().append(Component.text("§c釣った人：§e${fisher.player?.name}"))
                         .appendNewline().append(Component.text("§cサイズ：§e${parameter.size}cm"))
                 Man10Fishing.instance.server.broadcast(
-                        Component.text("${Man10Fishing.prefix}§d${fish.alias}の§c§nサーバーレコード§dが更新されました")
+                        Component.text("${Man10Fishing.prefix}§d${fish.alias}の").append(Component.text("§c[サーバーレコード]")
                                 .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT,text))
+                                ).append(Component.text("§dが更新されました"))
                 )
             }
             it.amount++
