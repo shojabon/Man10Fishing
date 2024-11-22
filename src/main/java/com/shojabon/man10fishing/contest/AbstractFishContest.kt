@@ -8,10 +8,14 @@ import com.shojabon.mcutils.Utils.STimer
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
+import org.bukkit.Color
+import org.bukkit.FireworkEffect
 import org.bukkit.Location
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.Firework
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.scoreboard.DisplaySlot
@@ -243,6 +247,19 @@ abstract class AbstractFishContest() {
                 }
             })
 
+        }
+        ranking[1]?.let {data->
+            Bukkit.getPlayer(data.uuid)?.let {
+                Man10Fishing.instance.server.scheduler.runTask(Man10Fishing.instance, Runnable {
+                    val fw=it.world.spawnEntity(it.location, EntityType.FIREWORK) as Firework
+                    val meta=fw.fireworkMeta
+                    meta.power=1
+                    val eff= FireworkEffect.builder().withColor(Color.LIME).withColor(Color.WHITE).withColor(Color.YELLOW)
+                            .with(FireworkEffect.Type.BALL_LARGE).flicker(true).build()
+                    meta.addEffect(eff)
+                    fw.fireworkMeta=meta
+                })
+            }
         }
     }
 

@@ -9,6 +9,8 @@ import com.shojabon.man10fishing.menu.TreasureBoxMenu
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Fish
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -70,21 +72,36 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
 
 
-            val mainHand = e.player.inventory.itemInMainHand
+
+        val mainHand = e.player.inventory.itemInMainHand
+
             if (!FishingRod.isRod(mainHand)){
                 (e.caught as Item).itemStack=ItemStack(Material.AIR)
                 e.player.sendMessage("§cつれないなあ...")
                 return
             }
             val rodItem = FishingRod(mainHand)
-            if (rodItem.getFoodCount() <= 0) {
+
+
+
+        //以下デバッグ用
+//        val rodItem=FishingRod(mainHand.clone())
+//        rodItem.setFoodType("0|0|0|0|0|0")
+//        rodItem.setFoodCount(10)
+        ////////////
+        if(mainHand.itemMeta.hasEnchant(Enchantment.MENDING)){
+            e.player.sendMessage("不正を検知しました")
+            return
+        }
+
+            e.caught ?: return
+
+
+            if (!rodItem.useFood(e.player)) {
                 (e.caught as Item).itemStack=ItemStack(Material.AIR)
                 e.player.sendMessage("§cつれないなあ...")
                 return
             }
-
-            e.caught ?: return
-
 
             if (Man10Fishing.playersOpeningTreasure.contains(e.player)) {
                 plugin.logger.log(Level.WARNING, "${e.player.name}${Man10Fishing.playerAlert}")
@@ -143,7 +160,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
             e.player.sendMessage(Man10Fishing.prefix + "§c逃げられてしまったようだ...")
         }
 
-        if (!rodItem.removeFoodCount(1)){
+        if (rodItem.remainingFoodCount==0){
             e.player.sendMessage(Man10Fishing.prefix + "§c餌がなくなりました")
         }
         Man10Fishing.fisherWithBiteRod.remove(e.player.uniqueId)
@@ -151,13 +168,22 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
     }
 
     @EventHandler
-    fun onClick(e: PlayerInteractEvent){
+    fun onSwap(e: PlayerSwapHandItemsEvent){
         //釣り竿を持って右クリックすると左クリックも呼び出されるというminecraftのわけわかんねぇバグがあるので
         //左クリックで餌guiを開くみたいなことができません
-        if(e.action != Action.LEFT_CLICK_BLOCK)return
-        if(e.player.inventory.itemInMainHand.type != Material.FISHING_ROD) return
-        if(!FishingRod.isRod(e.player.inventory.itemInMainHand)) return
-        e.isCancelled = true
+
+        if(e.mainHandItem.type==Material.FISHING_ROD){
+            e.player.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、持つ手を入れ替えることができない!")
+            e.isCancelled=true
+            return
+        }
+
+        if(e.offHandItem.type != Material.FISHING_ROD) return
+        e.isCancelled=true
+        if(!FishingRod.isRod(e.player.inventory.itemInMainHand)){
+            e.player.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、持つ手を入れ替えることができない!")
+            return
+        }
 
         val menu = SingleItemStackSelectorMenu("餌を選択してください", ItemStack(Material.AIR), plugin)
         menu.setCheckItemFunction { itemStack: ItemStack? ->
@@ -166,7 +192,7 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
         }
 //        menu.selectTypeItem(true)
         menu.setOnConfirm { itemStack: ItemStack? ->
-            if(e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return@setOnConfirm
+//            if(e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return@setOnConfirm
             if(e.player.inventory.itemInMainHand.type != Material.FISHING_ROD) return@setOnConfirm
             if(!FishingRod.isRod(e.player.inventory.itemInMainHand)) return@setOnConfirm
             if(itemStack == null) return@setOnConfirm
@@ -189,14 +215,6 @@ class Man10FishingListener(private val plugin: Man10Fishing) : Listener {
 
         }
         menu.open(e.player)
-    }
-
-    @EventHandler
-    fun onSwap(e:PlayerSwapHandItemsEvent){
-        if(e.mainHandItem?.type==Material.FISHING_ROD||e.offHandItem?.type==Material.FISHING_ROD){
-            e.player.sendMessage("§cおおっと!あなたは釣り竿を強く握りしめているので、持つ手を入れ替えることができない!")
-            e.isCancelled=true
-        }
     }
 
     @EventHandler

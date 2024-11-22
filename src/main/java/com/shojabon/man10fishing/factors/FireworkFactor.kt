@@ -11,7 +11,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Firework
 import org.bukkit.entity.Player
 
-@FishFactorDefinition(name = "花火設定",
+@FishFactorDefinition(name = "花火",
         iconMaterial = Material.FIREWORK_ROCKET,
         explanation = ["花火による演出を行うかどうかの設定"],
         adminSetting = false,
@@ -22,7 +22,7 @@ class FireworkFactor(fish: Fish) : FishFactor(fish) {
             Man10Fishing.instance.server.scheduler.runTask(Man10Fishing.instance, Runnable {
                 val fw=fisher.world.spawnEntity(fisher.location, EntityType.FIREWORK) as Firework
                 val meta=fw.fireworkMeta
-                meta.power=0
+                meta.power=1
                 val eff= FireworkEffect.builder().withColor(Color.LIME).withColor(Color.WHITE).withColor(Color.YELLOW)
                         .with(FireworkEffect.Type.BALL_LARGE).flicker(true).build()
                 meta.addEffect(eff)

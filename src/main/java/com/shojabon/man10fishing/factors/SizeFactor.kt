@@ -24,12 +24,12 @@ class SizeFactor(fish: Fish) : FishFactor(fish) {
         val max=max.get()
         var sizeRank=SizeRank.NORMAL
 
-        //2.32は1%の場所
+        //2.58は0.5%の場所
         val gaussiann=java.util.Random().nextGaussian()
 
         when {
-            (gaussiann<-2.32)->sizeRank=SizeRank.SMALL
-            (gaussiann>2.32)->sizeRank=SizeRank.BIG
+            (gaussiann<-2.58)->sizeRank=SizeRank.SMALL
+            (gaussiann>2.58)->sizeRank=SizeRank.BIG
         }
         var size=gaussiann*((max-min)/2/1.97)+(min+max)/2
         if(size<=0)size=min

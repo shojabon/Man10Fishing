@@ -6,7 +6,10 @@ import com.shojabon.mcutils.Utils.BaseUtils
 import com.shojabon.mcutils.Utils.SItemStack
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.Sound
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import kotlin.random.Random
 
 class FishingRod(var rodItem: ItemStack) {
     companion object{
@@ -22,6 +25,8 @@ class FishingRod(var rodItem: ItemStack) {
     var remainingFoodCount = 0
     var currentFood = listOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     var season= Season.NONE
+    var foodPerUse=1
+    var savingChance=0.0
 
     init {
         if (isRod(rodItem)){
@@ -54,6 +59,15 @@ class FishingRod(var rodItem: ItemStack) {
         return getFoodCount() > 0
     }
 
+    fun useFood(player:Player):Boolean{
+
+        if(remainingFoodCount<foodPerUse)return false
+
+        if(Random.nextDouble()<savingChance)player.playSound(player.location,Sound.BLOCK_NOTE_BLOCK_BELL,0.5F,2.0F)
+        else removeFoodCount(foodPerUse)
+
+        return true
+    }
     //食べ物タイプ
 
     fun setFoodType(foodType: List<Double>){
