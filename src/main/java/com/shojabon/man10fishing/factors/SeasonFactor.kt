@@ -34,7 +34,7 @@ class SeasonFactor(fish: Fish) : FishFactor(fish) {
 
     override fun fishEnabled(fish: Fish, fisher: Player, rod: FishingRod,hookLocation: Location): Boolean {
 
-        var currentSeason=Man10Fishing.api.getCurrentSeason()
+        var currentSeason=Season.getCurrentSeason()
         if(Man10Fishing.nowContest==null){
             if(rod.season in listOf(Season.SPRING,Season.SUMMER,Season.AUTUMN,Season.WINTER))currentSeason=rod.season
         }

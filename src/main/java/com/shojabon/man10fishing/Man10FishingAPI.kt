@@ -320,23 +320,10 @@ class Man10FishingAPI(private val plugin: Man10Fishing) {
         Bukkit.getServer().broadcast(Component.text(Man10Fishing.prefix+message))
     }
 
-    //現在の季節を返す
-    //基準は1990/1/4の日曜日
-    //季節は、基準日から7日を春として1週間ごとに春→夏→秋→冬→春...と帰納的に定義される
-    fun getCurrentSeason(): Season {
-        return when((((Date().time/864000000L)-3L)/7)%4){
-            0L->Season.SPRING
-            1L->Season.SUMMER
-            2L->Season.AUTUMN
-            else->Season.WINTER
-            //処理の関係上elseとなっているが、これは3Lの場合のみしか通らない
-        }
-    }
-
 
     //季節に応じたスポーン場所を返す
     fun getSpawnLocation():Location?{
-        return Man10Fishing.spawnPoints[getCurrentSeason()]
+        return Man10Fishing.spawnPoints[Season.getCurrentSeason()]
     }
 
 }

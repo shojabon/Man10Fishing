@@ -40,7 +40,7 @@ class FishingScheduler {
             if (it.dayOfTheWeek != null && it.dayOfTheWeek!!.int != now.get(Calendar.DAY_OF_WEEK)){
                 return@forEach
             }
-            if(!it.seasons.contains(Season.ALL)&&!it.seasons.contains(Man10Fishing.api.getCurrentSeason())){
+            if(!it.seasons.contains(Season.ALL)&&!it.seasons.contains(Season.getCurrentSeason())){
                 return@forEach
             }
 
@@ -151,7 +151,7 @@ class FishingScheduler {
                     }
                     ActionEnum.RANDOM_START_CONTEST_IN_CATEGORY->{
                         val categories=(actionValue as String).split(",")
-                        var contests= Man10FishingAPI.seasonContests[Man10Fishing.api.getCurrentSeason()]!!.toSet()
+                        var contests= Man10FishingAPI.seasonContests[Season.getCurrentSeason()]!!.toSet()
                         if(!categories.contains("all")){
                             categories.forEach {
                                 contests = contests.intersect((Man10FishingAPI.categorizedContests[it]

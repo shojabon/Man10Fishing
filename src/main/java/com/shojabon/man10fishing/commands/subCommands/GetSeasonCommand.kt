@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 class GetSeasonCommand(var plugin: Man10Fishing) : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
-        sender.sendMessage("§a§l今の季節は${translateSeason(Man10Fishing.api.getCurrentSeason())}§a§lです")
+        sender.sendMessage("§a§l今の季節は${translateSeason(Season.getCurrentSeason())}§a§lです")
 
         return true
     }
