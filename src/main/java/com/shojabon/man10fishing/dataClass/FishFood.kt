@@ -26,6 +26,7 @@ class FishFood(var food: ItemStack) {
 
         //デフォルト設定があるアイテムなら
         fun isDefaultFood(item: ItemStack): Boolean{
+            if(item.itemMeta.hasCustomModelData())return false
             val defaultFoodType = Man10Fishing.foodConfig.getString(item.type.name) ?: return false
             val foodSeparatedInformation = defaultFoodType.split("|")
             if(foodSeparatedInformation.size != 6){
