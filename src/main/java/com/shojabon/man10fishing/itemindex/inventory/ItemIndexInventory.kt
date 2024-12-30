@@ -182,7 +182,7 @@ class ItemIndexInventory(private val plugin: JavaPlugin, name: String, private v
                 ,"§d釣った人：§e${record?.maxUuid?.let { Bukkit.getOfflinePlayer(it).name }}"
                 ,""
                 ,"§dサーバー内最小記録：§b${record?.minsize}§ecm"
-                ,"§d釣った人：§e${record?.maxUuid?.let { Bukkit.getOfflinePlayer(it).name }}"
+                ,"§d釣った人：§e${record?.minUuid?.let { Bukkit.getOfflinePlayer(it).name }}"
                 ,""
                 ,"§dこれまでに釣られた数：§b${record?.amount}§e匹"
                 ,""
