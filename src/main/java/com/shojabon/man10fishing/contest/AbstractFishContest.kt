@@ -129,17 +129,17 @@ abstract class AbstractFishContest() {
             }
             if(t=="all"){
                 val ipList= arrayListOf<String>()
-                rewardCommands[t]?.forEach { str ->
-                    players.values.forEach { cPlayer ->
-                        if(cPlayer.caughtFish.isEmpty())return@forEach
-                        Man10Fishing.instance.logger.info("コンテスト${t}位:${cPlayer.name}")
-                        val player=Bukkit.getPlayer(cPlayer.uuid)?:return@forEach
-                        val ip=player.address?.address?.hostAddress?:return@forEach
-                        if(ipList.contains(ip)){
-                            player.sendMessage("${Man10Fishing.prefix}§c複数のアカウントで参加賞を受け取ることはできません。")
-                            return@forEach
-                        }
-                        ipList.add(ip)
+                players.values.forEach{cPlayer->
+                    if(cPlayer.caughtFish.isEmpty())return@forEach
+                    Man10Fishing.instance.logger.info("コンテスト${t}位:${cPlayer.name}")
+                    val player=Bukkit.getPlayer(cPlayer.uuid)?:return@forEach
+                    val ip=player.address?.address?.hostAddress?:return@forEach
+                    if(ipList.contains(ip)){
+                        player.sendMessage("${Man10Fishing.prefix}§c複数のアカウントで参加賞を受け取ることはできません。")
+                        return@forEach
+                    }
+                    ipList.add(ip)
+                    rewardCommands[t]?.forEach { str ->
                         dispatchCommand(applyAdditionalPlaceHolder(applyPlaceHolder(str, cPlayer), cPlayer))
                     }
                 }
