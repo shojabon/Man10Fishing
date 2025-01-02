@@ -22,7 +22,7 @@ import org.bukkit.entity.Player
  */
 class CommandFactor(fish: Fish) : FishFactor(fish) {
 
-    val commands=FishSettingVariable("commands", null as List<String>?)
+    val commands=FishSettingVariable("command", null as List<String>?)
 
     override fun onFish(fish: Fish, parameter: FishParameter, fisher: Player, rod: FishingRod) {
         for(command in commands.get()?:return){
